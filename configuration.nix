@@ -1,5 +1,4 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
+# Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
 
 { config, pkgs, ... }:
@@ -9,6 +8,8 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./asus-g15.nix
+      ./qemu-kvm.nix
+      #./Desktop.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -20,18 +21,17 @@
   };
   boot.loader.grub = {
 	enable = true;
-	efiSupport = true;
-        gfxmodeBios = "auto";
 	devices = [ "nodev" ];
+	efiSupport = true;
+    gfxmodeBios = "auto";
+	memtest86.enable = true;
 	extraGrubInstallArgs = [ "--bootloader-id=NixOS" ];
 	configurationName = "NixOS";
   };
   boot.loader.timeout = 1;
  
-  # NOTE SET KERNEL BOOTLOADER OPTIONS ON INDIVIDUAL NIX
-  
-  #networking.hostName = "NixOS-G15"; # Define your hostname.
-  # Pick only one of the below networking options.
+  # NOTE SET KERNEL BOOTLOADER OPTIONS and Hostname ON INDIVIDUAL NIX  
+  # networking.hostName = "NixOS"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.networkmanager.enable = true; 
 
@@ -50,30 +50,8 @@
   #   useXkbConfig = true; # use xkbOptions in tty.
   };
 
-  # Enable the X11 windowing system.
-  # services.xserver.enable = true;  
-
-  # Configure keymap in X11
-  # services.xserver.layout = "us";
-  # services.xserver.xkbOptions = "eurosign:e,caps:escape";
-
-  # Enable CUPS to print documents.
-  # services.printing.enable = true;
-
-  # Enable sound.
-  # sound.enable = true;
-  # hardware.pulseaudio.enable = true;
-
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  # NOTE: defined in other module
-  #users.users.ja = {
-  #   isNormalUser = true;
-  #   extraGroups = [ "wheel" "video" "input" "audio" ]; # Enable ‘sudo’ for the user.
-  #   packages = with pkgs; [
-  #     xfce.mousepad
-  #     tree
-  #   ];
-  #};
+  # NOTE: DEFINE USER ACCOUNT in different module
   
   # Latest Kernel
   #boot.kernelPackages = pkgs.linuxPackages_latest;
@@ -81,57 +59,58 @@
   # Unfree softwares
   nixpkgs.config.allowUnfree = true;
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
+  # List packages installed in system profile. To search, run: $ nix search wget
   environment.systemPackages = with pkgs; [
+  	# System Packages
+    baobab
+    btrfs-progs
+    cpufrequtils
+    ffmpeg   
+    git
+    glib #for gsettings to work   
+    libappindicator
+    libnotify
+    openssl # required by Rainbow borders
+    pipewire  
+    vim
+    wget
+    wireplumber
+    xarchiver
+    xdg-user-dirs
+        
+	# I normally have and use
     audacious
+    firefox
+    mpv
+    neofetch
+        
+    # Hyprland Stuff        
     blueman
     btop
-    btrfs-progs
     cava
     cliphist
     dunst
-    ffmpeg
-    firefox
     foot
-    git
-    glib #for gsettings to work
     gnome.gnome-system-monitor
     grim
     jq
-    libappindicator
-    libnotify
-    lxqt.pcmanfm-qt
-    mpv
-    neofetch
+    pcmanfm
     networkmanagerapplet
     nwg-look
     nvtop
-    openssl # required by Rainbow borders   
     pamixer
     pavucontrol
-    pipewire
-    python3
     polkit_gnome
     slurp
-    snapper
-    supergfxctl
     swaybg
     swayidle
     swaylock-effects
     swww
     qt5ct
     qt6ct
-    vim
-    wget
-    wireplumber
     wl-clipboard
     wofi
     viewnior
-    xarchiver
-    xdg-user-dirs
-    zram-generator
-    (pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];}))
   ];
 
   programs.thunar.enable = true;
@@ -140,10 +119,21 @@
 	thunar-volman
 	tumbler
   ];
-  
+  # for thunar to work better
   services.gvfs.enable = true;
   services.tumbler.enable = true;
 
+  # SOUNDS #
+  # sound.enable = true; # dont enable for pipewire
+  # hardware.pulseaudio.enable = true;  
+  # PIPEWIRE
+  security.rtkit.enable = true;
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+  };
   
   # FONTS
   fonts.packages = with pkgs; [
@@ -155,55 +145,17 @@
     (nerdfonts.override {fonts = ["JetBrainsMono"];})
  ];
   
-  # ZSH
-  programs.zsh.enable = true;
-  users.defaultUserShell = pkgs.zsh;
-  environment.shells = with pkgs; [ zsh ];
-  
-  # Enable CUPS to print documents.
-  # services.printing.enable = true;
-
-  # Enable sound.
-  # sound.enable = true;
-  # hardware.pulseaudio.enable = true;
-  
-  # PIPEWIRE
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-  };
-  
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
-  
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
-
-  # List services that you want to enable:
-  #services.udisks2.enable = true;
-  security.polkit.enable = true;
-  services.envfs.enable = true;
-
-  # Enable default programs
+  # Programs #
+  # dconf
   programs.dconf.enable = true;
-  
+    
+  # SERVICES #
+  # udev
+  services.udev.enable = true; 
+  # services.udisks2.enable = true;
+  services.envfs.enable = true;  
   # Dbus
-  services.dbus.enable = true;
-
-  # zram
-  zramSwap.enable = true;
-
-  # Swaylock
-  security.pam.services.swaylock.text = "auth include login";
-  
+  services.dbus.enable = true;  
   # Trim For SSD, fstrim.
   services.fstrim = {
     enable = true;
@@ -212,17 +164,60 @@
 
   # Fwupd # Firmware updater
   services.fwupd.enable = true;
-   
-  # udev
-  services.udev.enable = true;
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
+    
+  # SECURITY
+  # Swaylock
+  security.pam.services.swaylock.text = "auth include login";
+  security.polkit.enable = true; 
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   networking.firewall.enable = true;
+      
+  # SYSTEMD 
+  systemd.services.NetworkManager-wait-online.enable = false; 
+
+  # zram
+  zramSwap = {
+	enable = true;
+	priority = 100;
+	memoryPercent = 30;
+	swapDevices = 1;
+  };
+
+  # zram-generator NOTE: add in the packages
+  #services.zram-generator = {
+    #enable = true;
+    #settings = {
+	#name = dev;
+	#zram-size = "8192";
+	#compression-algorithm = "zstd";
+	#swap-priority = 100;
+	#};
+  #};
+  
+  nix.settings.experimental-features = [ "nix-command"  "flakes" ];
+  
+  # Enable the X11 windowing system.
+  # services.xserver.enable = true;  
+
+  # Configure keymap in X11
+  # services.xserver.layout = "us";
+  # services.xserver.xkbOptions = "eurosign:e,caps:escape";  
+
+  
+  # Some programs need SUID wrappers, can be configured further or are
+  # started in user sessions.
+  # programs.mtr.enable = true;
+  # programs.gnupg.agent = {
+  #   enable = true;
+  #   enableSSHSupport = true;
+  # };
+  
+  # Enable the OpenSSH daemon.
+  # services.openssh.enable = true;
   
     # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you
