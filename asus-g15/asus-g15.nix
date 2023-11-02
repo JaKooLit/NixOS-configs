@@ -26,10 +26,19 @@
     asusctl
     supergfxctl
 
+	#hardware-acceleration
+    libva
+	libva-utils
+
+	#nvidia-specific hardware acceleration
+	libvdpau
+	libvdpau-va-gl 
+    nvidia-vaapi-driver
+	vaapiVdpau
+    vdpauinfo
+
     #flatpak
     glxinfo
-    libva
-    nvidia-vaapi-driver
     obs-studio
     yt-dlp
     vscodium
