@@ -30,14 +30,14 @@
     vscodium
     webcord
     
-	glxinfo
+    glxinfo
     libva			
     # Hyprland to work well
     qt6.qtwayland
     xdg-desktop-portal-hyprland
     #waybar - if want experimental then next line
     #(pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];}))
-	waybar
+    waybar
 
     #gaming stuff
     gamemode
@@ -64,7 +64,7 @@
   
   powerManagement.cpuFreqGovernor = "schedutil";
 
-  networking.hostName = "NiX";
+  networking.hostName = "NixOS";
   
   # ZSH
   programs.zsh = {

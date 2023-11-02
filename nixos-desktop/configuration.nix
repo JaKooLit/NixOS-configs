@@ -7,10 +7,10 @@
   imports =
     [ # Include the results of the hardware scan.
       ./modules/hardware-configuration.nix
-      ./modules/HP-Mini.nix
+      #./modules/HP-Mini.nix
       #./asus-g15.nix
-      ./qemu-kvm.nix
-      ./desktop.nix
+      ./modules/qemu-kvm.nix
+      ./modules/desktop.nix
     ];
 
   # Use the systemd-boot EFI boot loader.

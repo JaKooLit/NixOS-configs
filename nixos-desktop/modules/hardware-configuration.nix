@@ -8,62 +8,72 @@
     [ (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
-  boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "usb_storage" "usbhid" "sd_mod" "sdhci_pci" ];
+  boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/708f8104-00f8-40bc-ba93-a912c9c003de";
+    { device = "/dev/disk/by-uuid/0bb6f23d-8d70-43c3-a760-867db05e48b8";
       fsType = "btrfs";
       options = [ "noatime" "compress=zstd:4" "discard=async" "space_cache=v2" "ssd" "subvol=root" ];
     };
 
   fileSystems."/home" =
-    { device = "/dev/disk/by-uuid/708f8104-00f8-40bc-ba93-a912c9c003de";
+    { device = "/dev/disk/by-uuid/0bb6f23d-8d70-43c3-a760-867db05e48b8";
       fsType = "btrfs";
       options = [ "noatime" "compress=zstd:4" "discard=async" "space_cache=v2" "ssd" "subvol=home" ];
     };
 
   fileSystems."/var" =
-    { device = "/dev/disk/by-uuid/708f8104-00f8-40bc-ba93-a912c9c003de";
+    { device = "/dev/disk/by-uuid/0bb6f23d-8d70-43c3-a760-867db05e48b8";
       fsType = "btrfs";
       options = [ "noatime" "compress=zstd:4" "discard=async" "space_cache=v2" "ssd" "subvol=var" ];
     };
 
   fileSystems."/opt" =
-    { device = "/dev/disk/by-uuid/708f8104-00f8-40bc-ba93-a912c9c003de";
+    { device = "/dev/disk/by-uuid/0bb6f23d-8d70-43c3-a760-867db05e48b8";
       fsType = "btrfs";
       options = [ "noatime" "compress=zstd:4" "discard=async" "space_cache=v2" "ssd" "subvol=opt" ];
     };
 
   fileSystems."/nix" =
-    { device = "/dev/disk/by-uuid/708f8104-00f8-40bc-ba93-a912c9c003de";
+    { device = "/dev/disk/by-uuid/0bb6f23d-8d70-43c3-a760-867db05e48b8";
       fsType = "btrfs";
       options = [ "noatime" "compress=zstd:4" "discard=async" "space_cache=v2" "ssd" "subvol=nix" ];
     };
 
+  fileSystems."/boot" =
+    { device = "/dev/disk/by-uuid/20078d76-d0c4-4a57-885c-f348e07f9f05";
+      fsType = "ext4";
+    };
+
   fileSystems."/efi" =
-    { device = "/dev/disk/by-uuid/D665-2D85";
+    { device = "/dev/disk/by-uuid/6F17-ADD0";
       fsType = "vfat";
     };
 
-  fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/851fba85-6488-43fc-ab98-a20a51652040";
-      fsType = "ext4";
-    };
-
   swapDevices =
-    [ { device = "/dev/disk/by-uuid/672859bf-0fc2-45bb-877b-4bd222f4ba2c"; }
+    [ { device = "/dev/disk/by-uuid/ef6d1409-5ecf-413b-8408-7265f05b1bc9"; }
     ];
 
-  fileSystems."/home/ja/00shared-drives/shared-1TB" =
-    { device = "/dev/disk/by-uuid/8f80f828-1642-4e98-8f65-a8c681215e6f";
+    fileSystems."/home/ja/00shared-drives/Data-Momentus-XT" =
+    { device = "/dev/disk/by-uuid/11bc1730-7b19-48dd-8bde-05fa54308860";
       fsType = "ext4";
     };
 
-  fileSystems."/home/ja/00shared-drives/shared-500G" =
-    { device = "/dev/disk/by-uuid/2c88e4ba-39e2-41d1-a88e-92d794b13baf";
+  fileSystems."/home/ja/00shared-drives/1TB-SSD" =
+    { device = "/dev/disk/by-uuid/6a061ba4-d0be-416e-9853-7fe9862c8f63";
+      fsType = "ext4";
+    };
+
+  fileSystems."/home/ja/00shared-drives/1TB-NVME" =
+    { device = "/dev/disk/by-uuid/15d348b6-c5a4-4eb9-8d14-8f33da2ab912";
+      fsType = "ext4";
+    };
+
+  fileSystems."/home/ja/00shared-drives/500G-NVME" =
+    { device = "/dev/disk/by-uuid/797a4922-3b58-4bdd-ad7e-4ddac564d3de";
       fsType = "ext4";
     };
 
@@ -72,8 +82,9 @@
   # still possible to use this option, but it's recommended to use it in conjunction
   # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
   networking.useDHCP = lib.mkDefault true;
-  # networking.interfaces.enp3s0.useDHCP = lib.mkDefault true;
-  # networking.interfaces.wlp4s0.useDHCP = lib.mkDefault true;
+  # networking.interfaces.enp5s0.useDHCP = lib.mkDefault true;
+  # networking.interfaces.enp6s0.useDHCP = lib.mkDefault true;
+  # networking.interfaces.wlp7s0.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
