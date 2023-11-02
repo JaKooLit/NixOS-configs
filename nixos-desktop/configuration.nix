@@ -9,8 +9,8 @@
       ./modules/hardware-configuration.nix
       ./modules/HP-Mini.nix
       #./asus-g15.nix
-      #./qemu-kvm.nix
-      #./Desktop.nix
+      ./qemu-kvm.nix
+      ./desktop.nix
     ];
 
   # Use the systemd-boot EFI boot loader.

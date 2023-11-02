@@ -6,10 +6,9 @@
 {
   imports =
     [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ./asus-g15.nix
-      ./qemu-kvm.nix
-      #./Desktop.nix
+      ./modules/hardware-configuration.nix
+      ./modules/asus-g15.nix
+      ./modules/qemu-kvm.nix
     ];
 
   # Use the systemd-boot EFI boot loader.

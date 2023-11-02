@@ -29,14 +29,18 @@
     yt-dlp
     vscodium
     webcord
+
+	#hardware-acceleration
+    libva
+	libva-utils
 			
     # Hyprland to work well
     nvtop-intel
     qt6.qtwayland
     xdg-desktop-portal-hyprland
-    #waybar
-    (pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];}))
-
+    #waybar - if want experimental then next line
+    #(pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];}))
+	waybar
   ];
 
   programs.hyprland = {
@@ -50,8 +54,6 @@
     xdg-desktop-portal-gtk
   ];
   
-  powerManagement.cpuFreqGovernor = "schedutil";
-
   networking.hostName = "NixOS-MiniPC";
   
   # ZSH
