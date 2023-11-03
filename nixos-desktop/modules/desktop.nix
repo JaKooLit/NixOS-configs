@@ -26,6 +26,8 @@
     #flatpak
     glxinfo
     obs-studio
+	obs-studio-plugins.obs-vaapi 
+	nvtop-amd
     yt-dlp
     vscodium
     webcord

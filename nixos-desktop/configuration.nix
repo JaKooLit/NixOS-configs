@@ -69,8 +69,9 @@
 	firewalld
     ffmpeg   
     git
-    glib #for gsettings to work   
-    libappindicator
+    glib #for gsettings to work 
+    libayatana-appindicator
+	#libappindicator
     libnotify
     openssl # required by Rainbow borders
 	python3
