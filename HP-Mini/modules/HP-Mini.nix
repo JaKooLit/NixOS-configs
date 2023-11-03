@@ -29,10 +29,12 @@
     yt-dlp
     vscodium
     webcord
+    rofi-wayland
+    wlogout
 
-	#hardware-acceleration
+    #hardware-acceleration
     libva
-	libva-utils
+    libva-utils
 			
     # Hyprland to work well
     nvtop-intel
@@ -40,7 +42,7 @@
     xdg-desktop-portal-hyprland
     #waybar - if want experimental then next line
     #(pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];}))
-	waybar
+    waybar
   ];
 
   programs.hyprland = {
