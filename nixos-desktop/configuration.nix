@@ -34,7 +34,11 @@
   # NOTE SET KERNEL BOOTLOADER OPTIONS and Hostname ON INDIVIDUAL MODULE NIX  
   # networking.hostName = "NixOS"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  networking.networkmanager.enable = true; 
+  networking.networkmanager.enable = true;
+  networking.networkmanager.wifi.backend = "iwd";
+  networking.wireless.iwd.enable = true;
+  networking.firewall.enable = false;
+  networking.usePredictableInterfaceNames = false; 
 
   # Set your time zone.
   time.timeZone = "Asia/Seoul";
@@ -66,10 +70,10 @@
     baobab
     btrfs-progs
     cpufrequtils
-	firewalld
     ffmpeg   
     git
-    glib #for gsettings to work 
+    glib #for gsettings to work
+	gnome.adwaita-icon-theme 
     libayatana-appindicator
 	#libappindicator
     libnotify
@@ -116,6 +120,8 @@
     viewnior
   ];
 
+  xdg.icons.enable = true;
+
   programs.thunar.enable = true;
   programs.thunar.plugins = with pkgs.xfce; [
 	thunar-archive-plugin
@@ -153,52 +159,34 @@
   programs.dconf.enable = true;
     
   # SERVICES #
-  # udev
-  services.udev.enable = true; 
+  services.udev.enable = true;
   # services.udisks2.enable = true;
   services.envfs.enable = true;  
-  # Dbus
   services.dbus.enable = true;  
-  # Trim For SSD, fstrim.
   services.fstrim = {
     enable = true;
     interval = "weekly";
   };
-
-  # Fwupd # Firmware updater
   services.fwupd.enable = true;
+  services.journald.extraConfig = "SystemMaxUse=100M";
   
-  # upower
-  services.upower.enable = true;
-  powerManagement = {
-	enable = true;
-	cpuFreqGovernor = "schedutil";
-  };
+  # upower (seems only useful for laptop
+  # services.upower.enable = true;
+  #powerManagement = {
+    #enable = true;
+	#puFreqGovernor = "schedutil";
+  #};
   
   # SECURITY
   # Swaylock
   security.pam.services.swaylock.text = "auth include login";
   security.polkit.enable = true; 
 
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  #networking.nftables.enable = true;
-  #networking.firewall = {
-	#enable = true;
-	#allowedTCPPorts = [ 80 443 ];
-	#allowedUDPPortRanges = [
-	    #{ from = 4000; to = 4007; }
-	    #{ from = 8000; to = 8010; }
-	    #];
-  #};
-  #sudo firewall-cmd --add-port=1025-65535/tcp --permanent
-  #sudo firewall-cmd --add-port=1025-65535/udp --permanent
       
   # SYSTEMD 
   systemd.services.NetworkManager-wait-online.enable = false;
-  systemd.services.firewalld.enable = true; 
+  systemd.services.polkit.restartIfChanged = false;
+  #systemd.services.firewalld.enable = true; 
 
   # zram
   zramSwap = {
@@ -207,19 +195,10 @@
 	memoryPercent = 30;
 	swapDevices = 1;
   };
-
-  # zram-generator NOTE: add in the packages
-  #services.zram-generator = {
-    #enable = true;
-    #settings = {
-	#name = dev;
-	#zram-size = "8192";
-	#compression-algorithm = "zstd";
-	#swap-priority = 100;
-	#};
-  #};
   
   nix.settings.experimental-features = [ "nix-command"  "flakes" ];
+
+  hardware.firmware = with pkgs; [ linux-firmware ];
   
   # Enable the X11 windowing system.
   # services.xserver.enable = true;  

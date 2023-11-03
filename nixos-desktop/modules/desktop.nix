@@ -5,8 +5,14 @@
 
 {
   # Kernel Parameters for Desktop
-  # boot.loader.grub.theme = "/boot/grub/themes/nixos/";
-  boot.kernelParams = [ "iommu=on" "amd_iommu=on" "amd_pstate=guided" "nowatchdog" ];
+  boot.loader.grub.theme = "/boot/grub/themes/nixos/";
+  boot.kernelParams = [ 
+	"iommu=on" 
+	"amd_iommu=on" 
+	"amd_pstate=guided" 
+	"nowatchdog" 
+	"nmi_watchdog=0"	
+  ];
   
   # Kernel
   boot.kernelPackages = pkgs.linuxPackages_latest;
@@ -34,12 +40,14 @@
     
     glxinfo
     libva			
-    # Hyprland to work well
     qt6.qtwayland
     xdg-desktop-portal-hyprland
     #waybar - if want experimental then next line
     #(pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];}))
     waybar
+
+	qemu_kvm
+	virt-manager
 
     #gaming stuff
     gamemode
@@ -64,7 +72,7 @@
     xdg-desktop-portal-gtk
   ];
   
-  powerManagement.cpuFreqGovernor = "schedutil";
+  #powerManagement.cpuFreqGovernor = "schedutil";
 
   networking.hostName = "NixOS";
   
@@ -105,6 +113,14 @@
   ### GPU STUFF ##
   ## AMD GPU
   boot.initrd.kernelModules = [ "amdgpu" ];
+
+  virtualisation.libvirtd.enable = true;
+  virtualisation.libvirtd.onShutdown = "shutdown";
+  virtualisation.spiceUSBRedirection.enable = true;
+  #virtualisation.libvirtd.qemu.package = with pkgs; [
+	#qemu_kvm
+	#virt-manager
+  #];		
   
   # Enable OpenGL
   hardware.opengl = {
