@@ -11,14 +11,14 @@
   # Kernel
   boot.kernelPackages = pkgs.linuxPackages_latest;
  
-  # User account
   users.users.ja = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" "video" "input" "audio" ]; # Enable ‘sudo’ for the user.
-    packages = with pkgs; [	
-		xfce.mousepad
-		tree	
-     	];
+  	isNormalUser = true;
+  	extraGroups = [ "wheel" "video" "input" "audio" ]; # Enable ‘sudo’ for the user.
+  	packages = with pkgs; [
+    	pywal
+    	xfce.mousepad
+    	tree
+  	];
   };
 
   # for HP - Mini pc
@@ -29,8 +29,6 @@
     yt-dlp
     vscodium
     webcord
-    rofi-wayland
-    wlogout
 
     #hardware-acceleration
     libva

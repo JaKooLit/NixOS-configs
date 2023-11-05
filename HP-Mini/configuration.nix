@@ -80,7 +80,8 @@
     wireplumber
     xarchiver
     xdg-user-dirs
-        
+    
+    kitty    
 	# I normally have and use
     audacious
     firefox
@@ -111,8 +112,12 @@
     qt5ct
     qt6ct
     wl-clipboard
+	wlogout
     wofi
     viewnior
+
+	# trial apps
+	rofi-wayland
   ];
 
   programs.thunar.enable = true;
@@ -241,7 +246,7 @@
   #};
   
   nix.settings.experimental-features = [ "nix-command"  "flakes" ];
-  
+ 
   # Enable the X11 windowing system.
   # services.xserver.enable = true;  
 
