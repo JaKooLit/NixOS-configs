@@ -7,10 +7,10 @@
   imports =
     [ # Include the results of the hardware scan.
       ./modules/hardware-configuration.nix
-      #./modules/HP-Mini.nix
+      ./modules/HP-Mini.nix
       #./asus-g15.nix
-      ./modules/qemu-kvm.nix
-      ./modules/desktop.nix
+      #./qemu-kvm.nix
+      #./Desktop.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -34,11 +34,7 @@
   # NOTE SET KERNEL BOOTLOADER OPTIONS and Hostname ON INDIVIDUAL MODULE NIX  
   # networking.hostName = "NixOS"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  networking.networkmanager.enable = true;
-  networking.networkmanager.wifi.backend = "iwd";
-  networking.wireless.iwd.enable = true;
-  networking.firewall.enable = false;
-  networking.usePredictableInterfaceNames = false; 
+  networking.networkmanager.enable = true; 
 
   # Set your time zone.
   time.timeZone = "Asia/Seoul";
@@ -70,12 +66,11 @@
     baobab
     btrfs-progs
     cpufrequtils
+	firewalld
     ffmpeg   
     git
-    glib #for gsettings to work
-	gnome.adwaita-icon-theme 
-    libayatana-appindicator
-	#libappindicator
+    glib #for gsettings to work   
+    libappindicator
     libnotify
     openssl # required by Rainbow borders
 	python3
@@ -85,7 +80,8 @@
     wireplumber
     xarchiver
     xdg-user-dirs
-        
+    
+    kitty    
 	# I normally have and use
     audacious
     firefox
@@ -116,11 +112,13 @@
     qt5ct
     qt6ct
     wl-clipboard
+	wlogout
     wofi
     viewnior
-  ];
 
-  xdg.icons.enable = true;
+	# trial apps
+	rofi-wayland
+  ];
 
   programs.thunar.enable = true;
   programs.thunar.plugins = with pkgs.xfce; [
@@ -159,34 +157,74 @@
   programs.dconf.enable = true;
     
   # SERVICES #
-  services.udev.enable = true;
+  # udev
+  services.udev.enable = true; 
   # services.udisks2.enable = true;
   services.envfs.enable = true;  
+  # Dbus
   services.dbus.enable = true;  
+  # Trim For SSD, fstrim.
   services.fstrim = {
     enable = true;
     interval = "weekly";
   };
+
+  # Fwupd # Firmware updater
   services.fwupd.enable = true;
-  services.journald.extraConfig = "SystemMaxUse=100M";
   
-  # upower (seems only useful for laptop
-  # services.upower.enable = true;
-  #powerManagement = {
-    #enable = true;
-	#puFreqGovernor = "schedutil";
-  #};
+  # upower
+  services.upower.enable = true;
+  powerManagement = {
+	enable = true;
+	cpuFreqGovernor = "schedutil";
+  };
   
   # SECURITY
   # Swaylock
   security.pam.services.swaylock.text = "auth include login";
   security.polkit.enable = true; 
 
+  # Open ports in the firewall.
+  # networking.firewall.allowedTCPPorts = [ ... ];
+  # networking.firewall.allowedUDPPorts = [ ... ];
+  # Or disable the firewall altogether.
+  #networking.nftables.enable = true;
+  #networking.firewall = {
+	#enable = true;
+	#allowedTCPPorts = [ 80 443 ];
+	#allowedUDPPortRanges = [
+	    #{ from = 4000; to = 4007; }
+	    #{ from = 8000; to = 8010; }
+	    #];
+  #};
+  #sudo firewall-cmd --add-port=1025-65535/tcp --permanent
+  #sudo firewall-cmd --add-port=1025-65535/udp --permanent
       
   # SYSTEMD 
   systemd.services.NetworkManager-wait-online.enable = false;
-  systemd.services.polkit.restartIfChanged = false;
-  #systemd.services.firewalld.enable = true; 
+  systemd.services.firewalld.enable = true; 
+  
+  # Masking sleep, hibernate, suspend.. etc
+  systemd = {
+		targets = {
+		sleep = {
+		enable = false;
+		unitConfig.DefaultDependencies = "no";
+  		};
+		suspend = {
+		enable = false;
+		unitConfig.DefaultDependencies = "no";
+		};
+		hibernate = {
+		enable = false;
+		unitConfig.DefaultDependencies = "no";
+		};
+		"hybrid-sleep" = {
+		enable = false;
+		unitConfig.DefaultDependencies = "no";
+		};
+	};
+  };
 
   # zram
   zramSwap = {
@@ -195,11 +233,20 @@
 	memoryPercent = 30;
 	swapDevices = 1;
   };
+
+  # zram-generator NOTE: add in the packages
+  #services.zram-generator = {
+    #enable = true;
+    #settings = {
+	#name = dev;
+	#zram-size = "8192";
+	#compression-algorithm = "zstd";
+	#swap-priority = 100;
+	#};
+  #};
   
   nix.settings.experimental-features = [ "nix-command"  "flakes" ];
-
-  hardware.firmware = with pkgs; [ linux-firmware ];
-  
+ 
   # Enable the X11 windowing system.
   # services.xserver.enable = true;  
 
