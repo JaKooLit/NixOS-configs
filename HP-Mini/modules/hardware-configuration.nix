@@ -37,12 +37,6 @@
       options = [ "noatime" "compress=zstd" "discard=async" "space_cache=v2" "subvol=opt" ];
     };
 
-  fileSystems."/.snapshots" =
-    { device = "/dev/disk/by-uuid/e73d534e-b9fd-4b3d-a69a-b4d89182e65e";
-      fsType = "btrfs";
-      options = [ "noatime" "compress=zstd" "discard=async" "space_cache=v2" "subvol=snapshots" ];
-    };
-
   fileSystems."/boot" =
     { device = "/dev/disk/by-uuid/692abc0f-8f00-40d8-a49b-443072437fb2";
       fsType = "ext4";
