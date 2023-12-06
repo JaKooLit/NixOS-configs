@@ -9,6 +9,7 @@
       ./modules/hardware-configuration.nix
       ./modules/asus-g15.nix
       ./modules/qemu-kvm.nix
+      #./Desktop.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -22,14 +23,14 @@
 	enable = true;
 	devices = [ "nodev" ];
 	efiSupport = true;
-    gfxmodeBios = "auto";
+        gfxmodeBios = "auto";
 	memtest86.enable = true;
 	extraGrubInstallArgs = [ "--bootloader-id=NixOS" ];
 	configurationName = "NixOS";
   };
   boot.loader.timeout = 1;
  
-  # NOTE SET KERNEL BOOTLOADER OPTIONS and Hostname ON INDIVIDUAL NIX  
+  # NOTE SET KERNEL BOOTLOADER OPTIONS and Hostname ON INDIVIDUAL MODULE NIX  
   # networking.hostName = "NixOS"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.networkmanager.enable = true; 
@@ -64,24 +65,26 @@
     baobab
     btrfs-progs
     cpufrequtils
+    firewalld
     ffmpeg   
     git
     glib #for gsettings to work   
     libappindicator
     libnotify
     openssl # required by Rainbow borders
+    python3
     pipewire  
     vim
     wget
     wireplumber
-    xarchiver
     xdg-user-dirs
-        
+
 	# I normally have and use
     audacious
     firefox
     mpv
     neofetch
+    ranger
         
     # Hyprland Stuff        
     blueman
@@ -89,27 +92,34 @@
     cava
     cliphist
     dunst
-    foot
+	gnome.eog
     gnome.gnome-system-monitor
+	gnome.file-roller
     grim
     jq
+    kitty
     pcmanfm
     networkmanagerapplet
-    nwg-look
+    nwg-look # requires unstable channel
     nvtop
     pamixer
     pavucontrol
     polkit_gnome
+    pywal
+	qt6Packages.qtstyleplugin-kvantum #kvantum
     slurp
+	shotcut
+    swappy
     swaybg
     swayidle
     swaylock-effects
     swww
     qt5ct
     qt6ct
+    rofi-wayland
     wl-clipboard
-    wofi
-    viewnior
+    wlogout
+    yad
   ];
 
   programs.thunar.enable = true;
@@ -151,7 +161,7 @@
   # SERVICES #
   # udev
   services.udev.enable = true; 
-  # services.udisks2.enable = true;
+  #services.udisks2.enable = true;
   services.envfs.enable = true;  
   # Dbus
   services.dbus.enable = true;  
@@ -163,20 +173,60 @@
 
   # Fwupd # Firmware updater
   services.fwupd.enable = true;
-    
+  
+  # upower
+  services.upower.enable = true;
+  powerManagement = {
+	enable = true;
+	cpuFreqGovernor = "schedutil";
+  };
+  
   # SECURITY
   # Swaylock
   security.pam.services.swaylock.text = "auth include login";
   security.polkit.enable = true; 
-
+  
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
-  networking.firewall.enable = true;
+  #networking.nftables.enable = true;
+  #networking.firewall = {
+	#enable = true;
+	#allowedTCPPorts = [ 80 443 ];
+	#allowedUDPPortRanges = [
+	    #{ from = 4000; to = 4007; }
+	    #{ from = 8000; to = 8010; }
+	    #];
+  #};
+  #sudo firewall-cmd --add-port=1025-65535/tcp --permanent
+  #sudo firewall-cmd --add-port=1025-65535/udp --permanent
       
   # SYSTEMD 
-  systemd.services.NetworkManager-wait-online.enable = false; 
+  systemd.services.NetworkManager-wait-online.enable = false;
+  systemd.services.firewalld.enable = true; 
+  
+  # Masking sleep, hibernate, suspend.. etc
+  systemd = {
+		targets = {
+		sleep = {
+		enable = false;
+		unitConfig.DefaultDependencies = "no";
+  		};
+		suspend = {
+		enable = false;
+		unitConfig.DefaultDependencies = "no";
+		};
+		hibernate = {
+		enable = false;
+		unitConfig.DefaultDependencies = "no";
+		};
+		"hybrid-sleep" = {
+		enable = false;
+		unitConfig.DefaultDependencies = "no";
+		};
+	};
+  };
 
   # zram
   zramSwap = {

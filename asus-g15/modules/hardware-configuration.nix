@@ -14,43 +14,37 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/708f8104-00f8-40bc-ba93-a912c9c003de";
+    { device = "/dev/disk/by-uuid/0bbe3967-c1e1-442b-97ca-54c60b0effc5";
       fsType = "btrfs";
-      options = [ "noatime" "compress=zstd:4" "discard=async" "space_cache=v2" "ssd" "subvol=root" ];
-    };
-
-  fileSystems."/home" =
-    { device = "/dev/disk/by-uuid/708f8104-00f8-40bc-ba93-a912c9c003de";
-      fsType = "btrfs";
-      options = [ "noatime" "compress=zstd:4" "discard=async" "space_cache=v2" "ssd" "subvol=home" ];
-    };
-
-  fileSystems."/var" =
-    { device = "/dev/disk/by-uuid/708f8104-00f8-40bc-ba93-a912c9c003de";
-      fsType = "btrfs";
-      options = [ "noatime" "compress=zstd:4" "discard=async" "space_cache=v2" "ssd" "subvol=var" ];
-    };
-
-  fileSystems."/opt" =
-    { device = "/dev/disk/by-uuid/708f8104-00f8-40bc-ba93-a912c9c003de";
-      fsType = "btrfs";
-      options = [ "noatime" "compress=zstd:4" "discard=async" "space_cache=v2" "ssd" "subvol=opt" ];
-    };
-
-  fileSystems."/nix" =
-    { device = "/dev/disk/by-uuid/708f8104-00f8-40bc-ba93-a912c9c003de";
-      fsType = "btrfs";
-      options = [ "noatime" "compress=zstd:4" "discard=async" "space_cache=v2" "ssd" "subvol=nix" ];
+      options = [ "noatime" "compress=zstd:4" "ssd" "discard=async" "space_cache=v2" "subvol=root" ];
     };
 
   fileSystems."/efi" =
-    { device = "/dev/disk/by-uuid/D665-2D85";
+    { device = "/dev/disk/by-uuid/B39B-9ABD";
       fsType = "vfat";
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/851fba85-6488-43fc-ab98-a20a51652040";
+    { device = "/dev/disk/by-uuid/9c6f7389-833b-4a2a-92f9-eec3e29aa919";
       fsType = "ext4";
+    };
+
+  fileSystems."/home" =
+    { device = "/dev/disk/by-uuid/0bbe3967-c1e1-442b-97ca-54c60b0effc5";
+      fsType = "btrfs";
+      options = [ "noatime" "compress=zstd:4" "ssd" "discard=async" "space_cache=v2" "subvol=home" ];
+    };
+
+  fileSystems."/var" =
+    { device = "/dev/disk/by-uuid/0bbe3967-c1e1-442b-97ca-54c60b0effc5";
+      fsType = "btrfs";
+      options = [ "noatime" "compress=zstd:4" "ssd" "discard=async" "space_cache=v2" "subvol=var" ];
+    };
+
+  fileSystems."/nix" =
+    { device = "/dev/disk/by-uuid/0bbe3967-c1e1-442b-97ca-54c60b0effc5";
+      fsType = "btrfs";
+      options = [ "noatime" "compress=zstd:4" "ssd" "discard=async" "space_cache=v2" "subvol=nix" ];
     };
 
   swapDevices =

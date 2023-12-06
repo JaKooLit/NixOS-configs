@@ -5,7 +5,7 @@
 
 {
   # Kernel Parameters for Asus G15
-  boot.loader.grub.theme = "/boot/grub/themes/nixos/";
+  #boot.loader.grub.theme = "/boot/grub/themes/nixos/";
   boot.kernelParams = [ "rd.driver.blacklist=nouveau" "modprobe.blacklist=nouveau" "nvidia-drm.modeset=1" "iommu=on" "amd_iommu=on" "amd_pstate=guided" "nowatchdog" ];
   
   # Kernel
@@ -26,30 +26,37 @@
     asusctl
     supergfxctl
 
-	#hardware-acceleration
-    libva
-	libva-utils
+	# printing and scanning support
+	cups
+	epsonscan2
+	epson-escpr
+	epson-escpr2
 
-	#nvidia-specific hardware acceleration
-	libvdpau
-	libvdpau-va-gl 
+    #hardware-acceleration
+    libva
+    libva-utils
+
+    #nvidia-specific hardware acceleration
+    libvdpau
+    libvdpau-va-gl 
     nvidia-vaapi-driver
-	vaapiVdpau
+    vaapiVdpau
     vdpauinfo
 
+	discord
     #flatpak
     glxinfo
     obs-studio
     yt-dlp
     vscodium
-    webcord
 			
     # Hyprland to work well
     brightnessctl
     qt6.qtwayland
     xdg-desktop-portal-hyprland
-    #waybar
-    (pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];}))
+    #waybar - if wanted experimental
+    #(pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];}))
+	waybar
 
     #gaming stuff
     gamemode
@@ -118,6 +125,9 @@
     };
   };
   
+  # PRINTING
+  services.printing.enable = true;
+
   # For Electron apps to use wayland
   #environment.sessionVariables.NIXOS_OZONE_WL = "1";
   
