@@ -8,37 +8,13 @@
     [ (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" ];
+  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/e73d534e-b9fd-4b3d-a69a-b4d89182e65e";
-      fsType = "btrfs";
-      options = [ "noatime" "compress=zstd" "discard=async" "space_cache=v2" "subvol=root" ];
-    };
-
-  fileSystems."/home" =
-    { device = "/dev/disk/by-uuid/e73d534e-b9fd-4b3d-a69a-b4d89182e65e";
-      fsType = "btrfs";
-      options = [ "noatime" "compress=zstd" "discard=async" "space_cache=v2" "subvol=home" ];
-    };
-
-  fileSystems."/var" =
-    { device = "/dev/disk/by-uuid/e73d534e-b9fd-4b3d-a69a-b4d89182e65e";
-      fsType = "btrfs";
-      options = [ "noatime" "compress=zstd" "discard=async" "space_cache=v2" "subvol=var" ];
-    };
-
-  fileSystems."/opt" =
-    { device = "/dev/disk/by-uuid/e73d534e-b9fd-4b3d-a69a-b4d89182e65e";
-      fsType = "btrfs";
-      options = [ "noatime" "compress=zstd" "discard=async" "space_cache=v2" "subvol=opt" ];
-    };
-
-  fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/692abc0f-8f00-40d8-a49b-443072437fb2";
+    { device = "/dev/disk/by-uuid/9942929e-fba8-4728-85dc-369a98a79b13";
       fsType = "ext4";
     };
 

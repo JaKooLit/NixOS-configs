@@ -66,58 +66,64 @@
     baobab
     btrfs-progs
     cpufrequtils
-	firewalld
+    firewalld
     ffmpeg   
     git
-    glib #for gsettings to work   
+    glib #for gsettings to work
+    gnome.eog
+    killall   
     libappindicator
     libnotify
     openssl # required by Rainbow borders
-	python3
+    python3
     pipewire  
     vim
     wget
     wireplumber
     xarchiver
     xdg-user-dirs
+    tree    
     
-    kitty    
 	# I normally have and use
     audacious
     firefox
+    hyfetch
     mpv
     neofetch
         
     # Hyprland Stuff        
+
     blueman
     btop
     cava
     cliphist
     dunst
-    foot
     gnome.gnome-system-monitor
     grim
     jq
-    pcmanfm
+    kitty
+    qt6Packages.qtstyleplugin-kvantum
     networkmanagerapplet
     nwg-look # requires unstable channel
     pamixer
     pavucontrol
+    pcmanfm
     polkit_gnome
+    pywal
+    qt5ct
+    qt6ct #unstable
+    ranger
+    rofi-wayland
     slurp
-    swaybg
+    swappy
     swayidle
     swaylock-effects
     swww
-    qt5ct
-    qt6ct
     wl-clipboard
-	wlogout
-    wofi
-    viewnior
-
-	# trial apps
-	rofi-wayland
+    wlogout
+    xfce.mousepad
+    yad
+    yt-dlp	    
   ];
 
   programs.thunar.enable = true;

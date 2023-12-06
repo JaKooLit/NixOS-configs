@@ -9,15 +9,12 @@
   boot.kernelParams = [ "nowatchdog" ];
   
   # Kernel
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  #boot.kernelPackages = pkgs.linuxPackages_latest;
  
   users.users.ja = {
   	isNormalUser = true;
   	extraGroups = [ "wheel" "video" "input" "audio" ]; # Enable ‘sudo’ for the user.
   	packages = with pkgs; [
-    	pywal
-    	xfce.mousepad
-    	tree
   	];
   };
 
@@ -26,16 +23,15 @@
     #flatpak
     glxinfo
     #obs-studio
-    yt-dlp
     vscodium
-    webcord
+    discord
 
     #hardware-acceleration
     libva
     libva-utils
 			
     # Hyprland to work well
-    nvtop-intel
+    nvtop-intel #unstable
     qt6.qtwayland
     xdg-desktop-portal-hyprland
     #waybar - if want experimental then next line
