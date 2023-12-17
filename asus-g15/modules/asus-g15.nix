@@ -23,14 +23,14 @@
 
   # for Asus G15
   environment.systemPackages = with pkgs; [
-    asusctl
-    supergfxctl
+    #asusctl
+    #supergfxctl
 
-	# printing and scanning support
-	cups
-	epsonscan2
-	epson-escpr
-	epson-escpr2
+    # printing and scanning support
+    cups
+    epsonscan2
+    epson-escpr
+    epson-escpr2
 
     #hardware-acceleration
     libva
@@ -43,7 +43,7 @@
     vaapiVdpau
     vdpauinfo
 
-	discord
+    discord
     #flatpak
     glxinfo
     obs-studio
