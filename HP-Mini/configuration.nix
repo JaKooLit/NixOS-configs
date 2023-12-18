@@ -80,7 +80,6 @@
     vim
     wget
     wireplumber
-    xarchiver
     xdg-user-dirs
     tree    
     
@@ -92,17 +91,19 @@
     neofetch
         
     # Hyprland Stuff        
-
     blueman
     btop
     cava
     cliphist
     dunst
+	gnome.file-roller
     gnome.gnome-system-monitor
     grim
     jq
     kitty
-    qt6Packages.qtstyleplugin-kvantum
+	krabby #pokemon colorscripts like
+    libsForQt5.qtstyleplugin-kvantum
+	mpvScripts.mpris
     networkmanagerapplet
     nwg-look # requires unstable channel
     pamixer
@@ -110,8 +111,10 @@
     pcmanfm
     polkit_gnome
     pywal
+	qbittorrent
     qt5ct
     qt6ct #unstable
+    qt6Packages.qtstyleplugin-kvantum
     ranger
     rofi-wayland
     slurp
@@ -119,11 +122,12 @@
     swayidle
     swaylock-effects
     swww
+	unzip
     wl-clipboard
     wlogout
     xfce.mousepad
     yad
-    yt-dlp	    
+    yt-dlp  
   ];
 
   programs.thunar.enable = true;
@@ -253,6 +257,22 @@
   
   nix.settings.experimental-features = [ "nix-command"  "flakes" ];
  
+  systemd = {
+  	user.services.polkit-gnome-authentication-agent-1 = {
+    description = "polkit-gnome-authentication-agent-1";
+    wantedBy = [ "graphical-session.target" ];
+    wants = [ "graphical-session.target" ];
+    after = [ "graphical-session.target" ];
+    serviceConfig = {
+        Type = "simple";
+        ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+        Restart = "on-failure";
+        RestartSec = 1;
+        TimeoutStopSec = 10;
+      };
+  	};
+  };
+
   # Enable the X11 windowing system.
   # services.xserver.enable = true;  
 
