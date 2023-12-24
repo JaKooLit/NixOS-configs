@@ -94,9 +94,9 @@
     cava
     cliphist
     dunst
-	gnome.eog
+    gnome.eog
     gnome.gnome-system-monitor
-	gnome.file-roller
+    gnome.file-roller
     grim
     gtk-engine-murrine #for gtk themes
     jq
@@ -129,6 +129,8 @@
 
   programs.thunar.enable = true;
   programs.thunar.plugins = with pkgs.xfce; [
+	exo
+	mousepad
 	thunar-archive-plugin
 	thunar-volman
 	tumbler

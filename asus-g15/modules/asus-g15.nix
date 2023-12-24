@@ -16,7 +16,6 @@
     isNormalUser = true;
     extraGroups = [ "wheel" "video" "input" "audio" "libvirtd" ]; # Enable ‘sudo’ for the user.
     packages = with pkgs; [	
-		xfce.mousepad
 		tree	
      	];
   };
