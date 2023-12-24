@@ -45,7 +45,7 @@
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
   console = {
-     font = "Lat2-Terminus16";
+     font = "${pkgs.terminus_font}/share/consolefonts/ter-132b.psf.gz";
      keyMap = "us";
   #   useXkbConfig = true; # use xkbOptions in tty.
   };
@@ -98,6 +98,7 @@
     gnome.gnome-system-monitor
 	gnome.file-roller
     grim
+    gtk-engine-murrine #for gtk themes
     jq
     kitty
     pcmanfm
@@ -109,6 +110,7 @@
     polkit_gnome
     pywal
 	qt6Packages.qtstyleplugin-kvantum #kvantum
+	libsForQt5.qtstyleplugin-kvantum #kvantum
     slurp
 	shotcut
     swappy
@@ -116,6 +118,7 @@
     swayidle
     swaylock-effects
     swww
+	unzip
     qt5ct
     qt6ct
     rofi-wayland
@@ -153,6 +156,7 @@
     noto-fonts-cjk
     jetbrains-mono
     font-awesome
+	terminus_font
     (nerdfonts.override {fonts = ["JetBrainsMono"];})
  ];
   
@@ -178,10 +182,6 @@
   
   # upower
   services.upower.enable = true;
-  powerManagement = {
-	enable = true;
-	cpuFreqGovernor = "schedutil";
-  };
   
   # SECURITY
   # Swaylock
@@ -207,7 +207,10 @@
   # SYSTEMD 
   systemd.services.NetworkManager-wait-online.enable = false;
   systemd.services.firewalld.enable = true; 
-  
+  systemd.services.power-profiles-daemon = {
+	enable = true;
+	wantedBy = [ "multi-user.target" ];
+  };
   # Masking sleep, hibernate, suspend.. etc
   systemd = {
 		targets = {
@@ -230,21 +233,21 @@
 	};
   };
 
-  systemd = {
-  	user.services.polkit-gnome-authentication-agent-1 = {
-    description = "polkit-gnome-authentication-agent-1";
-    wantedBy = [ "graphical-session.target" ];
-    wants = [ "graphical-session.target" ];
-    after = [ "graphical-session.target" ];
-    serviceConfig = {
-        Type = "simple";
-        ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
-        Restart = "on-failure";
-        RestartSec = 1;
-        TimeoutStopSec = 10;
-  	    };
-  	};
-  };
+  #systemd = {
+  #	user.services.polkit-gnome-authentication-agent-1 = {
+  #  description = "polkit-gnome-authentication-agent-1";
+  #  wantedBy = [ "graphical-session.target" ];
+  #  wants = [ "graphical-session.target" ];
+  #  after = [ "graphical-session.target" ];
+  #  serviceConfig = {
+  #      Type = "simple";
+  #      ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+  #      Restart = "on-failure";
+  #      RestartSec = 1;
+  #      TimeoutStopSec = 10;
+  #	    };
+  #	};
+  #};
 
   # zram
   zramSwap = {

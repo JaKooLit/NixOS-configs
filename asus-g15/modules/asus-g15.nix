@@ -23,14 +23,14 @@
 
   # for Asus G15
   environment.systemPackages = with pkgs; [
-    #asusctl
-    #supergfxctl
+    asusctl
+    supergfxctl
 
     # printing and scanning support
     cups
     epsonscan2
     epson-escpr
-    epson-escpr2
+    #epson-escpr2
 
     #hardware-acceleration
     libva
@@ -73,7 +73,6 @@
   programs.hyprland = {
     enable = true;
     xwayland.enable = true;
-    enableNvidiaPatches = true;
   };
   
   programs.xwayland.enable = true;
@@ -82,7 +81,10 @@
     xdg-desktop-portal-gtk
   ];
   
-  powerManagement.cpuFreqGovernor = "schedutil";
+  powerManagement = {
+	enable = true;
+	cpuFreqGovernor = "ondemand";
+  };
 
   networking.hostName = "NixOS-G15";
   
@@ -96,7 +98,7 @@
   environment.shells = with pkgs; [ zsh ];
   
   # Enable CUPS to print documents.
-  # services.printing.enable = true;
+  services.printing.enable = true;
 
   # Enable touchpad support (enabled default in most desktopManager).
   services.xserver.libinput.enable = true;
@@ -110,6 +112,7 @@
   };
   
   services.supergfxd.enable = true;
+  services.power-profiles-daemon.enable = true;
 
   services.logind.lidSwitch = "ignore";
   services.logind.lidSwitchExternalPower = "ignore";
@@ -126,7 +129,7 @@
   };
   
   # PRINTING
-  services.printing.enable = true;
+  #services.printing.enable = true;
 
   # For Electron apps to use wayland
   #environment.sessionVariables.NIXOS_OZONE_WL = "1";
@@ -156,7 +159,9 @@
     prime.nvidiaBusId = "PCI:1:0:0";
     modesetting.enable = true;
     # Nvidia power management. Experimental, and can cause sleep/suspend to fail.
-    powerManagement.enable = true;
+    powerManagement = {
+		enable = true;
+	};
     # Fine-grained power management. Turns off GPU when not in use.
     # Experimental and only works on modern Nvidia GPUs (Turing or newer).
     #powerManagement.finegrained = true;
