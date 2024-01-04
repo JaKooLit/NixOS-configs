@@ -5,7 +5,7 @@
 
 {
   # Kernel Parameters for Desktop
-  boot.loader.grub.theme = "/boot/grub/themes/nixos/";
+  #boot.loader.grub.theme = "/boot/grub/themes/nixos/";
   boot.kernelParams = [ 
 	"iommu=on" 
 	"amd_iommu=on" 
@@ -21,9 +21,7 @@
   users.users.ja = {
     isNormalUser = true;
     extraGroups = [ "libvirtd" "wheel" "video" "input" "audio" ]; # Enable ‘sudo’ for the user.
-    packages = with pkgs; [	
-		xfce.mousepad
-		tree	
+    packages = with pkgs; [
      	];
   };
 
@@ -32,8 +30,8 @@
     #flatpak
     glxinfo
     obs-studio
-	obs-studio-plugins.obs-vaapi 
-	nvtop-amd
+	  obs-studio-plugins.obs-vaapi 
+	  nvtop-amd
     yt-dlp
     vscodium
     webcord

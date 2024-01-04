@@ -7,10 +7,10 @@
   imports =
     [ # Include the results of the hardware scan.
       ./modules/hardware-configuration.nix
-      ./modules/HP-Mini.nix
+      #./modules/HP-Mini.nix
       #./asus-g15.nix
       #./qemu-kvm.nix
-      #./Desktop.nix
+      ./Desktop.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -24,7 +24,7 @@
 	enable = true;
 	devices = [ "nodev" ];
 	efiSupport = true;
-    gfxmodeBios = "auto";
+  gfxmodeBios = "auto";
 	memtest86.enable = true;
 	extraGrubInstallArgs = [ "--bootloader-id=NixOS" ];
 	configurationName = "NixOS";
@@ -66,19 +66,18 @@
     baobab
     btrfs-progs
     cpufrequtils
-	firewalld
+	  #firewalld
     ffmpeg   
     git
     glib #for gsettings to work   
     libappindicator
     libnotify
     openssl # required by Rainbow borders
-	python3
+	  python3
     pipewire  
     vim
     wget
     wireplumber
-    xarchiver
     xdg-user-dirs
     
     kitty    
@@ -93,26 +92,24 @@
     btop
     cava
     cliphist
-    dunst
-    foot
+    gnome.file-roller
     gnome.gnome-system-monitor
     grim
     jq
-    pcmanfm
+    kitty
     networkmanagerapplet
     nwg-look # requires unstable channel
     pamixer
     pavucontrol
     polkit_gnome
     slurp
-    swaybg
     swayidle
     swaylock-effects
     swww
     qt5ct
     qt6ct
     wl-clipboard
-	wlogout
+	  wlogout
     wofi
     viewnior
 
