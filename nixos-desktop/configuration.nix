@@ -9,8 +9,8 @@
       ./modules/hardware-configuration.nix
       #./modules/HP-Mini.nix
       #./asus-g15.nix
-      #./qemu-kvm.nix
-      ./Desktop.nix
+      ./modules/qemu-kvm.nix
+      ./modules/desktop.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -19,16 +19,16 @@
   boot.loader.efi = {
 	efiSysMountPoint = "/efi";
 	canTouchEfiVariables = true;
-  };
+  	};
   boot.loader.grub = {
 	enable = true;
 	devices = [ "nodev" ];
 	efiSupport = true;
-  gfxmodeBios = "auto";
+  	gfxmodeBios = "auto";
 	memtest86.enable = true;
 	extraGrubInstallArgs = [ "--bootloader-id=NixOS" ];
 	configurationName = "NixOS";
-  };
+  	};
   boot.loader.timeout = 1;
  
   # NOTE SET KERNEL BOOTLOADER OPTIONS and Hostname ON INDIVIDUAL MODULE NIX  
@@ -51,41 +51,41 @@
   #   useXkbConfig = true; # use xkbOptions in tty.
   };
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
   # NOTE: DEFINE USER ACCOUNT in different module
   
-  # Latest Kernel
-  #boot.kernelPackages = pkgs.linuxPackages_latest;
-
   # Unfree softwares
   nixpkgs.config.allowUnfree = true;
 
+  nix.settings.experimental-features = [ "nix-command"  "flakes" ];
+  
   # List packages installed in system profile. To search, run: $ nix search wget
   environment.systemPackages = with pkgs; [
   	# System Packages
     baobab
     btrfs-progs
     cpufrequtils
-	  #firewalld
+	#firewalld
     ffmpeg   
     git
     glib #for gsettings to work   
     libappindicator
     libnotify
     openssl # required by Rainbow borders
-	  python3
-    pipewire  
+	python3
+    pipewire
+    unzip  
     vim
     wget
     wireplumber
     xdg-user-dirs
-    
-    kitty    
+     
 	# I normally have and use
     audacious
     firefox
     mpv
+    mpvScripts.mpris
     neofetch
+    shotcut
         
     # Hyprland Stuff        
     blueman
@@ -94,6 +94,7 @@
     cliphist
     gnome.file-roller
     gnome.gnome-system-monitor
+    gnome.eog # eye of gnome
     grim
     jq
     kitty
@@ -101,44 +102,94 @@
     nwg-look # requires unstable channel
     pamixer
     pavucontrol
+    playerctl
     polkit_gnome
+    pywal
+    qt6Packages.qtstyleplugin-kvantum #kvantum
+	libsForQt5.qtstyleplugin-kvantum #kvantum
+    qt6.qtwayland
+	rofi-wayland
     slurp
+    swappy
     swayidle
     swaylock-effects
+	swaynotificationcenter
     swww
     qt5ct
     qt6ct
     wl-clipboard
-	  wlogout
-    wofi
-    viewnior
-
-	# trial apps
-	rofi-wayland
+    wlogout
+    xdg-utils
+    xdg-desktop-portal-hyprland
+    yad    
   ];
 
-  programs.thunar.enable = true;
-  programs.thunar.plugins = with pkgs.xfce; [
-	thunar-archive-plugin
-	thunar-volman
-	tumbler
-  ];
-  # for thunar to work better
-  services.gvfs.enable = true;
-  services.tumbler.enable = true;
+  programs = {
+  	hyprland = {
+    	enable = true;
+    	xwayland.enable = true;
+  		};
+  	xwayland.enable = true;
+  	
+  	thunar = {
+  		enable = true;
+  		plugins = with pkgs.xfce; [
+		exo
+		mousepad
+		thunar-archive-plugin
+		thunar-volman
+		tumbler
+  		];
+  	};
+  	
+  	dconf.enable = true;
+  };
 
-  # SOUNDS #
-  # sound.enable = true; # dont enable for pipewire
-  # hardware.pulseaudio.enable = true;  
-  # PIPEWIRE
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
+  xdg.portal = {
+  	enable = true;
+  	extraPortals = with pkgs; [
+    xdg-desktop-portal-gtk
+  	];
   };
   
+  # Services (common)
+  services = {
+  	# for thunar to work better
+  	gvfs.enable = true;
+  	tumbler.enable = true;
+
+  	# PIPEWIRE
+    pipewire = {
+      enable = true;
+      alsa = {
+        enable = true;
+        support32Bit = true;
+      	};
+      pulse.enable = true;
+  	};
+  
+  	udev.enable = true;
+  	envfs.enable = true;
+  	dbus.enable = true;
+  	
+  	# fstrim for SSD
+  	fstrim = {
+    	enable = true;
+    	interval = "weekly";
+  		};
+  
+	#firmware update  
+  	fwupd.enable = true;
+  	
+  	# upower
+  	upower.enable = true;
+  };
+  
+  powerManagement = {
+	enable = true;
+	cpuFreqGovernor = "schedutil";
+  };
+  	
   # FONTS
   fonts.packages = with pkgs; [
     noto-fonts
@@ -147,39 +198,15 @@
     jetbrains-mono
     font-awesome
     (nerdfonts.override {fonts = ["JetBrainsMono"];})
- ];
+  ];
   
-  # Programs #
-  # dconf
-  programs.dconf.enable = true;
     
-  # SERVICES #
-  # udev
-  services.udev.enable = true; 
-  # services.udisks2.enable = true;
-  services.envfs.enable = true;  
-  # Dbus
-  services.dbus.enable = true;  
-  # Trim For SSD, fstrim.
-  services.fstrim = {
-    enable = true;
-    interval = "weekly";
-  };
-
-  # Fwupd # Firmware updater
-  services.fwupd.enable = true;
-  
-  # upower
-  services.upower.enable = true;
-  powerManagement = {
-	enable = true;
-	cpuFreqGovernor = "schedutil";
-  };
-  
   # SECURITY
-  # Swaylock
-  security.pam.services.swaylock.text = "auth include login";
-  security.polkit.enable = true; 
+  security = {
+  	pam.services.swaylock.text = "auth include login";
+  	polkit.enable = true;
+  	rtkit.enable = true;
+  }; 
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
@@ -197,9 +224,10 @@
   #sudo firewall-cmd --add-port=1025-65535/tcp --permanent
   #sudo firewall-cmd --add-port=1025-65535/udp --permanent
       
-  # SYSTEMD 
-  systemd.services.NetworkManager-wait-online.enable = false;
-  systemd.services.firewalld.enable = true; 
+  systemd.services = {
+  	NetworkManager-wait-online.enable = false;
+  	firewalld.enable = true;
+  }; 
   
   # Masking sleep, hibernate, suspend.. etc
   systemd = {
@@ -242,8 +270,6 @@
 	#};
   #};
   
-  nix.settings.experimental-features = [ "nix-command"  "flakes" ];
- 
   # Enable the X11 windowing system.
   # services.xserver.enable = true;  
 
@@ -274,7 +300,7 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "23.05"; # Did you read the comment?
+  system.stateVersion = "24.05"; # Did you read the comment?
 
 }
 

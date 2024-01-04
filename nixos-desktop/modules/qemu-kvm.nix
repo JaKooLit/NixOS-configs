@@ -12,10 +12,13 @@
   ];
 
   virtualisation.libvirtd.enable = true;
-  #programs.virt-manager.enable = true;
+  virtualisation.libvirtd.onShutdown = "shutdown";
+  virtualisation.spiceUSBRedirection.enable = true;
+  #virtualisation.libvirtd.qemu.package = with pkgs; [
+	#qemu_kvm
+	#virt-manager
+  #];
   
-
-
 }
 
 
