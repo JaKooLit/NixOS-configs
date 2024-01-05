@@ -25,7 +25,12 @@
   users = {
 	users.ja = {
     	isNormalUser = true;
-    	extraGroups = [ "wheel" "video" "input" "audio" "libvirtd" ]; 
+    	extraGroups = [ 
+			"wheel" 
+			"video" 
+			"input" 
+			"audio" 
+			"libvirtd" ]; 
     packages = with pkgs; [		
      	];
   	};
@@ -41,9 +46,8 @@
     libva
     libva-utils
 
-	# printing and scanner
-	cups
-    epsonscan2
+	# scanner
+	(epsonscan2.override { withNonFreePlugins = true; withGui = true; }) 
 
     #nvidia-specific hardware acceleration
     libvdpau
@@ -58,7 +62,6 @@
     yt-dlp
     vscodium
 			
-    # Hyprland to work well
     brightnessctl
   ];
   
@@ -68,23 +71,16 @@
   };
     
   # Zsh configuration
-  # oh my zsh is managed through ~/.zshrc for easier changes :) 
   programs.zsh = {
     enable = true;
 	enableCompletion = true;
-#      ohMyZsh.enable = true;
-#      ohMyZsh.theme = "agnoster";
-#      ohMyZsh.plugins = [ "git" ];
-#      autosuggestions.enable = true;
-#      syntaxHighlighting.enable = true;
-      interactiveShellInit = ''
-        KITTY_SHELL_INTEGRATION="enabled"
-        typeset -gA ZSH_HIGHLIGHT_STYLES
-        ${pkgs.any-nix-shell}/bin/any-nix-shell zsh --info-right | source /dev/stdin
-        ZSH_HIGHLIGHT_STYLES[suffix-alias]=fg=blue,underline
-        ZSH_HIGHLIGHT_STYLES[precommand]=fg=blue,underline
-        ZSH_HIGHLIGHT_STYLES[arg0]=fg=blue
-      '';
+      ohMyZsh = {
+        enable = true;
+        plugins = ["git"];
+        theme = "fino-time";
+      };
+      autosuggestions.enable = true;
+      syntaxHighlighting.enable = true;
   };
 
   services = {
@@ -106,10 +102,16 @@
 		enable = true;
 		drivers = with pkgs; [
 			epson-escpr
+			epson-escpr2			
 			];
   		};
 	
-	avahi.enable = true; # necessary for network printing
+	avahi = {
+		enable = true; # necessary for network printing
+		nssmdns4 = true;
+		openFirewall = true;
+	};
+
 	blueman.enable = true;
 
 	#flatpak.enable = true;
@@ -123,13 +125,12 @@
 
 	bluetooth.enable = true;
 	bluetooth.powerOnBoot = true;
-
 	bluetooth.settings = {
 		General = {
 		Enable = "Source,Sink,Media,Socket";
 		};
 	};
-
+	
 	opengl = {
     	enable = true;
     	driSupport = true;

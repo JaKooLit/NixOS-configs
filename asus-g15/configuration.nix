@@ -117,7 +117,6 @@
     rofi-wayland
     wl-clipboard
     wlogout
-	xdg-desktop-portal-hyprland
     yad
 
     waybar  # if wanted experimental
@@ -147,6 +146,7 @@
   xdg.portal.enable = true;
   xdg.portal.extraPortals = with pkgs; [
     xdg-desktop-portal-gtk
+	xdg-desktop-portal-hyprland
   ];
   
   services = {
@@ -211,7 +211,7 @@
   # SYSTEMD
   systemd.services = {
 	NetworkManager-wait-online.enable = false;
-	firewalld.enable = true;
+	#firewalld.enable = true;
 	power-profiles-daemon = {
 		enable = true;
 		wantedBy = [ "multi-user.target" ];
