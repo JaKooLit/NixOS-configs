@@ -80,9 +80,8 @@
     mpv
     neofetch
     ranger
+    shotcut
 	    
-	krabby # pokemon colorscripts like
-    
     # Hyprland Stuff        
     btop
     cava
@@ -101,17 +100,16 @@
     pavucontrol
     polkit_gnome
     pywal
-	qt6.qtwayland
-	qt6Packages.qtstyleplugin-kvantum #kvantum
-	libsForQt5.qtstyleplugin-kvantum #kvantum
+	  qt6.qtwayland
+	  qt6Packages.qtstyleplugin-kvantum #kvantum
+	  libsForQt5.qtstyleplugin-kvantum #kvantum
     slurp
-	shotcut
     swappy
     swayidle
     swaylock-effects
-	swaynotificationcenter
+	  swaynotificationcenter
     swww
-	unzip
+	  unzip
     qt5ct
     qt6ct
     rofi-wayland
@@ -119,7 +117,7 @@
     wlogout
     yad
 
-    waybar  # if wanted experimental
+    waybar  # if wanted experimental next line
     #(pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];}))
   ];
 
@@ -146,33 +144,33 @@
   xdg.portal.enable = true;
   xdg.portal.extraPortals = with pkgs; [
     xdg-desktop-portal-gtk
-	xdg-desktop-portal-hyprland
+	  xdg-desktop-portal-hyprland
   ];
   
   services = {
-	gvfs.enable = true;
-	tumbler.enable = true;
+	  gvfs.enable = true;
+	  tumbler.enable = true;
 
-	pipewire = {
+	  pipewire = {
     	enable = true;
     	alsa.enable = true;
     	alsa.support32Bit = true;
     	pulse.enable = true;
-		wireplumber.enable = true;
+		  wireplumber.enable = true;
   		};
 	
-	udev.enable = true;
-	envfs.enable = true;
-	dbus.enable = true;
+	  udev.enable = true;
+	  envfs.enable = true;
+	  dbus.enable = true;
 
-	fstrim = {
+	  fstrim = {
     	enable = true;
     	interval = "weekly";
   		};
 
-	fwupd.enable = true;
+	  fwupd.enable = true;
 
-	upower.enable = true;	
+	  upower.enable = true;	
   };
 
   # FONTS
@@ -182,7 +180,7 @@
     noto-fonts-cjk
     jetbrains-mono
     font-awesome
-	terminus_font
+	  terminus_font
     (nerdfonts.override {fonts = ["JetBrainsMono"];})
  ];
   
@@ -210,11 +208,11 @@
       
   # SYSTEMD
   systemd.services = {
-	NetworkManager-wait-online.enable = false;
-	#firewalld.enable = true;
-	power-profiles-daemon = {
-		enable = true;
-		wantedBy = [ "multi-user.target" ];
+	  NetworkManager-wait-online.enable = false;
+	  firewalld.enable = true;
+	  power-profiles-daemon = {
+		  enable = true;
+		  wantedBy = [ "multi-user.target" ];
   		};
   }; 
 
@@ -242,11 +240,11 @@
 
   # zram
   zramSwap = {
-	enable = true;
-	priority = 100;
-	memoryPercent = 30;
-	swapDevices = 1;
-  };
+	  enable = true;
+	  priority = 100;
+	  memoryPercent = 30;
+	  swapDevices = 1;
+    };
 
   # Automatic Garbage Collection
   nix.gc = {

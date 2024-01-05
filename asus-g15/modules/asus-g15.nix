@@ -67,7 +67,7 @@
   
   powerManagement = {
 	enable = true;
-	cpuFreqGovernor = "ondemand";
+	cpuFreqGovernor = "schedutil";
   };
     
   # Zsh configuration
@@ -78,9 +78,9 @@
         enable = true;
         plugins = ["git"];
         theme = "fino-time";
-      };
-      autosuggestions.enable = true;
-      syntaxHighlighting.enable = true;
+      	};
+    autosuggestions.enable = true;
+    syntaxHighlighting.enable = true;
   };
 
   services = {
