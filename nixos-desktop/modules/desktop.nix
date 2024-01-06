@@ -61,8 +61,7 @@
     libva1
 	libva-utils			
     #waybar - if want experimental then next line
-    #(pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];}))
-    waybar
+    #(pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];})
 
     #gaming stuff
     #gamemode
