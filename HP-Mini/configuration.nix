@@ -39,10 +39,6 @@
   # Set your time zone.
   time.timeZone = "Asia/Seoul";
 
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
   console = {
@@ -51,106 +47,152 @@
   #   useXkbConfig = true; # use xkbOptions in tty.
   };
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
   # NOTE: DEFINE USER ACCOUNT in different module
-  
-  # Latest Kernel
-  #boot.kernelPackages = pkgs.linuxPackages_latest;
 
   # Unfree softwares
   nixpkgs.config.allowUnfree = true;
 
+  nix.settings.experimental-features = [ "nix-command"  "flakes" ];
+  
   # List packages installed in system profile. To search, run: $ nix search wget
   environment.systemPackages = with pkgs; [
   	# System Packages
     baobab
     btrfs-progs
     cpufrequtils
-    firewalld
     ffmpeg   
-    git
     glib #for gsettings to work
-    gnome.eog
     killall   
     libappindicator
     libnotify
     openssl # required by Rainbow borders
     python3
-    pipewire  
+	python311Packages.requests 
     vim
     wget
-    wireplumber
     xdg-user-dirs
-    tree    
+	xdg-utils
     
 	# I normally have and use
     audacious
-    firefox
-    hyfetch
-    mpv
+	mpv
     neofetch
         
     # Hyprland Stuff        
-    blueman
     btop
     cava
     cliphist
-    dunst
-	gnome.file-roller
+    gnome.eog
     gnome.gnome-system-monitor
     grim
     jq
     kitty
-	krabby #pokemon colorscripts like
     libsForQt5.qtstyleplugin-kvantum
-	mpvScripts.mpris
+    mpvScripts.mpris
     networkmanagerapplet
     nwg-look # requires unstable channel
     pamixer
     pavucontrol
-    pcmanfm
+	playerctl
     polkit_gnome
     pywal
-	qbittorrent
+    qbittorrent
     qt5ct
     qt6ct #unstable
     qt6Packages.qtstyleplugin-kvantum
+	qt6.qtwayland
     ranger
     rofi-wayland
     slurp
     swappy
     swayidle
     swaylock-effects
+	swaynotificationcenter
     swww
-	unzip
+    unzip
     wl-clipboard
     wlogout
-    xfce.mousepad
     yad
-    yt-dlp  
+    yt-dlp
+
+    
+	#colorscripts
+	#dwt1-shell-color-scripts
+	krabby #pokemon colorscripts like
+	
+	# waybar with experimental
+    #(pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];}))
   ];
 
-  programs.thunar.enable = true;
-  programs.thunar.plugins = with pkgs.xfce; [
-	thunar-archive-plugin
-	thunar-volman
-	tumbler
-  ];
-  # for thunar to work better
-  services.gvfs.enable = true;
-  services.tumbler.enable = true;
+  programs = {
 
-  # SOUNDS #
-  # sound.enable = true; # dont enable for pipewire
-  # hardware.pulseaudio.enable = true;  
-  # PIPEWIRE
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
+	hyprland = {
+    	enable = true;
+    	xwayland.enable = true;
+  	};
+
+  	xwayland.enable = true;
+	
+	waybar.enable = true;
+
+	firefox.enable = true;
+	git.enable = true;
+
+	thunar.enable = true;
+	thunar.plugins = with pkgs.xfce; [
+		exo
+		mousepad
+		thunar-archive-plugin
+		thunar-volman
+		tumbler
+  		];
+
+	file-roller.enable = true;
+
+	dconf.enable = true;
   };
+
+
+  services = {
+	# for thunar to work better
+  	gvfs.enable = true;
+  	tumbler.enable = true;
+	
+	# pipewire audio
+	pipewire = {
+    	enable = true;
+    	alsa.enable = true;
+    	alsa.support32Bit = true;
+    	pulse.enable = true;
+		wireplumber.enable = true;
+  	};
+
+	udev.enable = true;
+	envfs.enable = true;
+	dbus.enable = true;
+
+	fstrim = {
+    	enable = true;
+    	interval = "weekly";
+  		};
+
+	fwupd.enable = true;
+
+	upower.enable = true;
+  };
+
+
+  security = {
+	rtkit.enable = true;
+	pam.services.swaylock.text = "auth include login";
+	polkit.enable = true;
+  };
+
+  xdg.portal.enable = true;
+  xdg.portal.extraPortals = with pkgs; [
+    	xdg-desktop-portal-gtk
+		xdg-desktop-portal-hyprland
+  ];  
   
   # FONTS
   fonts.packages = with pkgs; [
@@ -162,38 +204,11 @@
     (nerdfonts.override {fonts = ["JetBrainsMono"];})
  ];
   
-  # Programs #
-  # dconf
-  programs.dconf.enable = true;
-    
-  # SERVICES #
-  # udev
-  services.udev.enable = true; 
-  # services.udisks2.enable = true;
-  services.envfs.enable = true;  
-  # Dbus
-  services.dbus.enable = true;  
-  # Trim For SSD, fstrim.
-  services.fstrim = {
-    enable = true;
-    interval = "weekly";
-  };
-
-  # Fwupd # Firmware updater
-  services.fwupd.enable = true;
-  
-  # upower
-  services.upower.enable = true;
   powerManagement = {
 	enable = true;
 	cpuFreqGovernor = "schedutil";
   };
   
-  # SECURITY
-  # Swaylock
-  security.pam.services.swaylock.text = "auth include login";
-  security.polkit.enable = true; 
-
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
@@ -212,27 +227,27 @@
       
   # SYSTEMD 
   systemd.services.NetworkManager-wait-online.enable = false;
-  systemd.services.firewalld.enable = true; 
+  #systemd.services.firewalld.enable = true; 
   
   # Masking sleep, hibernate, suspend.. etc
   systemd = {
-		targets = {
-		sleep = {
-		enable = false;
-		unitConfig.DefaultDependencies = "no";
-  		};
-		suspend = {
-		enable = false;
-		unitConfig.DefaultDependencies = "no";
-		};
-		hibernate = {
-		enable = false;
-		unitConfig.DefaultDependencies = "no";
-		};
-		"hybrid-sleep" = {
-		enable = false;
-		unitConfig.DefaultDependencies = "no";
-		};
+	targets = {
+	sleep = {
+	enable = false;
+	unitConfig.DefaultDependencies = "no";
+  	};
+	suspend = {
+	enable = false;
+	unitConfig.DefaultDependencies = "no";
+	};
+	hibernate = {
+	enable = false;
+	unitConfig.DefaultDependencies = "no";
+	};
+	"hybrid-sleep" = {
+	enable = false;
+	unitConfig.DefaultDependencies = "no";
+	};
 	};
   };
 
@@ -243,35 +258,22 @@
 	memoryPercent = 30;
 	swapDevices = 1;
   };
-
-  # zram-generator NOTE: add in the packages
-  #services.zram-generator = {
-    #enable = true;
-    #settings = {
-	#name = dev;
-	#zram-size = "8192";
-	#compression-algorithm = "zstd";
-	#swap-priority = 100;
-	#};
+   
+  #systemd = {
+  #	user.services.polkit-gnome-authentication-agent-1 = {
+   # description = "polkit-gnome-authentication-agent-1";
+   # wantedBy = [ "graphical-session.target" ];
+   # wants = [ "graphical-session.target" ];
+   # after = [ "graphical-session.target" ];
+   # serviceConfig = {
+   #     Type = "simple";
+   #     ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+   #     Restart = "on-failure";
+   #     RestartSec = 1;
+   #     TimeoutStopSec = 10;
+    #  };
+  #	};
   #};
-  
-  nix.settings.experimental-features = [ "nix-command"  "flakes" ];
- 
-  systemd = {
-  	user.services.polkit-gnome-authentication-agent-1 = {
-    description = "polkit-gnome-authentication-agent-1";
-    wantedBy = [ "graphical-session.target" ];
-    wants = [ "graphical-session.target" ];
-    after = [ "graphical-session.target" ];
-    serviceConfig = {
-        Type = "simple";
-        ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
-        Restart = "on-failure";
-        RestartSec = 1;
-        TimeoutStopSec = 10;
-      };
-  	};
-  };
 
   # Enable the X11 windowing system.
   # services.xserver.enable = true;  
@@ -303,7 +305,7 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "23.05"; # Did you read the comment?
+  system.stateVersion = "24.05"; # Did you read the comment?
 
 }
 
