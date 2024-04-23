@@ -42,17 +42,18 @@
 
   # for Desktop (all AMD)
   environment.systemPackages = with pkgs; [
-    #flatpak
     glxinfo
-	gst_all_1.gstreamer
-	gst_all_1.gst-plugins-base
-    gst_all_1.gst-plugins-good
-    gst_all_1.gst-plugins-bad
-    gst_all_1.gst-plugins-ugly
-	gst_all_1.gst-vaapi # necessary for obs-vaapi
+	#gst_all_1.gstreamer
+	#gst_all_1.gst-libav
+	#gst_all_1.gst-plugins-base
+    #gst_all_1.gst-plugins-good
+    #gst_all_1.gst-plugins-bad
+    #gst_all_1.gst-plugins-ugly
+	#gst_all_1.gst-vaapi # necessary for obs-vaapi
     obs-studio
-	obs-studio-plugins.obs-vaapi 
-	nvtop-amd
+	obs-studio-plugins.obs-vaapi
+	#obs-studio-plugins.obs-gstreamer
+	nvtopPackages.amd
     yt-dlp
     vscodium
     webcord
@@ -60,8 +61,9 @@
     glxinfo
     libva1
 	libva-utils			
-    #waybar - if want experimental then next line
-    #(pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];})
+    #waybar experimental - next line
+    #(pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];}))
+
 
     #gaming stuff
     #gamemode
@@ -74,12 +76,19 @@
     #wineWowPackages.minimal
     #winetricks
   ];
-
+  
   programs = {
 	zsh = {
 		enable = true;
 		enableCompletion = true;
-		};
+		autosuggestions.enable = true;
+		syntaxHighlighting.enable = true;
+		ohMyZsh = {
+			enable = true;
+			plugins = [ "git" ];
+			theme = "xiong-chiamiov-plus";
+			};
+	};
 	
 	# corectrl (Overclocking AMD GPU's)
 	corectrl = {
@@ -87,19 +96,10 @@
 		gpuOverclock.enable = true;
 		gpuOverclock.ppfeaturemask = "0xffffffff";
 		};
+
   };
   
   #powerManagement.cpuFreqGovernor = "schedutil";
-  
-  # OpenRGB
-  #services.hardware.openrgb.motherboard = amd;
-  
-  # Enable CUPS to print documents.
-  # services.printing.enable = true;
-
-  # Enable touchpad support (enabled default in most desktopManager).
-  #services.xserver.libinput.enable = true;
-  
   
   hardware = {
   	bluetooth.enable = true;
@@ -125,7 +125,10 @@
   	
   	xserver.videoDrivers = ["amdgpu"];
   	
-  	blueman.enable = true;  
+  	blueman.enable = true;
+  	
+  	hardware.openrgb.enable = true;
+  	hardware.openrgb.motherboard = "amd";
   };
 
   # For Electron apps to use wayland

@@ -8,17 +8,12 @@
   ### remember to add user into group libvirtd
   environment.systemPackages = with pkgs; [
 	qemu
-	virt-manager
   ];
 
+  programs.virt-manager.enable = true;
   virtualisation.libvirtd.enable = true;
   virtualisation.libvirtd.onShutdown = "shutdown";
   virtualisation.spiceUSBRedirection.enable = true;
-  #virtualisation.libvirtd.qemu.package = with pkgs; [
-	#qemu_kvm
-	#virt-manager
-  #];
-  
 }
 
 

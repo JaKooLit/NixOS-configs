@@ -60,42 +60,38 @@
   
   # List packages installed in system profile. To search, run: $ nix search wget
   environment.systemPackages = with pkgs; [
-  	# System Packages
     baobab
     btrfs-progs
     cpufrequtils
 	#firewalld
     ffmpeg   
-    git
     glib #for gsettings to work   
     libappindicator
     libnotify
     openssl # required by Rainbow borders
 	python3
-    pipewire
     unzip  
     vim
     wget
-    wireplumber
     xdg-user-dirs
      
 	# I normally have and use
     audacious
-    firefox
     mpv
     mpvScripts.mpris
     neofetch
     shotcut
         
     # Hyprland Stuff        
-    blueman
     btop
     cava
     cliphist
-    gnome.file-roller
     gnome.gnome-system-monitor
     gnome.eog # eye of gnome
     grim
+    hyprcursor # requires unstable channel
+    hypridle # requires unstable channel
+    hyprlock # requires unstable channel
     jq
     kitty
     networkmanagerapplet
@@ -108,11 +104,10 @@
     qt6Packages.qtstyleplugin-kvantum #kvantum
 	libsForQt5.qtstyleplugin-kvantum #kvantum
     qt6.qtwayland
+    ranger
 	rofi-wayland
     slurp
     swappy
-    swayidle
-    swaylock-effects
 	swaynotificationcenter
     swww
     qt5ct
@@ -120,17 +115,22 @@
     wl-clipboard
     wlogout
     xdg-utils
-    xdg-desktop-portal-hyprland
     yad    
   ];
 
   programs = {
+  	git.enable = true;
+  	firefox.enable = true;
+  	
   	hyprland = {
     	enable = true;
     	xwayland.enable = true;
   		};
   	xwayland.enable = true;
   	
+  	waybar.enable = true;
+  	
+  	file-roller.enable = true;
   	thunar = {
   		enable = true;
   		plugins = with pkgs.xfce; [
@@ -138,7 +138,6 @@
 		mousepad
 		thunar-archive-plugin
 		thunar-volman
-		tumbler
   		];
   	};
   	
@@ -148,7 +147,8 @@
   xdg.portal = {
   	enable = true;
   	extraPortals = with pkgs; [
-    xdg-desktop-portal-gtk
+    	xdg-desktop-portal-gtk
+    	xdg-desktop-portal-hyprland
   	];
   };
   
@@ -158,7 +158,6 @@
   	gvfs.enable = true;
   	tumbler.enable = true;
 
-  	# PIPEWIRE
     pipewire = {
       enable = true;
       alsa = {
@@ -166,23 +165,23 @@
         support32Bit = true;
       	};
       pulse.enable = true;
+      wireplumber.enable = true;
   	};
   
   	udev.enable = true;
   	envfs.enable = true;
   	dbus.enable = true;
   	
-  	# fstrim for SSD
   	fstrim = {
     	enable = true;
     	interval = "weekly";
   		};
   
-	#firmware update  
   	fwupd.enable = true;
   	
-  	# upower
   	upower.enable = true;
+  	
+  	#flatpak.enable = true;
   };
   
   powerManagement = {
@@ -259,7 +258,6 @@
 	swapDevices = 1;
   };
 
-  # zram-generator NOTE: add in the packages
   #services.zram-generator = {
     #enable = true;
     #settings = {
