@@ -64,7 +64,7 @@
     cpufrequtils
     #firewalld
     ffmpeg   
-    git
+    #git
     glib #for gsettings to work   
     libappindicator
     libnotify
@@ -76,7 +76,7 @@
 
 	# I normally have and use
     audacious
-    firefox
+    #firefox
     mpv
     neofetch
     ranger
@@ -91,23 +91,25 @@
     gnome.file-roller
     grim
     gtk-engine-murrine #for gtk themes
+	hyprcursor # requires unstable channel
+	hypridle # requires unstable channel
+	hyprlock  # requires unstable channel
     jq
     kitty
+	mpvScripts.mpris
     networkmanagerapplet
     nwg-look # requires unstable channel
-    nvtop
+    nvtopPackages.full
     pamixer
     pavucontrol
     polkit_gnome
     pywal
-	  qt6.qtwayland
-	  qt6Packages.qtstyleplugin-kvantum #kvantum
-	  libsForQt5.qtstyleplugin-kvantum #kvantum
+	qt6.qtwayland
+	qt6Packages.qtstyleplugin-kvantum #kvantum
+	libsForQt5.qtstyleplugin-kvantum #kvantum
     slurp
     swappy
-    swayidle
-    swaylock-effects
-	  swaynotificationcenter
+	swaynotificationcenter
     swww
 	  unzip
     qt5ct
@@ -117,7 +119,7 @@
     wlogout
     yad
 
-    waybar  # if wanted experimental next line
+    #waybar  # if wanted experimental next line
     #(pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];}))
   ];
 
@@ -129,6 +131,9 @@
 
 	xwayland.enable = true;
 
+	firefox.enable = true;
+	git.enable = true;
+
 	thunar.enable = true;
 	thunar.plugins = with pkgs.xfce; [
 		exo
@@ -139,6 +144,8 @@
   		];
 	
 	dconf.enable = true;
+	
+	waybar.enable = true;
   };
 
   xdg.portal.enable = true;
@@ -156,7 +163,7 @@
     	alsa.enable = true;
     	alsa.support32Bit = true;
     	pulse.enable = true;
-		  wireplumber.enable = true;
+		wireplumber.enable = true;
   		};
 	
 	  udev.enable = true;

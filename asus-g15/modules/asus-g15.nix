@@ -77,7 +77,7 @@
       ohMyZsh = {
         enable = true;
         plugins = ["git"];
-        theme = "fino-time";
+        theme = "xiong-chiamiov-plus";
       	};
     autosuggestions.enable = true;
     syntaxHighlighting.enable = true;
@@ -123,14 +123,18 @@
   hardware = {
 	cpu.amd.updateMicrocode = true;
 
-	bluetooth.enable = true;
-	bluetooth.powerOnBoot = true;
-	bluetooth.settings = {
-		General = {
-		Enable = "Source,Sink,Media,Socket";
+	bluetooth = {
+		enable = true;
+		powerOnBoot = true;
+		settings = {
+			General = {
+			Enable = "Source,Sink,Media,Socket";
+			Experimental = true;
+			};
 		};
 	};
-	
+
+
 	opengl = {
     	enable = true;
     	driSupport = true;
