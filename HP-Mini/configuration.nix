@@ -67,7 +67,8 @@
     libnotify
     openssl # required by Rainbow borders
     python3
-	python311Packages.requests 
+	python311Packages.requests
+	sof-firmware 
     vim
     wget
     xdg-user-dirs
@@ -77,6 +78,7 @@
     audacious
 	mpv
     neofetch
+	hyfetch # neofetch upgraded
         
     # Hyprland Stuff        
     btop
@@ -85,6 +87,9 @@
     gnome.eog
     gnome.gnome-system-monitor
     grim
+	hyprcursor # requires unstable channel
+	hypridle # requires unstable channel
+	hyprlock # requires unstable channel
     jq
     kitty
     libsForQt5.qtstyleplugin-kvantum
@@ -95,6 +100,7 @@
     pavucontrol
 	playerctl
     polkit_gnome
+	pyprland
     pywal
     qbittorrent
     qt5ct
@@ -105,8 +111,6 @@
     rofi-wayland
     slurp
     swappy
-    swayidle
-    swaylock-effects
 	swaynotificationcenter
     swww
     unzip
@@ -186,7 +190,25 @@
 	rtkit.enable = true;
 	pam.services.swaylock.text = "auth include login";
 	polkit.enable = true;
+	polkit.extraConfig = ''
+    polkit.addRule(function(action, subject) {
+      if (
+        subject.isInGroup("users")
+          && (
+            action.id == "org.freedesktop.login1.reboot" ||
+            action.id == "org.freedesktop.login1.reboot-multiple-sessions" ||
+            action.id == "org.freedesktop.login1.power-off" ||
+            action.id == "org.freedesktop.login1.power-off-multiple-sessions"
+          )
+        )
+      {
+        return polkit.Result.YES;
+      }
+    })
+  '';
   };
+
+
 
   xdg.portal.enable = true;
   xdg.portal.extraPortals = with pkgs; [
@@ -259,21 +281,22 @@
 	swapDevices = 1;
   };
    
-  #systemd = {
-  #	user.services.polkit-gnome-authentication-agent-1 = {
-   # description = "polkit-gnome-authentication-agent-1";
-   # wantedBy = [ "graphical-session.target" ];
-   # wants = [ "graphical-session.target" ];
-   # after = [ "graphical-session.target" ];
-   # serviceConfig = {
-   #     Type = "simple";
-   #     ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
-   #     Restart = "on-failure";
-   #     RestartSec = 1;
-   #     TimeoutStopSec = 10;
-    #  };
-  #	};
-  #};
+  systemd = {
+  	user.services.polkit-gnome-authentication-agent-1 = 	{
+    description = "polkit-gnome-authentication-agent-1";
+    wantedBy = [ "graphical-session.target" ];
+    wants = [ "graphical-session.target" ];
+    after = [ "graphical-session.target" ];
+    serviceConfig = {
+        Type = "simple";
+        ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+        Restart = "on-failure";
+        RestartSec = 1;
+        TimeoutStopSec = 10;
+      };
+  	};
+  };
+
 
   # Enable the X11 windowing system.
   # services.xserver.enable = true;  

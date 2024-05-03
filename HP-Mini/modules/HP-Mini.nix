@@ -33,7 +33,7 @@
     libva
     libva-utils
 
-	nvtop-intel #unstable
+	nvtopPackages.intel #unstable
   ];
   
   # ZSH
@@ -71,6 +71,7 @@
   }; 
 
   services = {
+	watchdogd.enable = false; # watchdog
 	blueman.enable = true;
 
 	xserver.videoDrivers = ["intel"];
