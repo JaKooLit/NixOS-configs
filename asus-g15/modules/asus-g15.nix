@@ -29,7 +29,9 @@
 			"wheel" 
 			"video" 
 			"input" 
-			"audio" 
+			"audio"
+			"scanner" 
+			"lp" 
 			"libvirtd" ]; 
     packages = with pkgs; [		
      	];
@@ -46,9 +48,6 @@
     libva
     libva-utils
 
-	# scanner
-	(epsonscan2.override { withNonFreePlugins = true; withGui = true; }) 
-
     #nvidia-specific hardware acceleration
     libvdpau
     libvdpau-va-gl 
@@ -63,8 +62,18 @@
     vscodium
 			
     brightnessctl
+
+    thunderbird
+    libreoffice-fresh
+    #epsonscan2
+    #(epsonscan2.override { withNonFreePlugins = true; withGui = true; }) 
   ];
   
+  # Additional fonts needed for office stuff
+  fonts.packages = with pkgs; [
+	cascadia-code
+ 	];
+	
   powerManagement = {
 	enable = true;
 	cpuFreqGovernor = "schedutil";
@@ -83,6 +92,9 @@
     syntaxHighlighting.enable = true;
   };
 
+  # for printer
+  programs.system-config-printer.enable = true;
+
   services = {
 	asusd = {
       enable = true;
@@ -92,7 +104,7 @@
 	supergfxd.enable = true;
 	power-profiles-daemon.enable = true;
 
-	xserver.libinput.enable = true; # for touchpad support
+	libinput.enable = true; # for touchpad support
 
 	logind.lidSwitch = "ignore";
 	logind.lidSwitchExternalPower = "ignore";
@@ -119,9 +131,16 @@
 	xserver.videoDrivers = ["nvidia" "amdgpu"]; 
   };
   
-  # Bluetooth, video card..
+  # Bluetooth, video card, scanner..
   hardware = {
 	cpu.amd.updateMicrocode = true;
+
+	# for network scanner
+	sane = {
+		enable = true;
+		extraBackends = [pkgs.epsonscan2];
+		disabledDefaultBackends = ["escl"];
+  		};
 
 	bluetooth = {
 		enable = true;
@@ -145,6 +164,7 @@
     	prime.amdgpuBusId = "PCI:7:0:0";
     	prime.nvidiaBusId = "PCI:1:0:0";
     	modesetting.enable = true;
+		prime.offload.enable =true;
     	# Nvidia power management. Experimental, and can cause sleep/suspend to fail.
     	powerManagement = {
 			enable = true;
