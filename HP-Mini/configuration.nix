@@ -80,7 +80,8 @@
     neofetch
 	hyfetch # neofetch upgraded
         
-    # Hyprland Stuff        
+    # Hyprland Stuff 
+	ags       
     btop
     cava
     cliphist

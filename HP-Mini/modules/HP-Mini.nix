@@ -27,7 +27,7 @@
     glxinfo
     #obs-studio
     vscodium
-    discord
+    webcord
 
     #hardware-acceleration
     libva
