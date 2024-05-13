@@ -1,7 +1,7 @@
 # Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
 
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 {
   imports =
     [ # Include the results of the hardware scan.
@@ -58,31 +58,41 @@
 
   # List packages installed in system profile. To search, run: $ nix search wget
   environment.systemPackages = with pkgs; [
-  	# System Packages
+  # System Packages
     baobab
     btrfs-progs
     cpufrequtils
-    #firewalld
     ffmpeg   
-    #git
-    glib #for gsettings to work   
+    glib #for gsettings to work
+    gnumake # needed for make   
     libappindicator
     libnotify
     openssl #required by Rainbow borders
-    python3 
+    python3
+    rustup 
     vim
     wget
     xdg-user-dirs
 
-	# I normally have and use
+    # I normally have and use
     audacious
     #firefox
     mpv
-    neofetch
+    hyfetch
     ranger
     shotcut
-	    
-    # Hyprland Stuff        
+      
+    # Hyprland Stuff | Laptop related stuff on a separate .nix
+
+    # ags stuff
+    ags
+    typescript
+    gtk-layer-shell
+    libdbusmenu-gtk3
+    gobject-introspection
+    gjs
+    gtk3
+        
     btop
     cava
     cliphist
@@ -91,27 +101,29 @@
     gnome.file-roller
     grim
     gtk-engine-murrine #for gtk themes
-	hyprcursor # requires unstable channel
-	hypridle # requires unstable channel
-	hyprlock  # requires unstable channel
+    hyprcursor # requires unstable channel
+    hypridle # requires unstable channel
+    hyprlock  # requires unstable channel
     jq
     kitty
-	mpvScripts.mpris
+    mpvScripts.mpris
     networkmanagerapplet
     nwg-look # requires unstable channel
     nvtopPackages.full
     pamixer
+    pyprland
     pavucontrol
     polkit_gnome
+    pyprland
     pywal
-	qt6.qtwayland
-	qt6Packages.qtstyleplugin-kvantum #kvantum
-	libsForQt5.qtstyleplugin-kvantum #kvantum
+    qt6.qtwayland
+    qt6Packages.qtstyleplugin-kvantum #kvantum
+    libsForQt5.qtstyleplugin-kvantum #kvantum
     slurp
     swappy
-	swaynotificationcenter
+    swaynotificationcenter
     swww
-	  unzip
+    unzip
     qt5ct
     qt6ct
     rofi-wayland

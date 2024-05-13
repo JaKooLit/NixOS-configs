@@ -1,5 +1,6 @@
 {
   description = "G15 flakes!";
+  
 
   inputs = {
 	nixpkgs.url = "nixpkgs/nixos-unstable";

@@ -49,12 +49,14 @@
     libva-utils
 
     #nvidia-specific hardware acceleration
+	autoAddDriverRunpath
     libvdpau
     libvdpau-va-gl 
     nvidia-vaapi-driver
     vaapiVdpau
     vdpauinfo
 
+	krabby # pokemon colorscript like
     discord
     glxinfo
     obs-studio
@@ -186,7 +188,7 @@
   };
 
   # For Electron apps to use wayland
-  #environment.sessionVariables.NIXOS_OZONE_WL = "1";
+  environment.sessionVariables.NIXOS_OZONE_WL = "1";
 }
 
 
