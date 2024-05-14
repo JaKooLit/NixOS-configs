@@ -14,6 +14,10 @@
   virtualisation.libvirtd.enable = true;
   virtualisation.libvirtd.onShutdown = "shutdown";
   virtualisation.spiceUSBRedirection.enable = true;
+  #virtualisation.libvirtd.extraOptions = 
+  #	[
+  #	"--tray"
+  #];
 }
 
 

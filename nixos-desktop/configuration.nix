@@ -1,7 +1,7 @@
 # Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
 
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 
 {
   imports =
@@ -59,64 +59,78 @@
   nix.settings.experimental-features = [ "nix-command"  "flakes" ];
   
   # List packages installed in system profile. To search, run: $ nix search wget
-  environment.systemPackages = with pkgs; [
+  environment.systemPackages = 
+  (with pkgs; [
     baobab
     btrfs-progs
     cpufrequtils
-	#firewalld
     ffmpeg   
-    glib #for gsettings to work   
+    glib #for gsettings to work
+    killall   
     libappindicator
     libnotify
     openssl # required by Rainbow borders
-	python3
-    unzip  
+    python3
+    python311Packages.requests
+    sof-firmware 
     vim
     wget
     xdg-user-dirs
-     
-	# I normally have and use
+    xdg-utils
+      
+    # I normally have and use
     audacious
     mpv
-    mpvScripts.mpris
     neofetch
     shotcut
         
-    # Hyprland Stuff        
+    # Hyprland Stuff
+    ags       
     btop
     cava
     cliphist
+    gnome.eog
     gnome.gnome-system-monitor
-    gnome.eog # eye of gnome
     grim
+    gtk-layer-shell # required by ags
     hyprcursor # requires unstable channel
     hypridle # requires unstable channel
     hyprlock # requires unstable channel
     jq
     kitty
+    libsForQt5.qtstyleplugin-kvantum
+    mpd
+    mpd-mpris
     networkmanagerapplet
     nwg-look # requires unstable channel
     pamixer
     pavucontrol
     playerctl
     polkit_gnome
-    pywal
-    qt6Packages.qtstyleplugin-kvantum #kvantum
-	libsForQt5.qtstyleplugin-kvantum #kvantum
+    pyprland
+    python311Packages.pyquery
+    qbittorrent
+    qt5ct
+    qt6ct #unstable
+    qt6Packages.qtstyleplugin-kvantum
     qt6.qtwayland
     ranger
-	rofi-wayland
+    rofi-wayland
     slurp
     swappy
-	swaynotificationcenter
+    swaynotificationcenter
     swww
-    qt5ct
-    qt6ct
+    unzip
+    waybar-mpris
     wl-clipboard
     wlogout
-    xdg-utils
-    yad    
+    yad
+    yt-dlp
+  ]) 
+	++ [
+    inputs.wallust.packages.${pkgs.system}.wallust
   ];
+
 
   programs = {
   	git.enable = true;
@@ -134,10 +148,10 @@
   	thunar = {
   		enable = true;
   		plugins = with pkgs.xfce; [
-		exo
-		mousepad
-		thunar-archive-plugin
-		thunar-volman
+        exo
+        mousepad
+        thunar-archive-plugin
+        thunar-volman
   		];
   	};
   	

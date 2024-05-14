@@ -1,20 +1,20 @@
 {
-  description = "Desktop flakes!";
+  description = "My Desktop flakes!";
 
   inputs = {
 	nixpkgs.url = "nixpkgs/nixos-unstable";
+	wallust.url = "git+https://codeberg.org/explosion-mental/wallust?ref=dev";
   };
-
-  outputs = { self, nixpkgs, ... }:
-	let
-	  lib = nixpkgs.lib;
-	in {
+  
+   outputs = { self, nixpkgs, ... }@inputs: {
 	nixosConfigurations = {
-	  NixOS = lib.nixosSystem {
+	  NixOS = nixpkgs.lib.nixosSystem {
 	    system = "x86_64-linux";
+	    specialArgs = { inherit inputs; };
 	    modules = [ ./configuration.nix ];
 	  };
 	};
   };
+	  	
 
 }

@@ -26,10 +26,10 @@
   # User account
   users = {
   	users.ja = {
-    	isNormalUser = true;
-    	extraGroups = [ "libvirtd" "wheel" "video" "input" "audio" ]; # Enable ‘sudo’ for the user.
-    	packages = with pkgs; [
-     	];
+		isNormalUser = true;
+		extraGroups = [ "libvirtd" "wheel" "video" "input" "audio" ]; # Enable ‘sudo’ for the user.
+		packages = with pkgs; [
+		];
   	};
   	
   	#zsh
@@ -76,7 +76,7 @@
     #wineWowPackages.minimal
     #winetricks
   ];
-  
+
   programs = {
 	zsh = {
 		enable = true;
