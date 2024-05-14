@@ -45,18 +45,11 @@
   # for Asus G15
   environment.systemPackages = with pkgs; [
     #hardware-acceleration
-    libva
-    libva-utils
+
 
     #nvidia-specific hardware acceleration
 	autoAddDriverRunpath
-    libvdpau
-    libvdpau-va-gl 
-    nvidia-vaapi-driver
-    vaapiVdpau
-    vdpauinfo
 
-	krabby # pokemon colorscript like
     discord
     glxinfo
     obs-studio
@@ -160,6 +153,15 @@
     	enable = true;
     	driSupport = true;
     	driSupport32Bit = true;
+		extraPackages = with pkgs; [
+			vaapiVdpau
+    		libvdpau
+    		libvdpau-va-gl 
+    		nvidia-vaapi-driver
+    		vdpauinfo
+			libva
+    		libva-utils		
+     		];
   		};
 
 	nvidia = {

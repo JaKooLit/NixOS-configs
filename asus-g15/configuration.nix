@@ -57,42 +57,29 @@
   nixpkgs.config.allowUnfree = true;
 
   # List packages installed in system profile. To search, run: $ nix search wget
-  environment.systemPackages = with pkgs; [
+  environment.systemPackages = (with pkgs; [
   # System Packages
     baobab
     btrfs-progs
     cpufrequtils
     ffmpeg   
-    glib #for gsettings to work
-    gnumake # needed for make   
+    glib #for gsettings to work  
     libappindicator
     libnotify
     openssl #required by Rainbow borders
     python3
-    rustup 
     vim
     wget
     xdg-user-dirs
 
     # I normally have and use
     audacious
-    #firefox
+    fastfetch
     mpv
-    hyfetch
     ranger
     shotcut
       
-    # Hyprland Stuff | Laptop related stuff on a separate .nix
-
-    # ags stuff
-    ags
-    typescript
-    gtk-layer-shell
-    libdbusmenu-gtk3
-    gobject-introspection
-    gjs
-    gtk3
-        
+    # Hyprland Stuff | Laptop related stuff on a separate .nix        
     btop
     cava
     cliphist
@@ -115,7 +102,6 @@
     pavucontrol
     polkit_gnome
     pyprland
-    pywal
     qt6.qtwayland
     qt6Packages.qtstyleplugin-kvantum #kvantum
     libsForQt5.qtstyleplugin-kvantum #kvantum
@@ -133,6 +119,9 @@
 
     #waybar  # if wanted experimental next line
     #(pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];}))
+  ]) ++ [
+	inputs.wallust.packages.${pkgs.system}.wallust
+	inputs.ags.packages.${pkgs.system}.ags
   ];
 
   programs = {
@@ -308,7 +297,7 @@
   #};
    
   # Enable the X11 windowing system.
-  # services.xserver.enable = true;  
+   services.xserver.enable = true;  
 
   # Configure keymap in X11
   # services.xserver.layout = "us";
