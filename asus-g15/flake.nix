@@ -5,7 +5,8 @@
   inputs = {
 	nixpkgs.url = "nixpkgs/nixos-unstable";
 	wallust.url = "git+https://codeberg.org/explosion-mental/wallust?ref=dev";
-	ags.url = "github:Aylur/ags";
+	#hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1"; # unstable hyprland
+	#ags.url = "github:Aylur/ags"; 
   };
 
   outputs = { self,nixpkgs, ... }@inputs: {

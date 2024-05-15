@@ -79,7 +79,8 @@
     ranger
     shotcut
       
-    # Hyprland Stuff | Laptop related stuff on a separate .nix        
+    # Hyprland Stuff | Laptop related stuff on a separate .nix
+	ags        
     btop
     cava
     cliphist
@@ -121,7 +122,7 @@
     #(pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];}))
   ]) ++ [
 	inputs.wallust.packages.${pkgs.system}.wallust
-	inputs.ags.packages.${pkgs.system}.ags
+	#inputs.ags.packages.${pkgs.system}.ags
   ];
 
   programs = {
@@ -298,6 +299,11 @@
    
   # Enable the X11 windowing system.
    services.xserver.enable = true;  
+   
+   services.xserver.displayManager.gdm.enable = false;
+   services.xserver.desktopManager.gnome.enable = false;
+   services.xserver.displayManager.lightdm.enable = false;
+   #services.xserver.displayManager.lightdm.greeter = false;
 
   # Configure keymap in X11
   # services.xserver.layout = "us";
