@@ -43,16 +43,8 @@
   # for Desktop (all AMD)
   environment.systemPackages = with pkgs; [
     glxinfo
-	#gst_all_1.gstreamer
-	#gst_all_1.gst-libav
-	#gst_all_1.gst-plugins-base
-    #gst_all_1.gst-plugins-good
-    #gst_all_1.gst-plugins-bad
-    #gst_all_1.gst-plugins-ugly
-	#gst_all_1.gst-vaapi # necessary for obs-vaapi
     obs-studio
 	obs-studio-plugins.obs-vaapi
-	#obs-studio-plugins.obs-gstreamer
 	nvtopPackages.amd
     yt-dlp
     vscodium
@@ -132,7 +124,7 @@
   };
 
   # For Electron apps to use wayland
-  #environment.sessionVariables.NIXOS_OZONE_WL = "1";
+  environment.sessionVariables.NIXOS_OZONE_WL = "1";
   
   # Flatpak (urghhhh dont really wanted though :( but vscodium dont work
   #services.flatpak.enable = true; 

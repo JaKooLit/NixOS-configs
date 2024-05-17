@@ -75,12 +75,12 @@
     # I normally have and use
     audacious
     fastfetch
-    mpv
+    (mpv.override {scripts = [mpvScripts.mpris];}) # with tray support
     ranger
     shotcut
       
     # Hyprland Stuff | Laptop related stuff on a separate .nix
-	ags        
+	  ags        
     btop
     cava
     cliphist
@@ -94,7 +94,6 @@
     hyprlock  # requires unstable channel
     jq
     kitty
-    mpvScripts.mpris
     networkmanagerapplet
     nwg-look # requires unstable channel
     nvtopPackages.full
@@ -179,7 +178,19 @@
 
 	  fwupd.enable = true;
 
-	  upower.enable = true;	
+	  upower.enable = true;
+
+    # Services X11 # note; need the xserver to be enabled for ags overview to work correctly. Really weird May 2024
+  	xserver = {
+  		enable = true;
+  		displayManager.gdm.enable = false;
+  		displayManager.lightdm.enable = false;
+  		displayManager.lightdm.greeters.gtk.enable = false;
+  		};
+ 	  desktopManager = {
+ 		  plasma6.enable = false;
+ 		  };
+ 	  displayManager.sddm.enable = false;	
   };
 
   # FONTS
@@ -297,14 +308,6 @@
 	#};
   #};
    
-  # Enable the X11 windowing system.
-   services.xserver.enable = true;  
-   
-   services.xserver.displayManager.gdm.enable = false;
-   services.xserver.desktopManager.gnome.enable = false;
-   services.xserver.displayManager.lightdm.enable = false;
-   #services.xserver.displayManager.lightdm.greeter = false;
-
   # Configure keymap in X11
   # services.xserver.layout = "us";
   # services.xserver.xkbOptions = "eurosign:e,caps:escape";  

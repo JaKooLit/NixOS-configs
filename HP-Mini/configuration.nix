@@ -56,7 +56,7 @@
   
   # List packages installed in system profile. To search, run: $ nix search wget
   environment.systemPackages = with pkgs; [
-  	# System Packages
+    # System Packages
     baobab
     btrfs-progs
     cpufrequtils
@@ -67,52 +67,51 @@
     libnotify
     openssl # required by Rainbow borders
     python3
-	python311Packages.requests
-	sof-firmware 
+    python311Packages.requests
+    sof-firmware 
     vim
     wget
     xdg-user-dirs
-	xdg-utils
-    
-	# I normally have and use
+    xdg-utils
+
+    # I normally have and use
     audacious
-	mpv
+    (mpv.override {scripts = [mpvScripts.mpris];}) # with tray support
     neofetch
-	hyfetch # neofetch upgraded
-        
+    hyfetch # neofetch upgraded
+      
     # Hyprland Stuff 
-	ags       
+    ags       
     btop
     cava
     cliphist
     gnome.eog
     gnome.gnome-system-monitor
     grim
-	hyprcursor # requires unstable channel
-	hypridle # requires unstable channel
-	hyprlock # requires unstable channel
+    hyprcursor # requires unstable channel
+    hypridle # requires unstable channel
+    hyprlock # requires unstable channel
     jq
     kitty
     libsForQt5.qtstyleplugin-kvantum
-    mpvScripts.mpris
     networkmanagerapplet
     nwg-look # requires unstable channel
     pamixer
     pavucontrol
-	playerctl
+    playerctl
     polkit_gnome
-	pyprland
+    pyprland
     pywal
     qbittorrent
     qt5ct
     qt6ct #unstable
     qt6Packages.qtstyleplugin-kvantum
-	qt6.qtwayland
+    qt6.qtwayland
     ranger
     rofi-wayland
     slurp
     swappy
-	swaynotificationcenter
+    swaynotificationcenter
     swww
     unzip
     wl-clipboard
@@ -120,12 +119,12 @@
     yad
     yt-dlp
 
-    
-	#colorscripts
-	#dwt1-shell-color-scripts
-	krabby #pokemon colorscripts like
-	
-	# waybar with experimental
+
+    #colorscripts
+    #dwt1-shell-color-scripts
+    krabby #pokemon colorscripts like
+
+    # waybar with experimental
     #(pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];}))
   ];
 
@@ -184,8 +183,19 @@
 	fwupd.enable = true;
 
 	upower.enable = true;
+  
+  # Services X11 # note; need the xserver to be enabled for ags overview to work correctly. Really weird May 2024
+  xserver = {
+  	enable = true;
+  	displayManager.gdm.enable = false;
+  	displayManager.lightdm.enable = false;
+  	displayManager.lightdm.greeters.gtk.enable = false;
+  	  };
+ 	  desktopManager = {
+ 		  plasma6.enable = false;
+ 		  };
+ 	  displayManager.sddm.enable = false;
   };
-
 
   security = {
 	rtkit.enable = true;
@@ -208,7 +218,6 @@
     })
   '';
   };
-
 
 
   xdg.portal.enable = true;
@@ -298,9 +307,6 @@
   	};
   };
 
-
-  # Enable the X11 windowing system.
-  # services.xserver.enable = true;  
 
   # Configure keymap in X11
   # services.xserver.layout = "us";

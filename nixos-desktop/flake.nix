@@ -3,7 +3,7 @@
 
   inputs = {
 	nixpkgs.url = "nixpkgs/nixos-unstable";
-	wallust.url = "git+https://codeberg.org/explosion-mental/wallust?ref=dev";
+	wallust.url = "git+https://codeberg.org/explosion-mental/wallust?ref=dev"; # change to dev or master depending your choice
   };
   
    outputs = { self, nixpkgs, ... }@inputs: {

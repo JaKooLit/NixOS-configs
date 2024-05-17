@@ -80,8 +80,8 @@
       
     # I normally have and use
     audacious
-    mpv
-    neofetch
+    (mpv.override {scripts = [mpvScripts.mpris];}) # with tray support
+    fastfetch
     shotcut
         
     # Hyprland Stuff
@@ -99,8 +99,6 @@
     jq
     kitty
     libsForQt5.qtstyleplugin-kvantum
-    mpd
-    mpd-mpris
     networkmanagerapplet
     nwg-look # requires unstable channel
     pamixer
@@ -128,7 +126,7 @@
     yt-dlp
   ]) 
 	++ [
-    inputs.wallust.packages.${pkgs.system}.wallust
+    inputs.wallust.packages.${pkgs.system}.wallust # wallust . Configure the branch in the flake.nix
   ];
 
 
@@ -192,10 +190,20 @@
   		};
   
   	fwupd.enable = true;
-  	
   	upower.enable = true;
-  	
   	#flatpak.enable = true;
+  	
+  	# Services X11 # note; need the xserver to be enabled for ags overview to work correctly. Really weird May 2024
+  	xserver = {
+  		enable = true;
+  		displayManager.gdm.enable = false;
+  		displayManager.lightdm.enable = false;
+  		displayManager.lightdm.greeters.gtk.enable = false;
+  		};
+ 	  desktopManager = {
+ 		  plasma6.enable = false;
+ 		  };
+ 	  displayManager.sddm.enable = false;
   };
   
   powerManagement = {
@@ -271,19 +279,6 @@
 	memoryPercent = 30;
 	swapDevices = 1;
   };
-
-  #services.zram-generator = {
-    #enable = true;
-    #settings = {
-	#name = dev;
-	#zram-size = "8192";
-	#compression-algorithm = "zstd";
-	#swap-priority = 100;
-	#};
-  #};
-  
-  # Enable the X11 windowing system.
-  # services.xserver.enable = true;  
 
   # Configure keymap in X11
   # services.xserver.layout = "us";
