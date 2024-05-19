@@ -1,7 +1,7 @@
 # Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
 
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 
 {
   imports =
@@ -55,7 +55,7 @@
   nix.settings.experimental-features = [ "nix-command"  "flakes" ];
   
   # List packages installed in system profile. To search, run: $ nix search wget
-  environment.systemPackages = with pkgs; [
+  environment.systemPackages = (with pkgs; [
     # System Packages
     baobab
     btrfs-progs
@@ -123,6 +123,9 @@
 
     # waybar with experimental
     #(pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];}))
+  ]) ++ [
+	inputs.wallust.packages.${pkgs.system}.wallust
+	#inputs.ags.packages.${pkgs.system}.ags
   ];
 
   programs = {
