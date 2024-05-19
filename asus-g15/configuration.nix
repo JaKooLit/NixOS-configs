@@ -75,12 +75,12 @@
     # I normally have and use
     audacious
     fastfetch
-    (mpv.override {scripts = [mpvScripts.mpris];}) # with tray support
+    (mpv.override {scripts = [mpvScripts.mpris];}) # with tray
     ranger
     shotcut
       
     # Hyprland Stuff | Laptop related stuff on a separate .nix
-	  ags        
+	ags        
     btop
     cava
     cliphist
@@ -178,7 +178,7 @@
 
 	  fwupd.enable = true;
 
-	  upower.enable = true;
+	  upower.enable = true;	
 
     # Services X11 # note; need the xserver to be enabled for ags overview to work correctly. Really weird May 2024
   	xserver = {
@@ -193,6 +193,7 @@
  	  displayManager.sddm.enable = false;	
   };
 
+ 	
   # FONTS
   fonts.packages = with pkgs; [
     noto-fonts

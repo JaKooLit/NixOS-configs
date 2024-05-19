@@ -49,19 +49,16 @@
 
     #nvidia-specific hardware acceleration
 	autoAddDriverRunpath
-
     discord
     glxinfo
     obs-studio
     yt-dlp
     vscodium
-			
-    brightnessctl
-
+	brightnessctl
     thunderbird
     libreoffice-fresh
     #epsonscan2
-    #(epsonscan2.override { withNonFreePlugins = true; withGui = true; }) 
+    (epsonscan2.override { withNonFreePlugins = true; withGui = true; }) 
   ];
   
   # Additional fonts needed for office stuff
@@ -114,9 +111,14 @@
   		};
 	
 	avahi = {
-		enable = true; # necessary for network printing
+		enable = true; # necessary for network printing / scanning
 		nssmdns4 = true;
 		openFirewall = true;
+      	publish = {
+        	enable = true;
+        	addresses = true;
+        	userServices = true;
+      		};
 	};
 
 	blueman.enable = true;
@@ -133,7 +135,9 @@
 	# for network scanner
 	sane = {
 		enable = true;
-		extraBackends = [pkgs.epsonscan2];
+		extraBackends = [
+			pkgs.epsonscan2
+		];
 		disabledDefaultBackends = ["escl"];
   		};
 
