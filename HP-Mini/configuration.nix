@@ -299,12 +299,17 @@
 
 
   # Enable the X11 windowing system.
-  services.xserver.enable = true; 
-  services.xserver.displayManager.gdm.enable = false;
-  services.xserver.desktopManager.gnome.enable = false;
-  services.xserver.displayManager.lightdm.enable = false;
-  services.displayManager.sddm.enable = false; 
-
+  #	xserver = {
+  #		enable = true;
+  #		displayManager.gdm.enable = false;
+  #		displayManager.lightdm.enable = false;
+  #		displayManager.lightdm.greeters.gtk.enable = false;
+  #		};
+  #  desktopManager = {
+   #	  plasma6.enable = false;
+ 	#	  };
+ 	#  displayManager.sddm.enable = false;	
+  #};
   # Configure keymap in X11
   # services.xserver.layout = "us";
   # services.xserver.xkbOptions = "eurosign:e,caps:escape";  
