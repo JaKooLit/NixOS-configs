@@ -7,6 +7,7 @@
   # Kernel Parameters for Asus G15
   #boot.loader.grub.theme = "/boot/grub/themes/nixos/";
   boot = {
+	kernelPackages = pkgs.linuxPackages_latest; # Kernel
 	initrd.kernelModules = [ "amdgpu" ];
 	kernelParams = [ 
 		"rd.driver.blacklist=nouveau" 
@@ -15,8 +16,9 @@
 		"iommu=on" 
 		"amd_iommu=on" 
 		"amd_pstate=guided" 
-		"nowatchdog" ];
-	kernelPackages = pkgs.linuxPackages_latest; # Kernel
+		"nowatchdog"
+		"modprobe.blacklist=sp5100_tco" 
+		];
   };
 
   networking.hostName = "NixOS-G15";
@@ -44,20 +46,16 @@
   
   # for Asus G15
   environment.systemPackages = with pkgs; [
-    #hardware-acceleration
-
-
-    #nvidia-specific hardware acceleration
 	autoAddDriverRunpath
+	brightnessctl
     discord
     glxinfo
+    libreoffice-fresh
+	librewolf
     obs-studio
+    thunderbird
     yt-dlp
     vscodium
-	brightnessctl
-    thunderbird
-    libreoffice-fresh
-    #epsonscan2
     (epsonscan2.override { withNonFreePlugins = true; withGui = true; }) 
   ];
   
@@ -89,8 +87,8 @@
 
   services = {
 	asusd = {
-      enable = true;
-      enableUserService = true;
+      	enable = true;
+      	enableUserService = true;
     };
 
 	supergfxd.enable = true;
@@ -119,11 +117,9 @@
         	addresses = true;
         	userServices = true;
       		};
-	};
+		};
 
 	blueman.enable = true;
-
-	#flatpak.enable = true;
 
 	xserver.videoDrivers = ["nvidia" "amdgpu"]; 
   };

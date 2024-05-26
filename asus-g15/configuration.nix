@@ -24,7 +24,7 @@
 		enable = true;
 		devices = [ "nodev" ];
 		efiSupport = true;
-        gfxmodeBios = "auto";
+    gfxmodeBios = "auto";
 		memtest86.enable = true;
 		extraGrubInstallArgs = [ "--bootloader-id=NixOS" ];
 		configurationName = "NixOS";
@@ -34,8 +34,6 @@
   };
 
   # NOTE SET KERNEL BOOTLOADER OPTIONS and Hostname ON INDIVIDUAL MODULE NIX  
-  # networking.hostName = "NixOS"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.networkmanager.enable = true; 
 
   # Set your time zone.
@@ -67,7 +65,6 @@
     libappindicator
     libnotify
     openssl #required by Rainbow borders
-    python3
     vim
     wget
     xdg-user-dirs
@@ -98,6 +95,7 @@
     nwg-look # requires unstable channel
     nvtopPackages.full
     pamixer
+	playerctl
     pyprland
     pavucontrol
     polkit_gnome
@@ -117,11 +115,9 @@
     wlogout
     yad
 
-    #waybar  # if wanted experimental next line
     #(pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];}))
-  ]) ++ [
-	inputs.wallust.packages.${pkgs.system}.wallust
-	#inputs.ags.packages.${pkgs.system}.ags
+    ]) ++ [
+	  inputs.wallust.packages.${pkgs.system}.wallust
   ];
 
   programs = {
@@ -236,6 +232,16 @@
 		  wantedBy = [ "multi-user.target" ];
   		};
   }; 
+
+  # flatpak
+	#flatpak.enable = true;
+  #systemd.services.flatpak-repo = {
+  #  wantedBy = [ "multi-user.target" ];
+  #  path = [ pkgs.flatpak ];
+  #  script = ''
+  #    flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+  #  '';
+  #};
 
   # Masking sleep, hibernate, suspend.. etc
   systemd = {
