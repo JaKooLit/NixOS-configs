@@ -80,6 +80,9 @@
       	};
     autosuggestions.enable = true;
     syntaxHighlighting.enable = true;
+    promptInit = ''
+      fastfetch --config ~/.config/fastfetch/config-compact.jsonc;
+    '';
   };
 
   # for printer

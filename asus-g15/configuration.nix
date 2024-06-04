@@ -56,10 +56,11 @@
 
   # List packages installed in system profile. To search, run: $ nix search wget
   environment.systemPackages = (with pkgs; [
-  # System Packages
+    # System Packages
     baobab
     btrfs-progs
     cpufrequtils
+    duf
     ffmpeg   
     glib #for gsettings to work  
     libappindicator
@@ -77,7 +78,8 @@
     shotcut
       
     # Hyprland Stuff | Laptop related stuff on a separate .nix
-	ags        
+    ags
+    libdbusmenu-gtk3 #ags        
     btop
     cava
     cliphist
@@ -89,13 +91,14 @@
     hyprcursor # requires unstable channel
     hypridle # requires unstable channel
     hyprlock  # requires unstable channel
+    imagemagick
     jq
     kitty
     networkmanagerapplet
     nwg-look # requires unstable channel
     nvtopPackages.full
     pamixer
-	playerctl
+    playerctl
     pyprland
     pavucontrol
     polkit_gnome
@@ -117,7 +120,7 @@
 
     #(pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];}))
     ]) ++ [
-	  inputs.wallust.packages.${pkgs.system}.wallust
+    inputs.wallust.packages.${pkgs.system}.wallust
   ];
 
   programs = {
