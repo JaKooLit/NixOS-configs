@@ -49,7 +49,9 @@
 	autoAddDriverRunpath
 	brightnessctl
     discord
+	fzf
     glxinfo
+	krabby
     libreoffice-fresh
 	librewolf
     obs-studio
@@ -81,7 +83,12 @@
     autosuggestions.enable = true;
     syntaxHighlighting.enable = true;
     promptInit = ''
-      fastfetch --config ~/.config/fastfetch/config-compact.jsonc;
+      	krabby random --no-title -s;
+      	source <(fzf --zsh);
+		HISTFILE=~/.zsh_history;
+		HISTSIZE=10000;
+		SAVEHIST=10000;
+		setopt appendhistory;
     '';
   };
 

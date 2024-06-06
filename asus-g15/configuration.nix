@@ -56,11 +56,11 @@
 
   # List packages installed in system profile. To search, run: $ nix search wget
   environment.systemPackages = (with pkgs; [
-    # System Packages
+  # System Packages
     baobab
     btrfs-progs
     cpufrequtils
-    duf
+	duf
     ffmpeg   
     glib #for gsettings to work  
     libappindicator
@@ -78,8 +78,7 @@
     shotcut
       
     # Hyprland Stuff | Laptop related stuff on a separate .nix
-    ags
-    libdbusmenu-gtk3 #ags        
+	ags      
     btop
     cava
     cliphist
@@ -90,62 +89,61 @@
     gtk-engine-murrine #for gtk themes
     hyprcursor # requires unstable channel
     hypridle # requires unstable channel
-    hyprlock  # requires unstable channel
-    imagemagick
+ 	imagemagick
     jq
     kitty
+    libsForQt5.qtstyleplugin-kvantum #kvantum
     networkmanagerapplet
     nwg-look # requires unstable channel
     nvtopPackages.full
     pamixer
-    playerctl
-    pyprland
     pavucontrol
+	playerctl
     polkit_gnome
     pyprland
+    qt5ct
+    qt6ct
     qt6.qtwayland
     qt6Packages.qtstyleplugin-kvantum #kvantum
-    libsForQt5.qtstyleplugin-kvantum #kvantum
+    rofi-wayland
     slurp
     swappy
     swaynotificationcenter
     swww
     unzip
-    qt5ct
-    qt6ct
-    rofi-wayland
     wl-clipboard
     wlogout
     yad
-
     #(pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];}))
     ]) ++ [
-    inputs.wallust.packages.${pkgs.system}.wallust
+	  inputs.wallust.packages.${pkgs.system}.wallust
   ];
 
   programs = {
-	hyprland = {
+	  hyprland = {
     	enable = true;
     	xwayland.enable = true;
-  	};
+  	  };
 
-	xwayland.enable = true;
+	  hyprlock.enable = true;
 
-	firefox.enable = true;
-	git.enable = true;
+	  xwayland.enable = true;
 
-	thunar.enable = true;
-	thunar.plugins = with pkgs.xfce; [
-		exo
-		mousepad
-		thunar-archive-plugin
-		thunar-volman
-		tumbler
+	  firefox.enable = true;
+	  git.enable = true;
+
+	  thunar.enable = true;
+	  thunar.plugins = with pkgs.xfce; [
+		  exo
+		  mousepad
+		  thunar-archive-plugin
+		  thunar-volman
+		  tumbler
   		];
 	
-	dconf.enable = true;
+	  dconf.enable = true;
 	
-	waybar.enable = true;
+	  waybar.enable = true;
   };
 
   xdg.portal.enable = true;
@@ -155,45 +153,47 @@
   ];
   
   services = {
+	
 	  gvfs.enable = true;
 	  tumbler.enable = true;
 
 	  pipewire = {
-    	enable = true;
-    	alsa.enable = true;
-    	alsa.support32Bit = true;
-    	pulse.enable = true;
-		wireplumber.enable = true;
-  		};
+      enable = true;
+      alsa.enable = true;
+      alsa.support32Bit = true;
+      pulse.enable = true;
+      wireplumber.enable = true;
+      };
 	
-	  udev.enable = true;
-	  envfs.enable = true;
-	  dbus.enable = true;
+    udev.enable = true;
+      envfs.enable = true;
+      dbus.enable = true;
 
 	  fstrim = {
     	enable = true;
     	interval = "weekly";
   		};
 
-	  fwupd.enable = true;
+	fwupd.enable = true;
 
-	  upower.enable = true;	
+	upower.enable = true;	
 
-    # Services X11 # note; need the xserver to be enabled for ags overview to work correctly. Really weird May 2024
-  	xserver = {
-  		enable = true;
-  		displayManager.gdm.enable = false;
-  		displayManager.lightdm.enable = false;
-  		displayManager.lightdm.greeters.gtk.enable = false;
-  		};
- 	  desktopManager = {
- 		  plasma6.enable = false;
- 		  };
- 	  displayManager.sddm.enable = false;	
+  # Services X11 
+  #	xserver = {
+  #		enable = false;
+  #		displayManager.gdm.enable = false;
+  #		displayManager.lightdm.enable = false;
+  #		displayManager.lightdm.greeters.gtk.enable = false;
+  #		};
+ 	#  desktopManager = {
+ 	#	  plasma6.enable = false;
+ 	#	  };
+ 	#  displayManager.sddm.enable = false;	
+  
+  
   };
 
- 	
-  # FONTS
+ 	# FONTS
   fonts.packages = with pkgs; [
     noto-fonts
     fira-code
