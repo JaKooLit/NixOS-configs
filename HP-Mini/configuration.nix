@@ -49,65 +49,63 @@
 
   # NOTE: DEFINE USER ACCOUNT in different module
 
+  nix.settings.experimental-features = [ "nix-command"  "flakes" ];
+ 
   # Unfree softwares
   nixpkgs.config.allowUnfree = true;
 
-  nix.settings.experimental-features = [ "nix-command"  "flakes" ];
-  
   # List packages installed in system profile. To search, run: $ nix search wget
   environment.systemPackages = (with pkgs; [
-    # System Packages
+  # System Packages
     baobab
     btrfs-progs
     cpufrequtils
     ffmpeg   
     glib #for gsettings to work
-    killall   
+	killall  
     libappindicator
     libnotify
-    openssl # required by Rainbow borders
+    openssl #required by Rainbow borders
     python3
-    python311Packages.requests
-    sof-firmware 
     vim
     wget
     xdg-user-dirs
-    xdg-utils
+	xdg-utils
 
     # I normally have and use
     audacious
-    mpv
     fastfetch
+    (mpv.override {scripts = [mpvScripts.mpris];}) # with tray
+    ranger
+    shotcut
       
-    # Hyprland Stuff 
-    ags       
+    # Hyprland Stuff | Laptop related stuff on a separate .nix
+	ags        
     btop
     cava
     cliphist
     gnome.eog
     gnome.gnome-system-monitor
+    gnome.file-roller
     grim
+    gtk-engine-murrine #for gtk themes
     hyprcursor # requires unstable channel
     hypridle # requires unstable channel
-    hyprlock # requires unstable channel
     jq
     kitty
-    libsForQt5.qtstyleplugin-kvantum
-    mpvScripts.mpris
-    networkmanagerapplet
+	libsForQt5.qtstyleplugin-kvantum #kvantum
+	networkmanagerapplet
     nwg-look # requires unstable channel
+    nvtopPackages.full
     pamixer
     pavucontrol
-    playerctl
+	playerctl
     polkit_gnome
     pyprland
-    pywal
-    qbittorrent
     qt5ct
-    qt6ct #unstable
-    qt6Packages.qtstyleplugin-kvantum
+    qt6ct
     qt6.qtwayland
-    ranger
+    qt6Packages.qtstyleplugin-kvantum #kvantum
     rofi-wayland
     slurp
     swappy
@@ -117,105 +115,85 @@
     wl-clipboard
     wlogout
     yad
-    yt-dlp
 
-    krabby #pokemon colorscripts like
-
-    # waybar with experimental
+    #waybar  # if wanted experimental next line
     #(pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];}))
   ]) ++ [
-	inputs.wallust.packages.${pkgs.system}.wallust
-	#inputs.ags.packages.${pkgs.system}.ags
+	  inputs.wallust.packages.${pkgs.system}.wallust
+	  #inputs.ags.packages.${pkgs.system}.ags
   ];
 
   programs = {
+	hyprland = {
+    	enable = true;
+    	xwayland.enable = true;
+  	};
 
-    hyprland = {
-        enable = true;
-        xwayland.enable = true;
-      };
+	xwayland.enable = true;
 
-      xwayland.enable = true;
-    
-    waybar.enable = true;
+	hyprlock.enable = true;
+	firefox.enable = true;
+	git.enable = true;
 
-    firefox.enable = true;
-    git.enable = true;
-
-    thunar.enable = true;
-    thunar.plugins = with pkgs.xfce; [
-      exo
-      mousepad
-      thunar-archive-plugin
-      thunar-volman
-      tumbler
-        ];
-
-    file-roller.enable = true;
-
-    dconf.enable = true;
+	thunar.enable = true;
+	thunar.plugins = with pkgs.xfce; [
+		exo
+		mousepad
+		thunar-archive-plugin
+		thunar-volman
+		tumbler
+  		];
+	
+	dconf.enable = true;
+	
+	waybar.enable = true;
   };
 
-
+  xdg.portal.enable = true;
+  xdg.portal.extraPortals = with pkgs; [
+    xdg-desktop-portal-gtk
+	  xdg-desktop-portal-hyprland
+  ];
+  
   services = {
-	# for thunar to work better
-  	gvfs.enable = true;
-  	tumbler.enable = true;
-	
-	# pipewire audio
-	pipewire = {
+	  gvfs.enable = true;
+	  tumbler.enable = true;
+
+	  pipewire = {
     	enable = true;
     	alsa.enable = true;
     	alsa.support32Bit = true;
     	pulse.enable = true;
 		wireplumber.enable = true;
-  	};
+  		};
+	
+	  udev.enable = true;
+	  envfs.enable = true;
+	  dbus.enable = true;
 
-	udev.enable = true;
-	envfs.enable = true;
-	dbus.enable = true;
-
-	fstrim = {
+	  fstrim = {
     	enable = true;
     	interval = "weekly";
   		};
 
-	fwupd.enable = true;
+	  fwupd.enable = true;
 
-	upower.enable = true;
+	  upower.enable = true;	
+
+    # Services X11 
+  	#xserver = {
+  	#	enable = true;
+  	#	displayManager.gdm.enable = false;
+  	#	displayManager.lightdm.enable = false;
+  	#	displayManager.lightdm.greeters.gtk.enable = false;
+  	#	};
+ 	#  desktopManager = {
+ 	#	  plasma6.enable = false;
+ 	#	  };
+ 	#  displayManager.sddm.enable = false;	
   };
 
-
-  security = {
-	rtkit.enable = true;
-	pam.services.swaylock.text = "auth include login";
-	polkit.enable = true;
-	polkit.extraConfig = ''
-    polkit.addRule(function(action, subject) {
-      if (
-        subject.isInGroup("users")
-          && (
-            action.id == "org.freedesktop.login1.reboot" ||
-            action.id == "org.freedesktop.login1.reboot-multiple-sessions" ||
-            action.id == "org.freedesktop.login1.power-off" ||
-            action.id == "org.freedesktop.login1.power-off-multiple-sessions"
-          )
-        )
-      {
-        return polkit.Result.YES;
-      }
-    })
-  '';
-  };
-
-
-
-  xdg.portal.enable = true;
-  xdg.portal.extraPortals = with pkgs; [
-    	xdg-desktop-portal-gtk
-		xdg-desktop-portal-hyprland
-  ];  
-  
+ 	
   # FONTS
   fonts.packages = with pkgs; [
     noto-fonts
@@ -223,14 +201,16 @@
     noto-fonts-cjk
     jetbrains-mono
     font-awesome
+	terminus_font
     (nerdfonts.override {fonts = ["JetBrainsMono"];})
  ];
   
-  powerManagement = {
-	enable = true;
-	cpuFreqGovernor = "schedutil";
+  security = {
+	pam.services.swaylock.text = "auth include login";
+	polkit.enable = true;
+	rtkit.enable = true;
   };
-  
+    
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
@@ -247,69 +227,88 @@
   #sudo firewall-cmd --add-port=1025-65535/tcp --permanent
   #sudo firewall-cmd --add-port=1025-65535/udp --permanent
       
-  # SYSTEMD 
-  systemd.services.NetworkManager-wait-online.enable = false;
-  #systemd.services.firewalld.enable = true; 
-  
+  # SYSTEMD
+  systemd.services = {
+	  NetworkManager-wait-online.enable = false;
+	  firewalld.enable = true;
+	  power-profiles-daemon = {
+		  enable = true;
+		  wantedBy = [ "multi-user.target" ];
+  		};
+  }; 
+
   # Masking sleep, hibernate, suspend.. etc
   systemd = {
-	targets = {
-	sleep = {
-	enable = false;
-	unitConfig.DefaultDependencies = "no";
-  	};
-	suspend = {
-	enable = false;
-	unitConfig.DefaultDependencies = "no";
-	};
-	hibernate = {
-	enable = false;
-	unitConfig.DefaultDependencies = "no";
-	};
-	"hybrid-sleep" = {
-	enable = false;
-	unitConfig.DefaultDependencies = "no";
-	};
+		targets = {
+		sleep = {
+		enable = false;
+		unitConfig.DefaultDependencies = "no";
+  		};
+		suspend = {
+		enable = false;
+		unitConfig.DefaultDependencies = "no";
+		};
+		hibernate = {
+		enable = false;
+		unitConfig.DefaultDependencies = "no";
+		};
+		"hybrid-sleep" = {
+		enable = false;
+		unitConfig.DefaultDependencies = "no";
+		};
 	};
   };
 
   # zram
   zramSwap = {
-	enable = true;
-	priority = 100;
-	memoryPercent = 30;
-	swapDevices = 1;
-  };
-   
-  systemd = {
-  	user.services.polkit-gnome-authentication-agent-1 = 	{
-    description = "polkit-gnome-authentication-agent-1";
-    wantedBy = [ "graphical-session.target" ];
-    wants = [ "graphical-session.target" ];
-    after = [ "graphical-session.target" ];
-    serviceConfig = {
-        Type = "simple";
-        ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
-        Restart = "on-failure";
-        RestartSec = 1;
-        TimeoutStopSec = 10;
-      };
-  	};
-  };
+	  enable = true;
+	  priority = 100;
+	  memoryPercent = 30;
+	  swapDevices = 1;
+    };
+
+  # Automatic Garbage Collection
+  nix.gc = {
+	automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 7d";
+     };
+      
+  # Auto system update
+  #  system.autoUpgrade = {
+  #  enable = true;
+  #  allowReboot = true;
+  #    };
 
 
-  # Enable the X11 windowing system.
-  #	xserver = {
-  #		enable = true;
-  #		displayManager.gdm.enable = false;
-  #		displayManager.lightdm.enable = false;
-  #		displayManager.lightdm.greeters.gtk.enable = false;
-  #		};
-  #  desktopManager = {
-   #	  plasma6.enable = false;
- 	#	  };
- 	#  displayManager.sddm.enable = false;	
+  # This is for polkit-gnome BUT IT IS NOT WORKING
+  #systemd = {
+  #	user.services.polkit-gnome-authentication-agent-1 = {
+  #  description = "polkit-gnome-authentication-agent-1";
+  #  wantedBy = [ "graphical-session.target" ];
+  #  wants = [ "graphical-session.target" ];
+  #  after = [ "graphical-session.target" ];
+  #  serviceConfig = {
+   #     Type = "simple";
+   #     ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+   #     Restart = "on-failure";
+   #     RestartSec = 1;
+   #     TimeoutStopSec = 10;
+  #	    };
+  #	};
   #};
+
+  # zram-generator NOTE: add in the packages
+  #services.zram-generator = {
+    #enable = true;
+    #settings = {
+	#name = dev;
+	#zram-size = "8192";
+	#compression-algorithm = "zstd";
+	#swap-priority = 100;
+	#};
+  #};
+   
   # Configure keymap in X11
   # services.xserver.layout = "us";
   # services.xserver.xkbOptions = "eurosign:e,caps:escape";  
@@ -340,5 +339,4 @@
   system.stateVersion = "24.05"; # Did you read the comment?
 
 }
-
 

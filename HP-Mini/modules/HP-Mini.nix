@@ -6,44 +6,67 @@
 {
   # Kernel Parameters miniPC
   #boot.loader.grub.theme = "/boot/grub/themes/nixos/";
-  boot.kernelParams = [ "nowatchdog" ];
+  boot.kernelParams = [ 
+	"nowatchdog"
+	"modprobe.blacklist=iTCO_wdt"
+ 	];
   
   # Kernel 
   #boot.kernelPackages = pkgs.linuxPackages_latest;
 
   networking.hostName = "NixOS-MiniPC";
   
-  users.users.ja = {
-  	isNormalUser = true;
-  	extraGroups = [ "wheel" "video" "input" "audio" ]; # Enable ‘sudo’ for the user.
-	shell = pkgs.zsh;
-  	packages = with pkgs; [
-  	];
+  # User account
+  users = {
+	users.ja = {
+    	isNormalUser = true;
+    	extraGroups = [ 
+			"wheel" 
+			"video" 
+			"input" 
+			"audio"
+			 ]; 
+    packages = with pkgs; [		
+     	];
+  	};
+
+	defaultUserShell = pkgs.zsh;
   };
+
+  environment.shells = with pkgs; [ zsh ];
 
   # for HP - Mini pc
   environment.systemPackages = with pkgs; [
-    #flatpak
     glxinfo
-    #obs-studio
     vscodium
     webcord
-
-    #hardware-acceleration
-    libva
-    libva-utils
-
-	nvtopPackages.intel #unstable
+	nvtopPackages.intel # requires unstable channel
   ];
-  
-  # ZSH
-  programs.zsh = {
+  # Additional fonts needed for office stuff
+  fonts.packages = with pkgs; [
+	cascadia-code
+ 	];
+	
+  powerManagement = {
 	enable = true;
-	enableCompletion = true;
+	cpuFreqGovernor = "schedutil";
   };
-  
-  #users.defaultUserShell = pkgs.zsh;
-  #environment.shells = with pkgs; [ zsh ];
+    
+  # Zsh configuration
+  programs.zsh = {
+    enable = true;
+	enableCompletion = true;
+      ohMyZsh = {
+        enable = true;
+        plugins = ["git"];
+        theme = "xiong-chiamiov-plus";
+      	};
+    autosuggestions.enable = true;
+    syntaxHighlighting.enable = true;
+    promptInit = ''
+      fastfetch --config ~/.config/fastfetch/config-compact.jsonc;
+    '';
+  };
   
   # Enable CUPS to print documents.
   # services.printing.enable = true;
@@ -51,13 +74,14 @@
   # HARDWARES:
   hardware = {
 	bluetooth = {
-			enable = true;
-			powerOnBoot = true;
+		enable = true;
+		powerOnBoot = true;
 		settings = {
-      		General = {
-      		Enable = "Source,Sink,Media,Socket";
-    		};
-  		};
+			General = {
+			Enable = "Source,Sink,Media,Socket";
+			Experimental = true;
+			};
+		};
 	};
 
 	cpu.intel.updateMicrocode = true;
@@ -66,6 +90,10 @@
     	enable = true;
     	driSupport = true;
     	driSupport32Bit = true;
+		extraPackages = with pkgs; [
+   			libva
+			libva-utils	
+     		];
   	};
 
   }; 
