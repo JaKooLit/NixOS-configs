@@ -93,13 +93,13 @@
     hypridle # requires unstable channel
     jq
     kitty
-	libsForQt5.qtstyleplugin-kvantum #kvantum
-	networkmanagerapplet
+	  libsForQt5.qtstyleplugin-kvantum #kvantum
+	  networkmanagerapplet
     nwg-look # requires unstable channel
     nvtopPackages.full
     pamixer
     pavucontrol
-	playerctl
+	  playerctl
     polkit_gnome
     pyprland
     qt5ct

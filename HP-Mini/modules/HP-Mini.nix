@@ -37,7 +37,9 @@
 
   # for HP - Mini pc
   environment.systemPackages = with pkgs; [
+	fzf
     glxinfo
+	krabby
     vscodium
     webcord
 	nvtopPackages.intel # requires unstable channel
@@ -64,7 +66,12 @@
     autosuggestions.enable = true;
     syntaxHighlighting.enable = true;
     promptInit = ''
-      fastfetch --config ~/.config/fastfetch/config-compact.jsonc;
+		krabby random --no-title -s;
+      	source <(fzf --zsh);
+		HISTFILE=~/.zsh_history;
+		HISTSIZE=10000;
+		SAVEHIST=10000;
+		setopt appendhistory;
     '';
   };
   
