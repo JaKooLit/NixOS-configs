@@ -11,7 +11,8 @@
 	"amd_iommu=on" 
 	"amd_pstate=guided" 
 	"nowatchdog" 
-	"nmi_watchdog=0"	
+	"nmi_watchdog=0"
+	"modprobe.blacklist=sp5100_tco"	
   	];
   
   	# kernel
@@ -23,63 +24,74 @@
   	#loader.grub.theme = "/boot/grub/themes/nixos/";
   };
   
-  # User account
-  users = {
-  	users.ja = {
-		isNormalUser = true;
-		extraGroups = [ "libvirtd" "wheel" "video" "input" "audio" ]; # Enable ‘sudo’ for the user.
-		packages = with pkgs; [
-		];
-  	};
-  	
-  	#zsh
-  	defaultUserShell = pkgs.zsh;
-  };
-
   networking.hostName = "NixOS";
   
-  environment.shells = with pkgs; [ zsh ];
+  # User account
+  users = {
+	users.ja = {
+    	isNormalUser = true;
+    	extraGroups = [ 
+			"wheel" 
+			"video" 
+			"input" 
+			"audio"
+			"libvirtd" ]; 
+    packages = with pkgs; [		
+     	];
+  	};
 
+	defaultUserShell = pkgs.zsh;
+  };
+
+  environment.shells = with pkgs; [ zsh ];
   # for Desktop (all AMD)
   environment.systemPackages = with pkgs; [
+	discord
+  	fzf
     glxinfo
+    krabby
+    nvtopPackages.amd
     obs-studio
 	obs-studio-plugins.obs-vaapi
-	nvtopPackages.amd
     yt-dlp
     vscodium
-    webcord
     
-    glxinfo
-    libva1
-	libva-utils			
+		
     #waybar experimental - next line
     #(pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];}))
 
 
     #gaming stuff
-    #gamemode
-    #goverlay
-    #lutris
-    #mangohud
-    #protonup-qt
-    #steam-small
-    #vkbasalt
-    #wineWowPackages.minimal
-    #winetricks
+    gamemode
+    goverlay
+    lutris
+    mangohud
+    protonup-qt
+    steam-small
+    vkbasalt
+    wineWowPackages.minimal
+    winetricks
   ];
 
   programs = {
 	zsh = {
-		enable = true;
+    	enable = true;
 		enableCompletion = true;
-		autosuggestions.enable = true;
-		syntaxHighlighting.enable = true;
-		ohMyZsh = {
-			enable = true;
-			plugins = [ "git" ];
-			theme = "xiong-chiamiov-plus";
-			};
+    ohMyZsh = {
+        	enable = true;
+        	plugins = ["git"];
+        	theme = "xiong-chiamiov-plus";
+      		};
+    autosuggestions.enable = true;
+    syntaxHighlighting.enable = true;
+    promptInit = ''
+      	krabby random --no-title -s;
+      	source <(fzf --zsh);
+		HISTFILE=~/.zsh_history;
+		HISTSIZE=10000;
+		SAVEHIST=10000;
+		setopt appendhistory;
+    	'';
 	};
 	
 	# corectrl (Overclocking AMD GPU's)
@@ -91,24 +103,34 @@
 
   };
   
-  #powerManagement.cpuFreqGovernor = "schedutil";
+  powerManagement = {
+  	enable = true;
+	cpuFreqGovernor = "schedutil";
+  };
   
   hardware = {
-  	bluetooth.enable = true;
-  	bluetooth.powerOnBoot = true;
-  	bluetooth.settings = {
-      General = {
-      	Enable = "Source,Sink,Media,Socket";
-    	};
+  	bluetooth = {
+		enable = true;
+		powerOnBoot = true;
+		settings = {
+			General = {
+			Enable = "Source,Sink,Media,Socket";
+			Experimental = true;
+			};
+		};
     };
     
     # AMD Microcode update
     cpu.amd.updateMicrocode = true;
     
-    opengl = {
+	opengl = {
     	enable = true;
     	driSupport = true;
     	driSupport32Bit = true;
+		extraPackages = with pkgs; [
+			libva
+    		libva-utils		
+     		];
   		};
   };  
   

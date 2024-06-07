@@ -1,9 +1,15 @@
 # Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
 
-{ config, pkgs, inputs, ... }:
-
-{
+{ config, pkgs, inputs, ... }: let
+  python-packages = pkgs.python3.withPackages (
+    ps:
+      with ps; [
+        requests
+        pyquery # needed for hyprland-dots Weather script
+      ]
+  	);
+  in {
   imports =
     [ # Include the results of the hardware scan.
       ./modules/hardware-configuration.nix
@@ -59,176 +65,162 @@
   nix.settings.experimental-features = [ "nix-command"  "flakes" ];
   
   # List packages installed in system profile. To search, run: $ nix search wget
-  environment.systemPackages = 
-  (with pkgs; [
+  environment.systemPackages = (with pkgs; [
+  # System Packages
     baobab
     btrfs-progs
     cpufrequtils
+	duf
     ffmpeg   
-    glib #for gsettings to work
-    killall   
+    glib #for gsettings to work  
     libappindicator
     libnotify
-    openssl # required by Rainbow borders
-    python3
-    python311Packages.requests
-    sof-firmware 
+    openssl #required by Rainbow borders
     vim
     wget
     xdg-user-dirs
-    xdg-utils
-      
+
     # I normally have and use
     audacious
-    (mpv.override {scripts = [mpvScripts.mpris];}) # with tray support
     fastfetch
+    (mpv.override {scripts = [mpvScripts.mpris];}) # with tray
+    ranger
     shotcut
-        
-    # Hyprland Stuff
-    ags       
+      
+    # Hyprland Stuff | Laptop related stuff on a separate .nix
+	ags      
     btop
     cava
     cliphist
     gnome.eog
     gnome.gnome-system-monitor
+    gnome.file-roller
     grim
-    gtk-layer-shell # required by ags
+    gtk-engine-murrine #for gtk themes
     hyprcursor # requires unstable channel
     hypridle # requires unstable channel
-    hyprlock # requires unstable channel
+ 	imagemagick
     jq
     kitty
-    libsForQt5.qtstyleplugin-kvantum
+    libsForQt5.qtstyleplugin-kvantum #kvantum
     networkmanagerapplet
     nwg-look # requires unstable channel
+    nvtopPackages.full
     pamixer
     pavucontrol
-    playerctl
+	playerctl
     polkit_gnome
     pyprland
-    python311Packages.pyquery
-    qbittorrent
     qt5ct
-    qt6ct #unstable
-    qt6Packages.qtstyleplugin-kvantum
+    qt6ct
     qt6.qtwayland
-    ranger
+    qt6Packages.qtstyleplugin-kvantum #kvantum
     rofi-wayland
     slurp
     swappy
     swaynotificationcenter
     swww
     unzip
-    waybar-mpris
     wl-clipboard
     wlogout
     yad
-    yt-dlp
-  ]) 
-	++ [
-    inputs.wallust.packages.${pkgs.system}.wallust # wallust . Configure the branch in the flake.nix
+    #(pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];}))
+    ]) ++ [
+	  inputs.wallust.packages.${pkgs.system}.wallust # for wallust dev
+	  python-packages # needed for Weather.py 
   ];
 
-
   programs = {
-  	git.enable = true;
-  	firefox.enable = true;
-  	
-  	hyprland = {
+	  hyprland = {
     	enable = true;
     	xwayland.enable = true;
-  		};
-  	xwayland.enable = true;
-  	
-  	waybar.enable = true;
-  	
-  	file-roller.enable = true;
-  	thunar = {
-  		enable = true;
-  		plugins = with pkgs.xfce; [
-        exo
-        mousepad
-        thunar-archive-plugin
-        thunar-volman
+  	  };
+
+	  hyprlock.enable = true;
+
+	  xwayland.enable = true;
+
+	  firefox.enable = true;
+	  git.enable = true;
+
+	  thunar.enable = true;
+	  thunar.plugins = with pkgs.xfce; [
+		  exo
+		  mousepad
+		  thunar-archive-plugin
+		  thunar-volman
+		  tumbler
   		];
-  	};
-  	
-  	dconf.enable = true;
+	
+	  dconf.enable = true;
+	
+	  waybar.enable = true;
   };
 
-  xdg.portal = {
-  	enable = true;
-  	extraPortals = with pkgs; [
-    	xdg-desktop-portal-gtk
-    	xdg-desktop-portal-hyprland
-  	];
-  };
+  xdg.portal.enable = true;
+  xdg.portal.extraPortals = with pkgs; [
+    xdg-desktop-portal-gtk
+	  xdg-desktop-portal-hyprland
+  ];
   
-  # Services (common)
   services = {
-  	# for thunar to work better
-  	gvfs.enable = true;
-  	tumbler.enable = true;
+	
+	  gvfs.enable = true;
+	  tumbler.enable = true;
 
-    pipewire = {
+	  pipewire = {
       enable = true;
-      alsa = {
-        enable = true;
-        support32Bit = true;
-      	};
+      alsa.enable = true;
+      alsa.support32Bit = true;
       pulse.enable = true;
       wireplumber.enable = true;
-  	};
-  
-  	udev.enable = true;
-  	envfs.enable = true;
-  	dbus.enable = true;
-  	
-  	fstrim = {
+      };
+	
+    udev.enable = true;
+      envfs.enable = true;
+      dbus.enable = true;
+
+	  fstrim = {
     	enable = true;
     	interval = "weekly";
   		};
+
+	fwupd.enable = true;
+
+	upower.enable = true;	
+
+  # Services X11 
+  #	xserver = {
+  #		enable = false;
+  #		displayManager.gdm.enable = false;
+  #		displayManager.lightdm.enable = false;
+  #		displayManager.lightdm.greeters.gtk.enable = false;
+  #		};
+ 	#  desktopManager = {
+ 	#	  plasma6.enable = false;
+ 	#	  };
+ 	#  displayManager.sddm.enable = false;	
   
-  	fwupd.enable = true;
-  	upower.enable = true;
-  	#flatpak.enable = true;
-  	
-  	# Services X11 # note; need the xserver to be enabled for ags overview to work correctly. Really weird May 2024
-  	xserver = {
-  		enable = true;
-  		displayManager.gdm.enable = false;
-  		displayManager.lightdm.enable = false;
-  		displayManager.lightdm.greeters.gtk.enable = false;
-  		};
- 	  desktopManager = {
- 		  plasma6.enable = false;
- 		  };
- 	  displayManager.sddm.enable = false;
-  };
   
-  powerManagement = {
-	enable = true;
-	cpuFreqGovernor = "schedutil";
   };
-  	
-  # FONTS
+
+ 	# FONTS
   fonts.packages = with pkgs; [
     noto-fonts
     fira-code
     noto-fonts-cjk
     jetbrains-mono
     font-awesome
+	  terminus_font
     (nerdfonts.override {fonts = ["JetBrainsMono"];})
-  ];
+ ];
   
-    
-  # SECURITY
   security = {
-  	pam.services.swaylock.text = "auth include login";
-  	polkit.enable = true;
-  	rtkit.enable = true;
-  }; 
-
+	pam.services.swaylock.text = "auth include login";
+	polkit.enable = true;
+	rtkit.enable = true;
+  };
+    
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
@@ -245,11 +237,26 @@
   #sudo firewall-cmd --add-port=1025-65535/tcp --permanent
   #sudo firewall-cmd --add-port=1025-65535/udp --permanent
       
+  # SYSTEMD
   systemd.services = {
-  	NetworkManager-wait-online.enable = false;
-  	firewalld.enable = true;
+	  NetworkManager-wait-online.enable = false;
+	  firewalld.enable = true;
+	  power-profiles-daemon = {
+		  enable = true;
+		  wantedBy = [ "multi-user.target" ];
+  		};
   }; 
-  
+
+  # flatpak
+	#flatpak.enable = true;
+  #systemd.services.flatpak-repo = {
+  #  wantedBy = [ "multi-user.target" ];
+  #  path = [ pkgs.flatpak ];
+  #  script = ''
+  #    flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+  #  '';
+  #};
+
   # Masking sleep, hibernate, suspend.. etc
   systemd = {
 		targets = {
@@ -274,12 +281,54 @@
 
   # zram
   zramSwap = {
-	enable = true;
-	priority = 100;
-	memoryPercent = 30;
-	swapDevices = 1;
-  };
+	  enable = true;
+	  priority = 100;
+	  memoryPercent = 30;
+	  swapDevices = 1;
+    };
 
+  # Automatic Garbage Collection
+  nix.gc = {
+	automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 7d";
+     };
+      
+  # Auto system update
+  #  system.autoUpgrade = {
+  #  enable = true;
+  #  allowReboot = true;
+  #    };
+
+
+  # This is for polkit-gnome BUT IT IS NOT WORKING
+  #systemd = {
+  #	user.services.polkit-gnome-authentication-agent-1 = {
+  #  description = "polkit-gnome-authentication-agent-1";
+  #  wantedBy = [ "graphical-session.target" ];
+  #  wants = [ "graphical-session.target" ];
+  #  after = [ "graphical-session.target" ];
+  #  serviceConfig = {
+   #     Type = "simple";
+   #     ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+   #     Restart = "on-failure";
+   #     RestartSec = 1;
+   #     TimeoutStopSec = 10;
+  #	    };
+  #	};
+  #};
+
+  # zram-generator NOTE: add in the packages
+  #services.zram-generator = {
+    #enable = true;
+    #settings = {
+	#name = dev;
+	#zram-size = "8192";
+	#compression-algorithm = "zstd";
+	#swap-priority = 100;
+	#};
+  #};
+   
   # Configure keymap in X11
   # services.xserver.layout = "us";
   # services.xserver.xkbOptions = "eurosign:e,caps:escape";  
@@ -310,5 +359,4 @@
   system.stateVersion = "24.05"; # Did you read the comment?
 
 }
-
 
