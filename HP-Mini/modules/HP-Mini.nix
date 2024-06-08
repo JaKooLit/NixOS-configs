@@ -1,7 +1,7 @@
 # Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
 
-{ config, pkgs, ... }:
+{ config, pkgs, lib, inputs, system,... }:
 
 {
   # Kernel Parameters miniPC
@@ -11,6 +11,12 @@
 	"modprobe.blacklist=iTCO_wdt"
  	];
   
+  # bootloader grub theme
+  boot.loader.grub = rec {
+    theme = inputs.distro-grub-themes.packages.${system}.nixos-grub-theme;
+    splashImage = "${theme}/splash_image.jpg";
+  };
+
   # Kernel 
   #boot.kernelPackages = pkgs.linuxPackages_latest;
 
@@ -51,7 +57,7 @@
 	
   powerManagement = {
 	enable = true;
-	cpuFreqGovernor = "schedutil";
+	cpuFreqGovernor = "performance";
   };
     
   # Zsh configuration
@@ -66,12 +72,12 @@
     autosuggestions.enable = true;
     syntaxHighlighting.enable = true;
     promptInit = ''
-		krabby random --no-title -s;
+	krabby random --no-mega --no-gmax --no-regional --no-title -s;
       	source <(fzf --zsh);
-		HISTFILE=~/.zsh_history;
-		HISTSIZE=10000;
-		SAVEHIST=10000;
-		setopt appendhistory;
+	HISTFILE=~/.zsh_history;
+	HISTSIZE=10000;
+	SAVEHIST=10000;
+	setopt appendhistory;
     '';
   };
   

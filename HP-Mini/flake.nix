@@ -5,13 +5,13 @@
 	nixpkgs.url = "nixpkgs/nixos-unstable";
 	wallust.url = "git+https://codeberg.org/explosion-mental/wallust?ref=dev";
 	#hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1"; # unstable hyprland
-	#ags.url = "github:Aylur/ags"; 
+	distro-grub-themes.url = "github:AdisonCavani/distro-grub-themes"; 
   };
 
   outputs = { self,nixpkgs, ... }@inputs: {
-	nixosConfigurations.NixOS-MiniPC = nixpkgs.lib.nixosSystem {
+	nixosConfigurations.NixOS-MiniPC = nixpkgs.lib.nixosSystem rec {
 	    system = "x86_64-linux";
-		specialArgs = { inherit inputs; };
+		specialArgs = { inherit system inputs; };
 	    modules = [ ./configuration.nix ];
 	  };
 	};

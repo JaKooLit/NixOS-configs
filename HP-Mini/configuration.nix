@@ -1,9 +1,16 @@
 # Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
 
-{ config, pkgs, inputs, ... }:
+{ config, pkgs, inputs, ... }: let	
+  	python-packages = pkgs.python3.withPackages (
+    	ps:
+     	 with ps; [
+        	requests
+        	pyquery # needed for hyprland-dots Weather script
+      		]
+  		);
+	in {
 
-{
   imports =
     [ # Include the results of the hardware scan.
       ./modules/hardware-configuration.nix
@@ -62,15 +69,15 @@
     cpufrequtils
     ffmpeg   
     glib #for gsettings to work
-	killall  
+	  killall  
     libappindicator
     libnotify
     openssl #required by Rainbow borders
-    python3
     vim
     wget
     xdg-user-dirs
-	xdg-utils
+	  xdg-utils
+
 
     # I normally have and use
     audacious
@@ -119,6 +126,7 @@
     #waybar  # if wanted experimental next line
     #(pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];}))
   ]) ++ [
+	  python-packages
 	  inputs.wallust.packages.${pkgs.system}.wallust
 	  #inputs.ags.packages.${pkgs.system}.ags
   ];
