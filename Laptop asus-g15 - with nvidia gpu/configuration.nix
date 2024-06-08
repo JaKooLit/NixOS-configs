@@ -67,10 +67,10 @@
     baobab
     btrfs-progs
     cpufrequtils
-	duf
+	  duf
     ffmpeg   
     glib #for gsettings to work
-	hwdata # for fastfetch  
+	  hwdata # for fastfetch  
     libappindicator
     libnotify
     openssl #required by Rainbow borders
@@ -86,7 +86,7 @@
     shotcut
       
     # Hyprland Stuff | Laptop related stuff on a separate .nix
-	ags      
+	  ags      
     btop
     cava
     cliphist
@@ -97,7 +97,7 @@
     gtk-engine-murrine #for gtk themes
     hyprcursor # requires unstable channel
     hypridle # requires unstable channel
- 	imagemagick
+ 	  imagemagick
     jq
     kitty
     libsForQt5.qtstyleplugin-kvantum #kvantum
@@ -106,7 +106,7 @@
     nvtopPackages.full
     pamixer
     pavucontrol
-	playerctl
+	  playerctl
     polkit_gnome
     pyprland
     qt5ct
@@ -162,7 +162,6 @@
   ];
   
   services = {
-	
 	  gvfs.enable = true;
 	  tumbler.enable = true;
 
@@ -183,9 +182,9 @@
     	interval = "weekly";
   		};
 
-	fwupd.enable = true;
+	  fwupd.enable = true;
 
-	upower.enable = true;	
+	  upower.enable = true;	
 
   # Services X11 
   #	xserver = {
@@ -199,7 +198,6 @@
  	#	  };
  	#  displayManager.sddm.enable = false;	
   
-  
   };
 
  	# FONTS
@@ -211,7 +209,7 @@
     font-awesome
 	  terminus_font
     (nerdfonts.override {fonts = ["JetBrainsMono"];})
- ];
+  ];
   
   security = {
 	pam.services.swaylock.text = "auth include login";
@@ -258,23 +256,23 @@
   # Masking sleep, hibernate, suspend.. etc
   systemd = {
 		targets = {
-		sleep = {
-		enable = false;
-		unitConfig.DefaultDependencies = "no";
-  		};
-		suspend = {
-		enable = false;
-		unitConfig.DefaultDependencies = "no";
-		};
-		hibernate = {
-		enable = false;
-		unitConfig.DefaultDependencies = "no";
-		};
-		"hybrid-sleep" = {
-		enable = false;
-		unitConfig.DefaultDependencies = "no";
-		};
-	};
+		  sleep = {
+		  enable = false;
+		  unitConfig.DefaultDependencies = "no";
+  	  	};
+		  suspend = {
+		  enable = false;
+		  unitConfig.DefaultDependencies = "no";
+		  };
+		  hibernate = {
+		  enable = false;
+		  unitConfig.DefaultDependencies = "no";
+		  };
+		  "hybrid-sleep" = {
+		  enable = false;
+		  unitConfig.DefaultDependencies = "no";
+		    };
+	    };
   };
 
   # zram
@@ -283,7 +281,7 @@
 	  priority = 100;
 	  memoryPercent = 30;
 	  swapDevices = 1;
-    };
+  };
 
   # Automatic Garbage Collection
   nix.gc = {
