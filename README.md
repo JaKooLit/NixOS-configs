@@ -1,10 +1,24 @@
 ### My Nixos Configs
 
-Note that I dont use Home Manager.
+> [!NOTE]
+> I dont use Home Manager
 
-This is not perfect but this is what I am using for my systems.
+#### notes on my Nixos-Hyprland
+- GTK themes are install manually. Here is the [`LINK`](https://github.com/JaKooLit/GTK-themes-icons)
+- Hyprland-Dots [`LINK`](https://github.com/JaKooLit/Hyprland-Dots)
+- Installing of Hyprland-Dots how to [`LINK`](https://github.com/JaKooLit/Hyprland-Dots?tab=readme-ov-file#-copying--installation--update-instructions-)
+- Some Notes regarding Hyprland-Dots for Nixos [`LINK`](https://github.com/JaKooLit/Hyprland-Dots?tab=readme-ov-file#-copying--installation--update-instructions-)
+- You need to setup flakes for Wallust-Dev (used as color palette generator)
 
-These configs are also what I use  in combination with my Hyprland-Dots [`LINK`](https://github.com/JaKooLit/Hyprland-Dots)
+> [!NOTE]
+> I dont use any Log-in Manager. I do utilize .zprofile for auto start for Hyprland
+- .zprofile
+```
+if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
+       Hyprland 
+fi
+```
+
 
 System Specs
 - Asus G15 - AMD CPU + Nvidia Discreet GPU
