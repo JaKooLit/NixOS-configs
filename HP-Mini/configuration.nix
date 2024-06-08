@@ -13,8 +13,8 @@
 
   imports =
     [ # Include the results of the hardware scan.
-      ./modules/hardware-configuration.nix
-      ./modules/HP-Mini.nix
+      ./profiles/Mini-PC/hardware-configuration.nix
+      ./profiles/Mini-PC/HP-Mini.nix
       #./asus-g15.nix
       #./qemu-kvm.nix
       #./Desktop.nix
@@ -67,16 +67,17 @@
     baobab
     btrfs-progs
     cpufrequtils
+	duf
     ffmpeg   
     glib #for gsettings to work
-	  killall  
+	killall  
     libappindicator
     libnotify
     openssl #required by Rainbow borders
     vim
     wget
     xdg-user-dirs
-	  xdg-utils
+	xdg-utils
 
 
     # I normally have and use
@@ -100,13 +101,13 @@
     hypridle # requires unstable channel
     jq
     kitty
-	  libsForQt5.qtstyleplugin-kvantum #kvantum
-	  networkmanagerapplet
+	libsForQt5.qtstyleplugin-kvantum #kvantum
+	networkmanagerapplet
     nwg-look # requires unstable channel
     nvtopPackages.full
     pamixer
     pavucontrol
-	  playerctl
+	playerctl
     polkit_gnome
     pyprland
     qt5ct
@@ -126,9 +127,9 @@
     #waybar  # if wanted experimental next line
     #(pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];}))
   ]) ++ [
-	  python-packages
-	  inputs.wallust.packages.${pkgs.system}.wallust
-	  #inputs.ags.packages.${pkgs.system}.ags
+	python-packages
+	inputs.wallust.packages.${pkgs.system}.wallust
+	#inputs.ags.packages.${pkgs.system}.ags
   ];
 
   programs = {

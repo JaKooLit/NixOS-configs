@@ -1,5 +1,5 @@
 {
-  description = "HP-MiniPC flakes!";
+  description = "HP-MiniPC";
 
   inputs = {
 	nixpkgs.url = "nixpkgs/nixos-unstable";
