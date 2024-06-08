@@ -3,11 +3,11 @@
 
 { config, pkgs, lib, inputs, system,... }:
 
-{
+  {
   # Kernel Parameters miniPC
   #boot.loader.grub.theme = "/boot/grub/themes/nixos/";
   boot.kernelParams = [ 
-	"nowatchdog"
+    "nowatchdog"
 	"modprobe.blacklist=iTCO_wdt"
  	];
   
@@ -30,13 +30,13 @@
   # User account
   users = {
 	users.ja = {
-    	isNormalUser = true;
-    	extraGroups = [ 
-			"wheel" 
-			"video" 
-			"input" 
-			"audio"
-			 ]; 
+      isNormalUser = true;
+      extraGroups = [ 
+		"wheel" 
+		"video" 
+		"input" 
+		"audio"
+		]; 
     packages = with pkgs; [		
      	];
   	};

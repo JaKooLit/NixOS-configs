@@ -9,8 +9,8 @@
         	pyquery # needed for hyprland-dots Weather script
       		]
   		);
-	in {
-
+	
+  in {
   imports =
     [ # Include the results of the hardware scan.
       ./profiles/Mini-PC/hardware-configuration.nix
@@ -49,9 +49,9 @@
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
   console = {
-     font = "Lat2-Terminus16";
-     keyMap = "us";
-  #   useXkbConfig = true; # use xkbOptions in tty.
+    font = "Lat2-Terminus16";
+    keyMap = "us";
+  # useXkbConfig = true; # use xkbOptions in tty.
   };
 
   # NOTE: DEFINE USER ACCOUNT in different module
@@ -63,22 +63,21 @@
 
   # List packages installed in system profile. To search, run: $ nix search wget
   environment.systemPackages = (with pkgs; [
-  # System Packages
+    # System Packages
     baobab
     btrfs-progs
     cpufrequtils
-	duf
+	  duf
     ffmpeg   
     glib #for gsettings to work
-	killall  
+	  killall  
     libappindicator
     libnotify
     openssl #required by Rainbow borders
     vim
     wget
     xdg-user-dirs
-	xdg-utils
-
+	  xdg-utils
 
     # I normally have and use
     audacious
@@ -87,8 +86,8 @@
     ranger
     shotcut
       
-    # Hyprland Stuff | Laptop related stuff on a separate .nix
-	ags        
+    # Hyprland Stuff | Laptop related stuff on a separate profile
+    ags        
     btop
     cava
     cliphist
@@ -101,13 +100,13 @@
     hypridle # requires unstable channel
     jq
     kitty
-	libsForQt5.qtstyleplugin-kvantum #kvantum
-	networkmanagerapplet
+    libsForQt5.qtstyleplugin-kvantum #kvantum
+    networkmanagerapplet
     nwg-look # requires unstable channel
     nvtopPackages.full
     pamixer
     pavucontrol
-	playerctl
+	  playerctl
     polkit_gnome
     pyprland
     qt5ct
@@ -127,35 +126,30 @@
     #waybar  # if wanted experimental next line
     #(pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];}))
   ]) ++ [
-	python-packages
-	inputs.wallust.packages.${pkgs.system}.wallust
-	#inputs.ags.packages.${pkgs.system}.ags
+	  python-packages
+	  inputs.wallust.packages.${pkgs.system}.wallust
+	  #inputs.ags.packages.${pkgs.system}.ags
   ];
 
   programs = {
-	hyprland = {
-    	enable = true;
-    	xwayland.enable = true;
-  	};
-
-	xwayland.enable = true;
-
-	hyprlock.enable = true;
-	firefox.enable = true;
-	git.enable = true;
-
-	thunar.enable = true;
-	thunar.plugins = with pkgs.xfce; [
-		exo
-		mousepad
-		thunar-archive-plugin
-		thunar-volman
-		tumbler
-  		];
-	
-	dconf.enable = true;
-	
-	waybar.enable = true;
+	  hyprland = {
+      enable = true;
+      xwayland.enable = true;
+  	  };
+    xwayland.enable = true;
+    hyprlock.enable = true;
+	  firefox.enable = true;
+    dconf.enable = true;
+	  waybar.enable = true;
+	  git.enable = true;
+    thunar.enable = true;
+	  thunar.plugins = with pkgs.xfce; [
+		  exo
+		  mousepad
+		  thunar-archive-plugin
+		  thunar-volman
+		  tumbler
+    ];
   };
 
   xdg.portal.enable = true;
@@ -173,7 +167,7 @@
     	alsa.enable = true;
     	alsa.support32Bit = true;
     	pulse.enable = true;
-		wireplumber.enable = true;
+		  wireplumber.enable = true;
   		};
 	
 	  udev.enable = true;
@@ -196,13 +190,12 @@
   	#	displayManager.lightdm.enable = false;
   	#	displayManager.lightdm.greeters.gtk.enable = false;
   	#	};
- 	#  desktopManager = {
- 	#	  plasma6.enable = false;
- 	#	  };
- 	#  displayManager.sddm.enable = false;	
+ 	  # desktopManager = {
+ 	  # plasma6.enable = false;
+ 	  # };
+ 	  # displayManager.sddm.enable = false;	
   };
 
- 	
   # FONTS
   fonts.packages = with pkgs; [
     noto-fonts
@@ -210,32 +203,16 @@
     noto-fonts-cjk
     jetbrains-mono
     font-awesome
-	terminus_font
+	  terminus_font
     (nerdfonts.override {fonts = ["JetBrainsMono"];})
- ];
+  ];
   
   security = {
-	pam.services.swaylock.text = "auth include login";
-	polkit.enable = true;
-	rtkit.enable = true;
+	  pam.services.swaylock.text = "auth include login";
+	  polkit.enable = true;
+	  rtkit.enable = true;
   };
     
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  #networking.nftables.enable = true;
-  #networking.firewall = {
-	#enable = true;
-	#allowedTCPPorts = [ 80 443 ];
-	#allowedUDPPortRanges = [
-	    #{ from = 4000; to = 4007; }
-	    #{ from = 8000; to = 8010; }
-	    #];
-  #};
-  #sudo firewall-cmd --add-port=1025-65535/tcp --permanent
-  #sudo firewall-cmd --add-port=1025-65535/udp --permanent
-      
   # SYSTEMD
   systemd.services = {
 	  NetworkManager-wait-online.enable = false;
@@ -256,16 +233,16 @@
 		suspend = {
 		enable = false;
 		unitConfig.DefaultDependencies = "no";
-		};
+		  };
 		hibernate = {
 		enable = false;
 		unitConfig.DefaultDependencies = "no";
-		};
+		  };
 		"hybrid-sleep" = {
 		enable = false;
 		unitConfig.DefaultDependencies = "no";
-		};
-	};
+		  };
+	  };
   };
 
   # zram
@@ -306,17 +283,6 @@
   #	    };
   #	};
   #};
-
-  # zram-generator NOTE: add in the packages
-  #services.zram-generator = {
-    #enable = true;
-    #settings = {
-	#name = dev;
-	#zram-size = "8192";
-	#compression-algorithm = "zstd";
-	#swap-priority = 100;
-	#};
-  #};
    
   # Configure keymap in X11
   # services.xserver.layout = "us";
@@ -334,7 +300,7 @@
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
   
-    # Copy the NixOS configuration file and link it from the resulting system
+  # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you
   # accidentally delete configuration.nix.
   # system.copySystemConfiguration = true;
