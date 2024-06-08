@@ -11,6 +11,11 @@
 	"modprobe.blacklist=iTCO_wdt"
  	];
   
+  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "sd_mod" ];
+  boot.initrd.kernelModules = [ ];
+  boot.kernelModules = [ ];
+  boot.extraModulePackages = [ ];
+
   # bootloader grub theme
   boot.loader.grub = rec {
     theme = inputs.distro-grub-themes.packages.${system}.nixos-grub-theme;
@@ -43,11 +48,11 @@
 
   # for HP - Mini pc
   environment.systemPackages = with pkgs; [
+	discord
 	fzf
     glxinfo
 	krabby
     vscodium
-    webcord
 	nvtopPackages.intel # requires unstable channel
   ];
   # Additional fonts needed for office stuff
