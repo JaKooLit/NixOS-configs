@@ -11,8 +11,8 @@
 - You need to setup flakes for Wallust-Dev (used as color palette generator)
 
 > [!NOTE]
-> I dont use any Log-in Manager. I do utilize .zprofile for auto start for Hyprland
-- .zprofile
+> I dont use any Log-in Manager. I do utilize ~/.zprofile for auto start for Hyprland
+- ~/.zprofile
 ```
 if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
        Hyprland 
