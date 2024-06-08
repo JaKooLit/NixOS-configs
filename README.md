@@ -5,3 +5,8 @@ Note that I dont use Home Manager.
 This is not perfect but this is what I am using for my systems.
 
 These configs are also what I use  in combination with my Hyprland-Dots [`LINK`](https://github.com/JaKooLit/Hyprland-Dots)
+
+System Specs
+- Asus G15 - AMD CPU + Nvidia Discreet GPU
+- HP-Mini PC - Intel 8500T igpu only
+- Desktop - Full AMD
