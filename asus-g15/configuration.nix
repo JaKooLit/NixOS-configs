@@ -1,8 +1,15 @@
 # Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
 
-{ config, pkgs, inputs, ... }:
-{
+{ config, pkgs, inputs, ... }: let
+  python-packages = pkgs.python3.withPackages (
+    ps:
+      with ps; [
+        requests
+        pyquery # needed for hyprland-dots Weather script
+      ]
+  	);
+  in {
   imports =
     [ # Include the results of the hardware scan.
       ./modules/hardware-configuration.nix
@@ -62,7 +69,8 @@
     cpufrequtils
 	duf
     ffmpeg   
-    glib #for gsettings to work  
+    glib #for gsettings to work
+	hwdata # for fastfetch  
     libappindicator
     libnotify
     openssl #required by Rainbow borders
@@ -117,6 +125,7 @@
     #(pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];}))
     ]) ++ [
 	  inputs.wallust.packages.${pkgs.system}.wallust
+	  python-packages # needed for Weather.py 
   ];
 
   programs = {

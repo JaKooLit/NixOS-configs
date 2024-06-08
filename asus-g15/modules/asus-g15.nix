@@ -1,11 +1,9 @@
 # Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
 
-{ config, pkgs, ... }:
+{ config, pkgs, lib, inputs, system, ... }:
 
 {
-  # Kernel Parameters for Asus G15
-  #boot.loader.grub.theme = "/boot/grub/themes/nixos/";
   boot = {
 	kernelPackages = pkgs.linuxPackages_latest; # Kernel
 	initrd.kernelModules = [ "amdgpu" ];
@@ -19,6 +17,12 @@
 		"nowatchdog"
 		"modprobe.blacklist=sp5100_tco" 
 		];
+  };
+
+  # bootloader grub theme
+  boot.loader.grub = rec {
+    theme = inputs.distro-grub-themes.packages.${system}.nixos-grub-theme;
+    splashImage = "${theme}/splash_image.jpg";
   };
 
   networking.hostName = "NixOS-G15";
@@ -58,6 +62,7 @@
     thunderbird
     yt-dlp
     vscodium
+	zoom-us
     (epsonscan2.override { withNonFreePlugins = true; withGui = true; }) 
   ];
   
