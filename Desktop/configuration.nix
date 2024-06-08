@@ -1,53 +1,46 @@
 # Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
 
-{ config, pkgs, inputs, ... }: let
-  python-packages = pkgs.python3.withPackages (
-    ps:
-      with ps; [
-        requests
-        pyquery # needed for hyprland-dots Weather script
-      ]
-  	);
-  in {
+{ config, pkgs, inputs, ... }: let	
+  	python-packages = pkgs.python3.withPackages (
+    	ps:
+     	 with ps; [
+        	requests
+        	pyquery # needed for hyprland-dots Weather script
+      		]
+  		);
+	in {
   imports =
     [ # Include the results of the hardware scan.
-      ./modules/hardware-configuration.nix
+      ./Profiles/Desktop/hardware-configuration.nix
       #./modules/HP-Mini.nix
       #./asus-g15.nix
-      ./modules/qemu-kvm.nix
-      ./modules/desktop.nix
+      ./Profiles/Desktop/qemu-kvm.nix
+      ./Profiles/Desktop/desktop.nix
     ];
-
-  # Use the systemd-boot EFI boot loader.
-  #boot.loader.systemd-boot.enable = true;
-  #boot.loader.efi.canTouchEfiVariables = true;
+	
+	# bootloader
   boot.loader.efi = {
-	efiSysMountPoint = "/efi";
-	canTouchEfiVariables = true;
-  	};
+		efiSysMountPoint = "/efi";
+		canTouchEfiVariables = true;
+  		};
   boot.loader.grub = {
-	enable = true;
-	devices = [ "nodev" ];
-	efiSupport = true;
+		enable = true;
+		devices = [ "nodev" ];
+		efiSupport = true;
   	gfxmodeBios = "auto";
-	memtest86.enable = true;
-	extraGrubInstallArgs = [ "--bootloader-id=NixOS" ];
-	configurationName = "NixOS";
+		memtest86.enable = true;
+		extraGrubInstallArgs = [ "--bootloader-id=NixOS" ];
+		configurationName = "Desktop";
   	};
   boot.loader.timeout = 1;
  
   # NOTE SET KERNEL BOOTLOADER OPTIONS and Hostname ON INDIVIDUAL MODULE NIX  
-  # networking.hostName = "NixOS"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.networkmanager.enable = true; 
 
   # Set your time zone.
   time.timeZone = "Asia/Seoul";
 
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
@@ -70,25 +63,26 @@
     baobab
     btrfs-progs
     cpufrequtils
-	duf
+		duf
     ffmpeg   
-    glib #for gsettings to work  
+    glib #for gsettings to work
+		killall  
     libappindicator
     libnotify
     openssl #required by Rainbow borders
     vim
     wget
     xdg-user-dirs
+		xdg-utils
 
     # I normally have and use
     audacious
     fastfetch
     (mpv.override {scripts = [mpvScripts.mpris];}) # with tray
     ranger
-    shotcut
       
     # Hyprland Stuff | Laptop related stuff on a separate .nix
-	ags      
+		ags        
     btop
     cava
     cliphist
@@ -99,16 +93,15 @@
     gtk-engine-murrine #for gtk themes
     hyprcursor # requires unstable channel
     hypridle # requires unstable channel
- 	imagemagick
     jq
     kitty
-    libsForQt5.qtstyleplugin-kvantum #kvantum
-    networkmanagerapplet
+		libsForQt5.qtstyleplugin-kvantum #kvantum
+		networkmanagerapplet
     nwg-look # requires unstable channel
     nvtopPackages.full
     pamixer
     pavucontrol
-	playerctl
+		playerctl
     polkit_gnome
     pyprland
     qt5ct
@@ -124,37 +117,39 @@
     wl-clipboard
     wlogout
     yad
+
+    #waybar  # if wanted experimental next line
     #(pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];}))
-    ]) ++ [
-	  inputs.wallust.packages.${pkgs.system}.wallust # for wallust dev
-	  python-packages # needed for Weather.py 
+  ]) ++ [
+		python-packages
+		inputs.wallust.packages.${pkgs.system}.wallust
+		#inputs.ags.packages.${pkgs.system}.ags
   ];
 
   programs = {
-	  hyprland = {
+		hyprland = {
     	enable = true;
     	xwayland.enable = true;
-  	  };
+  	};
 
-	  hyprlock.enable = true;
+	xwayland.enable = true;
 
-	  xwayland.enable = true;
+	hyprlock.enable = true;
+	firefox.enable = true;
+	git.enable = true;
 
-	  firefox.enable = true;
-	  git.enable = true;
-
-	  thunar.enable = true;
-	  thunar.plugins = with pkgs.xfce; [
-		  exo
-		  mousepad
-		  thunar-archive-plugin
-		  thunar-volman
-		  tumbler
+	thunar.enable = true;
+	thunar.plugins = with pkgs.xfce; [
+		exo
+		mousepad
+		thunar-archive-plugin
+		thunar-volman
+		tumbler
   		];
 	
-	  dconf.enable = true;
+	dconf.enable = true;
 	
-	  waybar.enable = true;
+	waybar.enable = true;
   };
 
   xdg.portal.enable = true;
@@ -164,56 +159,54 @@
   ];
   
   services = {
-	
 	  gvfs.enable = true;
 	  tumbler.enable = true;
 
 	  pipewire = {
-      enable = true;
-      alsa.enable = true;
-      alsa.support32Bit = true;
-      pulse.enable = true;
-      wireplumber.enable = true;
-      };
+    	enable = true;
+    	alsa.enable = true;
+    	alsa.support32Bit = true;
+    	pulse.enable = true;
+		wireplumber.enable = true;
+  		};
 	
-    udev.enable = true;
-      envfs.enable = true;
-      dbus.enable = true;
+	  udev.enable = true;
+	  envfs.enable = true;
+	  dbus.enable = true;
 
 	  fstrim = {
     	enable = true;
     	interval = "weekly";
   		};
 
-	fwupd.enable = true;
+	  fwupd.enable = true;
 
-	upower.enable = true;	
+	  upower.enable = true;	
 
-  # Services X11 
-  #	xserver = {
-  #		enable = false;
-  #		displayManager.gdm.enable = false;
-  #		displayManager.lightdm.enable = false;
-  #		displayManager.lightdm.greeters.gtk.enable = false;
-  #		};
+    # Services X11 
+  	#xserver = {
+  	#	enable = true;
+  	#	displayManager.gdm.enable = false;
+  	#	displayManager.lightdm.enable = false;
+  	#	displayManager.lightdm.greeters.gtk.enable = false;
+  	#	};
  	#  desktopManager = {
  	#	  plasma6.enable = false;
  	#	  };
  	#  displayManager.sddm.enable = false;	
-  
-  
   };
 
- 	# FONTS
+ 	
+  # FONTS
   fonts.packages = with pkgs; [
     noto-fonts
     fira-code
     noto-fonts-cjk
     jetbrains-mono
     font-awesome
-	  terminus_font
+		terminus_font
     (nerdfonts.override {fonts = ["JetBrainsMono"];})
- ];
+ 	];
   
   security = {
 	pam.services.swaylock.text = "auth include login";
@@ -246,16 +239,6 @@
 		  wantedBy = [ "multi-user.target" ];
   		};
   }; 
-
-  # flatpak
-	#flatpak.enable = true;
-  #systemd.services.flatpak-repo = {
-  #  wantedBy = [ "multi-user.target" ];
-  #  path = [ pkgs.flatpak ];
-  #  script = ''
-  #    flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-  #  '';
-  #};
 
   # Masking sleep, hibernate, suspend.. etc
   systemd = {
@@ -318,16 +301,6 @@
   #	};
   #};
 
-  # zram-generator NOTE: add in the packages
-  #services.zram-generator = {
-    #enable = true;
-    #settings = {
-	#name = dev;
-	#zram-size = "8192";
-	#compression-algorithm = "zstd";
-	#swap-priority = 100;
-	#};
-  #};
    
   # Configure keymap in X11
   # services.xserver.layout = "us";

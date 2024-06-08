@@ -1,41 +1,47 @@
 # Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
 
-{ config, pkgs, ... }:
+{ config, pkgs, lib, inputs, system,... }:
 
-{
-  # Kernel Parameters for Desktop
-  boot = {  
-  	kernelParams = [ 
-	"iommu=on" 
-	"amd_iommu=on" 
-	"amd_pstate=guided" 
-	"nowatchdog" 
-	"nmi_watchdog=0"
-	"modprobe.blacklist=sp5100_tco"	
-  	];
+  {
+  # Kernel Parameters miniPC
+  boot = {
+    kernelParams = [ 
+    "nowatchdog"
+	  "modprobe.blacklist=iTCO_wdt"
+ 	  ];
   
-  	# kernel
-  	kernelPackages = pkgs.linuxPackages_latest;
-  	
-  	# kernel modules
-  	initrd.kernelModules = [ "amdgpu" ];
-  	
-  	#loader.grub.theme = "/boot/grub/themes/nixos/";
+    initrd = { 
+      availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "sd_mod" ];
+      kernelModules = [ "amdgpu" ];
+    };
+  
+    kernelModules = [ ];
+    extraModulePackages = [ ];
+
+    # bootloader grub theme
+    loader.grub = rec {
+      theme = inputs.distro-grub-themes.packages.${system}.nixos-grub-theme;
+      splashImage = "${theme}/splash_image.jpg";
+    };
+
+    # Kernel 
+    kernelPackages = pkgs.linuxPackages_latest;
   };
   
-  networking.hostName = "NixOS";
   
+  networking.hostName = "Desktop";
+
   # User account
   users = {
-	users.ja = {
-    	isNormalUser = true;
-    	extraGroups = [ 
-			"wheel" 
-			"video" 
-			"input" 
-			"audio"
-			"libvirtd" ]; 
+	  users.ja = {
+    isNormalUser = true;
+    extraGroups = [ 
+		  "wheel" 
+		  "video" 
+		  "input" 
+		  "audio"
+		]; 
     packages = with pkgs; [		
      	];
   	};
@@ -44,22 +50,22 @@
   };
 
   environment.shells = with pkgs; [ zsh ];
+  
   # for Desktop (all AMD)
   environment.systemPackages = with pkgs; [
-	discord
+		discord
   	fzf
     glxinfo
     krabby
     nvtopPackages.amd
     obs-studio
-	obs-studio-plugins.obs-vaapi
+		obs-studio-plugins.obs-vaapi
+		shotcut
     yt-dlp
     vscodium
-    
-		
+    		
     #waybar experimental - next line
     #(pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];}))
-
 
     #gaming stuff
     gamemode
@@ -74,33 +80,33 @@
   ];
 
   programs = {
-	zsh = {
+  	# Zsh configuration
+		zsh = {
     	enable = true;
-		enableCompletion = true;
-    ohMyZsh = {
-        	enable = true;
-        	plugins = ["git"];
-        	theme = "xiong-chiamiov-plus";
-      		};
+	  	enableCompletion = true;
+      ohMyZsh = {
+        enable = true;
+        plugins = ["git"];
+        theme = "xiong-chiamiov-plus";
+      	};
     autosuggestions.enable = true;
     syntaxHighlighting.enable = true;
     promptInit = ''
-      	krabby random --no-title -s;
-      	source <(fzf --zsh);
-		HISTFILE=~/.zsh_history;
-		HISTSIZE=10000;
-		SAVEHIST=10000;
-		setopt appendhistory;
-    	'';
-	};
+	    krabby random --no-mega --no-gmax --no-regional --no-title -s;
+      source <(fzf --zsh);
+	    HISTFILE=~/.zsh_history;
+	    HISTSIZE=10000;
+	    SAVEHIST=10000;
+	    setopt appendhistory;
+      '';
+  };
 	
-	# corectrl (Overclocking AMD GPU's)
-	corectrl = {
-		enable = true;
-		gpuOverclock.enable = true;
-		gpuOverclock.ppfeaturemask = "0xffffffff";
-		};
-
+		# corectrl (Overclocking AMD GPU's)
+		corectrl = {
+			enable = true;
+			gpuOverclock.enable = true;
+			gpuOverclock.ppfeaturemask = "0xffffffff";
+			};
   };
   
   powerManagement = {
@@ -127,16 +133,15 @@
     	enable = true;
     	driSupport = true;
     	driSupport32Bit = true;
-		extraPackages = with pkgs; [
-			libva
-    		libva-utils		
+		  extraPackages = with pkgs; [
+   			libva
+			  libva-utils	
      		];
-  		};
+  	};
+
   };  
   
-  services = {
-  	das_watchdog.enable = false;
-  	
+  services = {  	
   	xserver.videoDrivers = ["amdgpu"];
   	
   	blueman.enable = true;
