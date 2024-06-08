@@ -26,7 +26,7 @@
     };
 
     # Kernel 
-    kernelPackages = pkgs.linuxPackages_latest;
+    #kernelPackages = pkgs.linuxPackages_latest;
   };
   
   networking.hostName = "NixOS-MiniPC";
