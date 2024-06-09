@@ -12,32 +12,28 @@
   in {
   imports =
     [ # Include the results of the hardware scan.
-      ./modules/hardware-configuration.nix
-      ./modules/asus-g15.nix
-      ./modules/qemu-kvm.nix
+      ./Asus-G15/hardware-configuration.nix
+      ./Asus-G15/qemu-kvm.nix
+			./Asus-G15/asus-g15.nix
       #./Desktop.nix
     ];
 
-  # Use the systemd-boot EFI boot loader.
-  #boot.loader.systemd-boot.enable = true;
-  #boot.loader.efi.canTouchEfiVariables = true;
+	# bootloader
   boot.loader = {
-	efi = {
-		efiSysMountPoint = "/efi";
-		canTouchEfiVariables = true;
+    efi = {
+		  efiSysMountPoint = "/efi";
+		  canTouchEfiVariables = true;
   		};
-
-	grub = {
-		enable = true;
-		devices = [ "nodev" ];
-		efiSupport = true;
-    gfxmodeBios = "auto";
-		memtest86.enable = true;
-		extraGrubInstallArgs = [ "--bootloader-id=NixOS" ];
-		configurationName = "NixOS";
+    grub = {
+		  enable = true;
+		  devices = [ "nodev" ];
+		  efiSupport = true;
+  	  gfxmodeBios = "auto";
+		  memtest86.enable = true;
+		  extraGrubInstallArgs = [ "--bootloader-id=NixOS" ];
+		  configurationName = "Asus-G15";
   		};
-	
-	timeout = 1;
+	  timeout = 1;
   };
 
   # NOTE SET KERNEL BOOTLOADER OPTIONS and Hostname ON INDIVIDUAL MODULE NIX  
@@ -83,7 +79,6 @@
     fastfetch
     (mpv.override {scripts = [mpvScripts.mpris];}) # with tray
     ranger
-    shotcut
       
     # Hyprland Stuff | Laptop related stuff on a separate .nix
 	  ags      
@@ -129,30 +124,29 @@
   ];
 
   programs = {
-	  hyprland = {
+		hyprland = {
     	enable = true;
     	xwayland.enable = true;
-  	  };
+  	};
 
-	  hyprlock.enable = true;
+	xwayland.enable = true;
 
-	  xwayland.enable = true;
+	hyprlock.enable = true;
+	firefox.enable = true;
+	git.enable = true;
 
-	  firefox.enable = true;
-	  git.enable = true;
-
-	  thunar.enable = true;
-	  thunar.plugins = with pkgs.xfce; [
-		  exo
-		  mousepad
-		  thunar-archive-plugin
-		  thunar-volman
-		  tumbler
+	thunar.enable = true;
+	thunar.plugins = with pkgs.xfce; [
+		exo
+		mousepad
+		thunar-archive-plugin
+		thunar-volman
+		tumbler
   		];
 	
-	  dconf.enable = true;
+	dconf.enable = true;
 	
-	  waybar.enable = true;
+	waybar.enable = true;
   };
 
   xdg.portal.enable = true;
@@ -166,16 +160,16 @@
 	  tumbler.enable = true;
 
 	  pipewire = {
-      enable = true;
-      alsa.enable = true;
-      alsa.support32Bit = true;
-      pulse.enable = true;
-      wireplumber.enable = true;
-      };
+    	enable = true;
+    	alsa.enable = true;
+    	alsa.support32Bit = true;
+    	pulse.enable = true;
+		wireplumber.enable = true;
+  		};
 	
-    udev.enable = true;
-      envfs.enable = true;
-      dbus.enable = true;
+	  udev.enable = true;
+	  envfs.enable = true;
+	  dbus.enable = true;
 
 	  fstrim = {
     	enable = true;
@@ -312,17 +306,6 @@
    #     TimeoutStopSec = 10;
   #	    };
   #	};
-  #};
-
-  # zram-generator NOTE: add in the packages
-  #services.zram-generator = {
-    #enable = true;
-    #settings = {
-	#name = dev;
-	#zram-size = "8192";
-	#compression-algorithm = "zstd";
-	#swap-priority = 100;
-	#};
   #};
    
   # Configure keymap in X11
