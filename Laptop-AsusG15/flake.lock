@@ -71,11 +71,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1717786204,
-        "narHash": "sha256-4q0s6m0GUcN7q+Y2DqD27iLvbcd1G50T2lv08kKxkSI=",
+        "lastModified": 1718895438,
+        "narHash": "sha256-k3JqJrkdoYwE3fHE6xGDY676AYmyh4U2Zw+0Bwe5DLU=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "051f920625ab5aabe37c920346e3e69d7d34400e",
+        "rev": "d603719ec6e294f034936c0d0dc06f689d91b6c3",
         "type": "github"
       },
       "original": {
@@ -162,11 +162,11 @@
         "utils": "utils"
       },
       "locked": {
-        "lastModified": 1716749644,
-        "narHash": "sha256-x78SWgCxKbEB8OGxUmcC+4HUPnu+G4nD9ruamL+7hcs=",
+        "lastModified": 1718493286,
+        "narHash": "sha256-doAtbAqUA5GCldRqz1JGee61660ZTn2rj60hOixSKtE=",
         "ref": "dev",
-        "rev": "7bc74a23b1e0b51302bfafeff3b54dd6e9976a77",
-        "revCount": 942,
+        "rev": "905ea665685c59c35f915351016fb06961370bfd",
+        "revCount": 962,
         "type": "git",
         "url": "https://codeberg.org/explosion-mental/wallust"
       },

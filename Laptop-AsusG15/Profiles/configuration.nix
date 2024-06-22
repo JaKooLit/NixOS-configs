@@ -66,7 +66,8 @@
 	  duf
     ffmpeg   
     glib #for gsettings to work
-	  hwdata # for fastfetch  
+	  hwdata # for fastfetch
+		inxi  
     libappindicator
     libnotify
     openssl #required by Rainbow borders

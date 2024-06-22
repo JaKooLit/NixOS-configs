@@ -149,63 +149,62 @@
 
 	# for network scanner
 	sane = {
-	  enable = true;
-	  extraBackends = [
-		pkgs.epsonscan2
-		];
-	  disabledDefaultBackends = ["escl"];
-  	};
+	  	enable = true;
+	  	extraBackends = [
+			pkgs.epsonscan2
+			];
+	  	disabledDefaultBackends = ["escl"];
+  		};
 
 	bluetooth = {
-	  enable = true;
-	  powerOnBoot = true;
-	  settings = {
-		General = {
+	  	enable = true;
+	  	powerOnBoot = true;
+	  	settings = {
+			General = {
      	  Enable = "Source,Sink,Media,Socket";
-		  Experimental = true;
-		};
-	  };
-	};
+		  	Experimental = true;
+					};
+	  		};
+			};
 
-	opengl = {
-      enable = true;
-      driSupport = true;
-      driSupport32Bit = true;
-	  extraPackages = with pkgs; [
-		vaapiVdpau
-    	libvdpau
-    	libvdpau-va-gl 
-    	nvidia-vaapi-driver
-    	vdpauinfo
-		libva
-    	libva-utils		
-    	];
-  	};
+	graphics = {
+      	enable = true;
+      	enable32Bit = true;
+	  	extraPackages = with pkgs; [
+			vaapiVdpau
+    		libvdpau
+    		libvdpau-va-gl 
+    		nvidia-vaapi-driver
+    		vdpauinfo
+			libva
+    		libva-utils		
+    		];
+  		};
 
 	nvidia = {
-      prime.amdgpuBusId = "PCI:7:0:0";
-      prime.nvidiaBusId = "PCI:1:0:0";
-      modesetting.enable = true;
-	  prime.offload.enable =true;
+      	prime.amdgpuBusId = "PCI:7:0:0";
+      	prime.nvidiaBusId = "PCI:1:0:0";
+      	modesetting.enable = true;
+	  	prime.offload.enable =true;
     
-	  # Nvidia power management. Experimental, and can cause sleep/suspend to fail.
-      powerManagement = {
-		enable = true;
-		};
+	  	# Nvidia power management. Experimental, and can cause sleep/suspend to fail.
+      	powerManagement = {
+			enable = true;
+			};
      
-	  # Fine-grained power management. Turns off GPU when not in use.
-      # Experimental and only works on modern Nvidia GPUs (Turing or newer).
-      #powerManagement.finegrained = true;
+	  	# Fine-grained power management. Turns off GPU when not in use.
+      	# Experimental and only works on modern Nvidia GPUs (Turing or newer).
+      	#powerManagement.finegrained = true;
     	
-      dynamicBoost.enable = true; # Dynamic Boost
+      	dynamicBoost.enable = true; # Dynamic Boost
 
-      nvidiaPersistenced = false;
-      # Use the NVidia open source kernel module (not to be confused with the
-      # independent third-party "nouveau" open source driver).
-      open = false;
+      	nvidiaPersistenced = false;
+      	# Use the NVidia open source kernel module (not to be confused with the
+      	# independent third-party "nouveau" open source driver).
+      	open = false;
 
-      nvidiaSettings = true;
-      package = config.boot.kernelPackages.nvidiaPackages.stable;
+      	nvidiaSettings = true;
+      	package = config.boot.kernelPackages.nvidiaPackages.stable;
   	};
   };
 
