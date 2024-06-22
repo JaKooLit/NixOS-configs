@@ -4,7 +4,8 @@
   inputs = {
 	nixpkgs.url = "nixpkgs/nixos-unstable";
 	wallust.url = "git+https://codeberg.org/explosion-mental/wallust?ref=dev"; # change to dev or master depending your choice
-	distro-grub-themes.url = "github:AdisonCavani/distro-grub-themes"; 
+	distro-grub-themes.url = "github:AdisonCavani/distro-grub-themes";
+	hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1"; #development or -git version 
   	};
 
   outputs = 

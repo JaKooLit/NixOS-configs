@@ -127,6 +127,8 @@
   programs = {
 		hyprland = {
     	enable = true;
+			package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+			portalPackage = pkgs.xdg-desktop-portal-hyprland;
     	xwayland.enable = true;
   	};
 
@@ -153,7 +155,6 @@
   xdg.portal.enable = true;
   xdg.portal.extraPortals = with pkgs; [
     xdg-desktop-portal-gtk
-	  xdg-desktop-portal-hyprland
   ];
   
   services = {
