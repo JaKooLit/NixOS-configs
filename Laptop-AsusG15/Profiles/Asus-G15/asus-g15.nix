@@ -25,7 +25,7 @@
     splashImage = "${theme}/splash_image.jpg";
   };
 
-  networking.hostName = "Asus-G15";
+  networking.hostName = "NixOS-G15";
 
   # User account
   users = {
@@ -50,47 +50,47 @@
   
   # for Asus G15
   environment.systemPackages = with pkgs; [
-	autoAddDriverRunpath
-	brightnessctl
-    discord
-	fzf
-    glxinfo
-	krabby
-    libreoffice-fresh
-	librewolf
-    obs-studio
-	shotcut
-    thunderbird
-    yt-dlp
+		autoAddDriverRunpath
+		brightnessctl
+  	discord
+		fzf
+  	glxinfo
+		krabby
+  	libreoffice-fresh
+		librewolf
+  	obs-studio
+		shotcut
+  	thunderbird
+  	yt-dlp
     vscodium
     (epsonscan2.override { withNonFreePlugins = true; withGui = true; }) 
   ];
   
   # Additional fonts needed for office stuff
   fonts.packages = with pkgs; [
-	cascadia-code
+		cascadia-code
  	];
 	
   powerManagement = {
-	enable = true;
-	cpuFreqGovernor = "schedutil";
+		enable = true;
+		cpuFreqGovernor = "schedutil";
   };
     
   programs = {
   	# Zsh configuration
 	zsh = {
-      enable = true;
+    enable = true;
 	  enableCompletion = true;
-      ohMyZsh = {
-        enable = true;
-        plugins = ["git"];
-        theme = "xiong-chiamiov-plus";
+    ohMyZsh = {
+      enable = true;
+      plugins = ["git"];
+      theme = "xiong-chiamiov-plus";
       	};
     autosuggestions.enable = true;
     syntaxHighlighting.enable = true;
     promptInit = ''
 	  krabby random --no-mega --no-gmax --no-regional --no-title -s;
-      source <(fzf --zsh);
+    source <(fzf --zsh);
 	  HISTFILE=~/.zsh_history;
 	  HISTSIZE=10000;
 	  SAVEHIST=10000;
@@ -105,7 +105,7 @@
   services = {
 	  asusd = {
 		enable = true;
-    	enableUserService = true;
+    enableUserService = true;
     };
 
 	supergfxd.enable = true;
@@ -131,11 +131,11 @@
 		enable = true; # necessary for network printing / scanning
 		nssmdns4 = true;
 		openFirewall = true;
-      	publish = {
-        	enable = true;
-        	addresses = true;
-        	userServices = true;
-      		};
+     	publish = {
+       	enable = true;
+       	addresses = true;
+       	userServices = true;
+     		};
 		};
 
 	blueman.enable = true;
@@ -145,68 +145,68 @@
   
   # Bluetooth, video card, scanner..
   hardware = {
-	cpu.amd.updateMicrocode = true;
+		cpu.amd.updateMicrocode = true;
 
 	# for network scanner
 	sane = {
-	  	enable = true;
-	  	extraBackends = [
+	  enable = true;
+	  extraBackends = [
 			pkgs.epsonscan2
 			];
-	  	disabledDefaultBackends = ["escl"];
+	  disabledDefaultBackends = ["escl"];
   		};
 
 	bluetooth = {
-	  	enable = true;
-	  	powerOnBoot = true;
-	  	settings = {
-			General = {
-     	  Enable = "Source,Sink,Media,Socket";
-		  	Experimental = true;
-					};
-	  		};
-			};
+	 	enable = true;
+	 	powerOnBoot = true;
+	 	settings = {
+		General = {
+   	  Enable = "Source,Sink,Media,Socket";
+	  	Experimental = true;
+				};
+	 		};
+		};
 
 	graphics = {
-      	enable = true;
-      	enable32Bit = true;
-	  	extraPackages = with pkgs; [
+   	enable = true;
+   	enable32Bit = true;
+	 	extraPackages = with pkgs; [
 			vaapiVdpau
-    		libvdpau
-    		libvdpau-va-gl 
-    		nvidia-vaapi-driver
-    		vdpauinfo
+   		libvdpau
+   		libvdpau-va-gl 
+   		nvidia-vaapi-driver
+   		vdpauinfo
 			libva
-    		libva-utils		
+   		libva-utils		
     		];
-  		};
+  	};
 
 	nvidia = {
-      	prime.amdgpuBusId = "PCI:7:0:0";
-      	prime.nvidiaBusId = "PCI:1:0:0";
-      	modesetting.enable = true;
-	  	prime.offload.enable =true;
+   	prime.amdgpuBusId = "PCI:7:0:0";
+   	prime.nvidiaBusId = "PCI:1:0:0";
+   	modesetting.enable = true;
+		prime.offload.enable =true;
     
-	  	# Nvidia power management. Experimental, and can cause sleep/suspend to fail.
-      	powerManagement = {
+		# Nvidia power management. Experimental, and can cause sleep/suspend to fail.
+   	powerManagement = {
 			enable = true;
 			};
      
-	  	# Fine-grained power management. Turns off GPU when not in use.
-      	# Experimental and only works on modern Nvidia GPUs (Turing or newer).
-      	#powerManagement.finegrained = true;
+	  # Fine-grained power management. Turns off GPU when not in use.
+    # Experimental and only works on modern Nvidia GPUs (Turing or newer).
+    #powerManagement.finegrained = true;
     	
-      	dynamicBoost.enable = true; # Dynamic Boost
+    dynamicBoost.enable = true; # Dynamic Boost
 
-      	nvidiaPersistenced = false;
-      	# Use the NVidia open source kernel module (not to be confused with the
-      	# independent third-party "nouveau" open source driver).
-      	open = false;
+    nvidiaPersistenced = false;
+    # Use the NVidia open source kernel module (not to be confused with the
+    # independent third-party "nouveau" open source driver).
+    open = false;
 
-      	nvidiaSettings = true;
-      	package = config.boot.kernelPackages.nvidiaPackages.stable;
+    nvidiaSettings = true;
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
   	};
-  };
+};
 
   environment.sessionVariables.NIXOS_OZONE_WL = "1"; # For Electron apps to use wayland
 }

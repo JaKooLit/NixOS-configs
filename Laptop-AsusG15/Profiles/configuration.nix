@@ -63,11 +63,12 @@
     baobab
     btrfs-progs
     cpufrequtils
-	  duf
+    duf
     ffmpeg   
     glib #for gsettings to work
-	  hwdata # for fastfetch
-		inxi  
+    hwdata # for fastfetch
+    hyfetch
+    inxi  
     libappindicator
     libnotify
     openssl #required by Rainbow borders
@@ -93,7 +94,7 @@
     gtk-engine-murrine #for gtk themes
     hyprcursor # requires unstable channel
     hypridle # requires unstable channel
- 	  imagemagick
+    imagemagick
     jq
     kitty
     libsForQt5.qtstyleplugin-kvantum #kvantum
@@ -102,7 +103,7 @@
     nvtopPackages.full
     pamixer
     pavucontrol
-	  playerctl
+    playerctl
     polkit_gnome
     pyprland
     qt5ct
