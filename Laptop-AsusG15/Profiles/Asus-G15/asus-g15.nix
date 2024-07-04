@@ -36,6 +36,7 @@
 		"video" 
 		"input" 
 		"audio"
+		"storage"
 		"scanner" 
 		"lp" 
 		"libvirtd" ]; 
@@ -50,16 +51,17 @@
   
   # for Asus G15
   environment.systemPackages = with pkgs; [
-		autoAddDriverRunpath
-		brightnessctl
+	ddcutil
+	autoAddDriverRunpath
+	brightnessctl
   	discord
-		fzf
+	fzf
   	glxinfo
-		krabby
+	krabby
   	libreoffice-fresh
-		librewolf
+	librewolf
   	obs-studio
-		shotcut
+	shotcut
   	thunderbird
   	yt-dlp
     vscodium
@@ -68,19 +70,19 @@
   
   # Additional fonts needed for office stuff
   fonts.packages = with pkgs; [
-		cascadia-code
+	cascadia-code
  	];
 	
   powerManagement = {
-		enable = true;
-		cpuFreqGovernor = "schedutil";
+	enable = true;
+	cpuFreqGovernor = "schedutil";
   };
     
   programs = {
   	# Zsh configuration
 	zsh = {
     enable = true;
-	  enableCompletion = true;
+	enableCompletion = true;
     ohMyZsh = {
       enable = true;
       plugins = ["git"];
@@ -90,7 +92,7 @@
     syntaxHighlighting.enable = true;
     promptInit = ''
 	  krabby random --no-mega --no-gmax --no-regional --no-title -s;
-    source <(fzf --zsh);
+      source <(fzf --zsh);
 	  HISTFILE=~/.zsh_history;
 	  HISTSIZE=10000;
 	  SAVEHIST=10000;
@@ -103,10 +105,10 @@
   };
 
   services = {
-	  asusd = {
+	asusd = {
 		enable = true;
-    enableUserService = true;
-    };
+	  	enableUserService = true;
+      };
 
 	supergfxd.enable = true;
 	power-profiles-daemon.enable = true;
@@ -145,16 +147,18 @@
   
   # Bluetooth, video card, scanner..
   hardware = {
-		cpu.amd.updateMicrocode = true;
+	cpu.amd.updateMicrocode = true;
 
 	# for network scanner
 	sane = {
 	  enable = true;
 	  extraBackends = [
-			pkgs.epsonscan2
-			];
+		pkgs.epsonscan2
+		];
 	  disabledDefaultBackends = ["escl"];
   		};
+
+	i2c.enable = true;
 
 	bluetooth = {
 	 	enable = true;
@@ -171,14 +175,14 @@
    	enable = true;
    	enable32Bit = true;
 	 	extraPackages = with pkgs; [
-			vaapiVdpau
+		vaapiVdpau
    		libvdpau
    		libvdpau-va-gl 
    		nvidia-vaapi-driver
    		vdpauinfo
-			libva
+		libva
    		libva-utils		
-    		];
+    	];
   	};
 
 	nvidia = {
@@ -188,9 +192,8 @@
 		prime.offload.enable =true;
     
 		# Nvidia power management. Experimental, and can cause sleep/suspend to fail.
-   	powerManagement = {
-			enable = true;
-			};
+   	powerManagement.enable = true;
+		
      
 	  # Fine-grained power management. Turns off GPU when not in use.
     # Experimental and only works on modern Nvidia GPUs (Turing or newer).
