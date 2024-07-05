@@ -63,17 +63,17 @@
     baobab
     btrfs-progs
     cpufrequtils
-		duf
+	  duf
     ffmpeg   
     glib #for gsettings to work
-		killall  
+	  killall  
     libappindicator
     libnotify
     openssl #required by Rainbow borders
     vim
     wget
     xdg-user-dirs
-		xdg-utils
+	  xdg-utils
 
     # I normally have and use
     audacious
@@ -82,26 +82,26 @@
     ranger
       
     # Hyprland Stuff | Laptop related stuff on a separate .nix
-		ags        
+	  ags        
     btop
     cava
     cliphist
-    gnome.eog
-    gnome.gnome-system-monitor
-    gnome.file-roller
+    eog
+    gnome-system-monitor
+    file-roller
     grim
     gtk-engine-murrine #for gtk themes
     hyprcursor # requires unstable channel
     hypridle # requires unstable channel
     jq
     kitty
-		libsForQt5.qtstyleplugin-kvantum #kvantum
-		networkmanagerapplet
+	  libsForQt5.qtstyleplugin-kvantum #kvantum
+	  networkmanagerapplet
     nwg-look # requires unstable channel
     nvtopPackages.full
     pamixer
     pavucontrol
-		playerctl
+	  playerctl
     polkit_gnome
     pyprland
     qt5ct
@@ -121,15 +121,15 @@
     #waybar  # if wanted experimental next line
     #(pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];}))
   ]) ++ [
-		python-packages
-		inputs.wallust.packages.${pkgs.system}.wallust
-		#inputs.ags.packages.${pkgs.system}.ags
+	  python-packages
+	  inputs.wallust.packages.${pkgs.system}.wallust
+	  #inputs.ags.packages.${pkgs.system}.ags
   ];
 
   programs = {
-		hyprland = {
-    	enable = true;
-    	xwayland.enable = true;
+	hyprland = {
+    enable = true;
+    xwayland.enable = true;
   	};
 
 	xwayland.enable = true;
@@ -242,23 +242,23 @@
 
   # Masking sleep, hibernate, suspend.. etc
   systemd = {
-		targets = {
-		sleep = {
-		enable = false;
-		unitConfig.DefaultDependencies = "no";
-  		};
-		suspend = {
-		enable = false;
-		unitConfig.DefaultDependencies = "no";
-		};
-		hibernate = {
-		enable = false;
-		unitConfig.DefaultDependencies = "no";
-		};
-		"hybrid-sleep" = {
-		enable = false;
-		unitConfig.DefaultDependencies = "no";
-		};
+	  targets = {
+	  sleep = {
+	  enable = false;
+	  unitConfig.DefaultDependencies = "no";
+  	};
+	  suspend = {
+	  enable = false;
+	  unitConfig.DefaultDependencies = "no";
+	  };
+	  hibernate = {
+	  enable = false;
+	  unitConfig.DefaultDependencies = "no";
+	  };
+	  "hybrid-sleep" = {
+	  enable = false;
+	  unitConfig.DefaultDependencies = "no";
+	  };
 	};
   };
 

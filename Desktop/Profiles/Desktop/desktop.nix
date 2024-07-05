@@ -64,9 +64,6 @@
     yt-dlp
     vscodium
     		
-    #waybar experimental - next line
-    #(pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];}))
-
     #gaming stuff
     gamemode
     goverlay
@@ -129,10 +126,9 @@
     # AMD Microcode update
     cpu.amd.updateMicrocode = true;
     
-	opengl = {
+	graphics = {
     	enable = true;
-    	driSupport = true;
-    	driSupport32Bit = true;
+    	enable32Bit = true;
 		  extraPackages = with pkgs; [
    			libva
 			  libva-utils	
@@ -153,7 +149,6 @@
   # For Electron apps to use wayland
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
   
-  # Flatpak (urghhhh dont really wanted though :( but vscodium dont work
   #services.flatpak.enable = true; 
 }
 
