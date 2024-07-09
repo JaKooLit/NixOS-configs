@@ -27,6 +27,8 @@
 
   networking.hostName = "NixOS-G15";
 
+  nixpkgs.config.allowUnfree = true;
+
   # User account
   users = {
 	users.ja = {
@@ -134,9 +136,9 @@
 		nssmdns4 = true;
 		openFirewall = true;
      	publish = {
-       	enable = true;
-       	addresses = true;
-       	userServices = true;
+       		enable = true;
+       		addresses = true;
+       		userServices = true;
      		};
 		};
 
@@ -165,7 +167,7 @@
 	 	powerOnBoot = true;
 	 	settings = {
 		General = {
-   	  Enable = "Source,Sink,Media,Socket";
+   	  	Enable = "Source,Sink,Media,Socket";
 	  	Experimental = true;
 				};
 	 		};
@@ -213,5 +215,3 @@
 
   environment.sessionVariables.NIXOS_OZONE_WL = "1"; # For Electron apps to use wayland
 }
-
-
