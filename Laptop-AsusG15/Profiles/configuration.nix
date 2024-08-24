@@ -99,12 +99,13 @@
     swaynotificationcenter
     swww
     unzip
+	wallust
     wl-clipboard
     wlogout
     yad
     #(pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];}))
     ]) ++ [
-	  inputs.wallust.packages.${pkgs.system}.wallust
+	  #inputs.wallust.packages.${pkgs.system}.wallust #dev
 	  python-packages # needed for Weather.py 
   ];
 

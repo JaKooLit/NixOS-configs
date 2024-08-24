@@ -60,9 +60,11 @@
 	fzf
   	glxinfo
 	krabby
+	kdePackages.okular
   	libreoffice-fresh
 	librewolf
   	obs-studio
+	pdfarranger
 	shotcut
   	thunderbird
   	yt-dlp
