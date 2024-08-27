@@ -8,7 +8,7 @@
 - Hyprland-Dots [`LINK`](https://github.com/JaKooLit/Hyprland-Dots)
 - Installing of Hyprland-Dots how to [`LINK`](https://github.com/JaKooLit/Hyprland-Dots?tab=readme-ov-file#-copying--installation--update-instructions-)
 - Some Notes regarding Hyprland-Dots for Nixos [`LINK`](https://github.com/JaKooLit/Hyprland-Dots?tab=readme-ov-file#-copying--installation--update-instructions-)
-- You need to setup flakes for Wallust-Dev (used as color palette generator)
+
 
 > [!NOTE]
 > I dont use any Log-in Manager. I do utilize ~/.zprofile for auto start for Hyprland
