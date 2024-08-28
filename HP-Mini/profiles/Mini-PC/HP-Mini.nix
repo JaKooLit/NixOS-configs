@@ -52,12 +52,12 @@
 
   # for HP - Mini pc
   environment.systemPackages = with pkgs; [
-	  discord
-	  fzf
+    discord
+    fzf
     glxinfo
-	  krabby
+    krabby
     vscodium
-	  nvtopPackages.intel # requires unstable channel
+    nvtopPackages.intel # requires unstable channel
   ];
 
   # Additional fonts needed for office stuff
@@ -109,13 +109,12 @@
 
 	cpu.intel.updateMicrocode = true;
 
-	opengl = {
+	graphics = {
     	enable = true;
-    	driSupport = true;
-    	driSupport32Bit = true;
+    	enable32Bit = true;
 		  extraPackages = with pkgs; [
    			libva
-			  libva-utils	
+			libva-utils	
      		];
   	};
 

@@ -1,46 +1,40 @@
 # Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
 
-{ config, pkgs, inputs, ... }: let	
-  	python-packages = pkgs.python3.withPackages (
-    	ps:
-     	 with ps; [
-        	requests
-        	pyquery # needed for hyprland-dots Weather script
-      		]
-  		);
-	in {
-
+{ config, pkgs, inputs, ... }: let
+  python-packages = pkgs.python3.withPackages (
+    ps:
+      with ps; [
+        requests
+        pyquery # needed for hyprland-dots Weather script
+      ]
+  	);
+  in {
   imports =
     [ # Include the results of the hardware scan.
-      ./profiles/Mini-PC/hardware-configuration.nix
-      ./profiles/Mini-PC/HP-Mini.nix
-      #./asus-g15.nix
-      #./qemu-kvm.nix
-      #./Desktop.nix
+    ./Mini-PC/hardware-configuration.nix
+    ./Mini-PC/HP-Mini.nix
     ];
 
-  # Use the systemd-boot EFI boot loader.
-  #boot.loader.systemd-boot.enable = true;
-  #boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.efi = {
-	efiSysMountPoint = "/efi";
-	canTouchEfiVariables = true;
+	# bootloader
+  boot.loader = {
+    efi = {
+		  efiSysMountPoint = "/efi";
+		  canTouchEfiVariables = true;
+  		};
+    grub = {
+		  enable = true;
+		  devices = [ "nodev" ];
+		  efiSupport = true;
+  	  gfxmodeBios = "auto";
+		  memtest86.enable = true;
+		  extraGrubInstallArgs = [ "--bootloader-id=NixOS" ];
+		  configurationName = "NixOS-MiniPC";
+  		};
+	  timeout = 1;
   };
-  boot.loader.grub = {
-	enable = true;
-	devices = [ "nodev" ];
-	efiSupport = true;
-    gfxmodeBios = "auto";
-	memtest86.enable = true;
-	extraGrubInstallArgs = [ "--bootloader-id=MyNixOS" ];
-	configurationName = "MyNixOS";
-  };
-  boot.loader.timeout = 1;
- 
+
   # NOTE SET KERNEL BOOTLOADER OPTIONS and Hostname ON INDIVIDUAL MODULE NIX  
-  # networking.hostName = "NixOS"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.networkmanager.enable = true; 
 
   # Set your time zone.
@@ -49,7 +43,7 @@
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
   console = {
-     font = "Lat2-Terminus16";
+     font = "${pkgs.terminus_font}/share/consolefonts/ter-128b.psf.gz";
      keyMap = "us";
   #   useXkbConfig = true; # use xkbOptions in tty.
   };
@@ -67,47 +61,45 @@
     baobab
     btrfs-progs
     cpufrequtils
-	duf
+    duf
     ffmpeg   
     glib #for gsettings to work
-	killall  
+    hwdata # for fastfetch  
     libappindicator
     libnotify
     openssl #required by Rainbow borders
     vim
     wget
     xdg-user-dirs
-	xdg-utils
-
 
     # I normally have and use
     audacious
     fastfetch
     (mpv.override {scripts = [mpvScripts.mpris];}) # with tray
     ranger
-    shotcut
       
     # Hyprland Stuff | Laptop related stuff on a separate .nix
-	ags        
+    ags      
     btop
     cava
     cliphist
-    gnome.eog
-    gnome.gnome-system-monitor
-    gnome.file-roller
+    eog
+    file-roller
+    gnome-system-monitor
     grim
     gtk-engine-murrine #for gtk themes
     hyprcursor # requires unstable channel
     hypridle # requires unstable channel
+    imagemagick
     jq
     kitty
-	libsForQt5.qtstyleplugin-kvantum #kvantum
-	networkmanagerapplet
+    libsForQt5.qtstyleplugin-kvantum #kvantum
+    networkmanagerapplet
     nwg-look # requires unstable channel
     nvtopPackages.full
     pamixer
     pavucontrol
-	playerctl
+    playerctl
     polkit_gnome
     pyprland
     qt5ct
@@ -120,26 +112,27 @@
     swaynotificationcenter
     swww
     unzip
+    wallust
     wl-clipboard
     wlogout
     yad
-
-    #waybar  # if wanted experimental next line
+    xdg-desktop-portal-hyprland
     #(pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];}))
   ]) ++ [
-	python-packages
-	inputs.wallust.packages.${pkgs.system}.wallust
-	#inputs.ags.packages.${pkgs.system}.ags
+	  #inputs.wallust.packages.${pkgs.system}.wallust # dev
+	  python-packages # needed for Weather.py
   ];
 
   programs = {
 	hyprland = {
-    	enable = true;
-    	xwayland.enable = true;
+    enable = true;
+		package = inputs.hyprland.packages.${pkgs.system}.hyprland; #hyprland-git
+    xwayland.enable = true;
   	};
 
 	xwayland.enable = true;
 
+	waybar.enable = true;
 	hyprlock.enable = true;
 	firefox.enable = true;
 	git.enable = true;
@@ -151,17 +144,16 @@
 		thunar-archive-plugin
 		thunar-volman
 		tumbler
-  		];
+  	];
 	
 	dconf.enable = true;
 	
-	waybar.enable = true;
   };
 
   xdg.portal.enable = true;
   xdg.portal.extraPortals = with pkgs; [
     xdg-desktop-portal-gtk
-	  xdg-desktop-portal-hyprland
+	#xdg-desktop-portal-hyprland
   ];
   
   services = {
@@ -189,35 +181,35 @@
 
 	  upower.enable = true;	
 
-    # Services X11 
-  	#xserver = {
-  	#	enable = true;
-  	#	displayManager.gdm.enable = false;
-  	#	displayManager.lightdm.enable = false;
-  	#	displayManager.lightdm.greeters.gtk.enable = false;
-  	#	};
+  # Services X11 
+  #	xserver = {
+  #		enable = false;
+  #		displayManager.gdm.enable = false;
+  #		displayManager.lightdm.enable = false;
+  #		displayManager.lightdm.greeters.gtk.enable = false;
+  #		};
  	#  desktopManager = {
  	#	  plasma6.enable = false;
  	#	  };
  	#  displayManager.sddm.enable = false;	
+  
   };
 
- 	
-  # FONTS
+ 	# FONTS
   fonts.packages = with pkgs; [
     noto-fonts
     fira-code
     noto-fonts-cjk
     jetbrains-mono
     font-awesome
-	terminus_font
+	  terminus_font
     (nerdfonts.override {fonts = ["JetBrainsMono"];})
- ];
+  ];
   
   security = {
-	pam.services.swaylock.text = "auth include login";
-	polkit.enable = true;
-	rtkit.enable = true;
+		pam.services.swaylock.text = "auth include login";
+		polkit.enable = true;
+		rtkit.enable = true;
   };
     
   # Open ports in the firewall.
@@ -246,26 +238,36 @@
   		};
   }; 
 
+  # flatpak
+	#flatpak.enable = true;
+  #systemd.services.flatpak-repo = {
+  #  wantedBy = [ "multi-user.target" ];
+  #  path = [ pkgs.flatpak ];
+  #  script = ''
+  #    flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+  #  '';
+  #};
+
   # Masking sleep, hibernate, suspend.. etc
   systemd = {
 		targets = {
-		sleep = {
-		enable = false;
-		unitConfig.DefaultDependencies = "no";
-  		};
-		suspend = {
-		enable = false;
-		unitConfig.DefaultDependencies = "no";
-		};
-		hibernate = {
-		enable = false;
-		unitConfig.DefaultDependencies = "no";
-		};
-		"hybrid-sleep" = {
-		enable = false;
-		unitConfig.DefaultDependencies = "no";
-		};
-	};
+		  sleep = {
+		  enable = false;
+		  unitConfig.DefaultDependencies = "no";
+  	  	};
+		  suspend = {
+		  enable = false;
+		  unitConfig.DefaultDependencies = "no";
+		  };
+		  hibernate = {
+		  enable = false;
+		  unitConfig.DefaultDependencies = "no";
+		  };
+		  "hybrid-sleep" = {
+		  enable = false;
+		  unitConfig.DefaultDependencies = "no";
+		    };
+	    };
   };
 
   # zram
@@ -274,7 +276,7 @@
 	  priority = 100;
 	  memoryPercent = 30;
 	  swapDevices = 1;
-    };
+  };
 
   # Automatic Garbage Collection
   nix.gc = {
@@ -305,17 +307,6 @@
    #     TimeoutStopSec = 10;
   #	    };
   #	};
-  #};
-
-  # zram-generator NOTE: add in the packages
-  #services.zram-generator = {
-    #enable = true;
-    #settings = {
-	#name = dev;
-	#zram-size = "8192";
-	#compression-algorithm = "zstd";
-	#swap-priority = 100;
-	#};
   #};
    
   # Configure keymap in X11
@@ -348,4 +339,5 @@
   system.stateVersion = "24.05"; # Did you read the comment?
 
 }
+
 

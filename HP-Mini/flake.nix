@@ -3,8 +3,8 @@
   	
   inputs = {
   	nixpkgs.url = "nixpkgs/nixos-unstable";
-	wallust.url = "git+https://codeberg.org/explosion-mental/wallust?ref=dev";
-	#hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1"; # unstable hyprland
+	#wallust.url = "git+https://codeberg.org/explosion-mental/wallust?ref=dev";
+	hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1"; # unstable hyprland
 	distro-grub-themes.url = "github:AdisonCavani/distro-grub-themes"; 
   	};
 
@@ -31,7 +31,7 @@
     	    inherit username;
        		inherit host;
 			};
-	   		modules = [ ./configuration.nix ];
+	   		modules = [ ./profiles/configuration.nix ];
 			};
 		};
 	};
