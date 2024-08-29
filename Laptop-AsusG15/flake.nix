@@ -13,7 +13,7 @@
     	let
       	system = "x86_64-linux";
       	host = "NixOS-G15";
-      	
+
       	pkgs = import nixpkgs {
         	inherit system;
         	config = {
