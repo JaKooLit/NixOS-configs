@@ -13,8 +13,7 @@
     	let
       	system = "x86_64-linux";
       	host = "NixOS-G15";
-      	username = "ja";
-
+      	
       	pkgs = import nixpkgs {
         	inherit system;
         	config = {
@@ -28,8 +27,7 @@
 			specialArgs = { 
 			inherit system;
 			inherit inputs;
-    	inherit username;
-      inherit host;
+      		inherit host;
 			};
 	   		modules = [ ./Profiles/configuration.nix ];
 			};

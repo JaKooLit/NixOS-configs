@@ -7,8 +7,8 @@
   # Kernel Parameters miniPC
   boot = {
     kernelParams = [ 
-    "nowatchdog"
-	  "modprobe.blacklist=iTCO_wdt"
+      "nowatchdog"
+	    "modprobe.blacklist=iTCO_wdt"
  	  ];
   
     initrd = { 
@@ -30,17 +30,19 @@
   };
   
   
-  networking.hostName = "Desktop";
+  networking.hostName = "NixOS-Desktop";
 
   # User account
   users = {
-	  users.ja = {
+	users.ja = {
     isNormalUser = true;
     extraGroups = [ 
 		  "wheel" 
 		  "video" 
 		  "input" 
 		  "audio"
+		  "libvirtd"
+		  "tss"
 		]; 
     packages = with pkgs; [		
      	];
@@ -53,17 +55,17 @@
   
   # for Desktop (all AMD)
   environment.systemPackages = with pkgs; [
-		discord
-  	fzf
+    discord
+    fzf
     glxinfo
     krabby
     nvtopPackages.amd
     obs-studio
-		obs-studio-plugins.obs-vaapi
-		shotcut
+    obs-studio-plugins.obs-vaapi
+    shotcut
     yt-dlp
     vscodium
-    		
+        
     #gaming stuff
     gamemode
     goverlay
@@ -78,10 +80,10 @@
 
   programs = {
   	# Zsh configuration
-		zsh = {
+	zsh = {
     	enable = true;
 	  	enableCompletion = true;
-      ohMyZsh = {
+    ohMyZsh = {
         enable = true;
         plugins = ["git"];
         theme = "xiong-chiamiov-plus";
@@ -98,12 +100,12 @@
       '';
   };
 	
-		# corectrl (Overclocking AMD GPU's)
-		corectrl = {
-			enable = true;
-			gpuOverclock.enable = true;
-			gpuOverclock.ppfeaturemask = "0xffffffff";
-			};
+	# corectrl (Overclocking AMD GPU's)
+	corectrl = {
+		enable = true;
+		gpuOverclock.enable = true;
+		gpuOverclock.ppfeaturemask = "0xffffffff";
+		};
   };
   
   powerManagement = {
@@ -148,6 +150,14 @@
 
   # For Electron apps to use wayland
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
+  
+  #TPM
+  security.tpm2 = {
+  	enable = false;
+  	pkcs11.enable = false;
+  	tctiEnvironment.enable = false;
+
+  };
   
   #services.flatpak.enable = true; 
 }

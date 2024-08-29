@@ -13,7 +13,6 @@
     	let
       	system = "x86_64-linux";
       	host = "NixOS-MiniPC";
-      	username = "ja";
 
       	pkgs = import nixpkgs {
         	inherit system;
@@ -28,7 +27,6 @@
 		specialArgs = { 
 			inherit system;
 			inherit inputs;
-    	    inherit username;
        		inherit host;
 			};
 	   		modules = [ ./profiles/configuration.nix ];

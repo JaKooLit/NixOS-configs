@@ -28,7 +28,7 @@
 		enable = true;
 		devices = [ "nodev" ];
 		efiSupport = true;
-  	gfxmodeBios = "auto";
+ 		gfxmodeBios = "auto";
 		memtest86.enable = true;
 		extraGrubInstallArgs = [ "--bootloader-id=NixOS" ];
 		configurationName = "Desktop";
@@ -45,6 +45,7 @@
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
   console = {
+  	 earlySetup = true;
      font = "Lat2-Terminus16";
      keyMap = "us";
   #   useXkbConfig = true; # use xkbOptions in tty.
@@ -79,10 +80,11 @@
     audacious
     fastfetch
     (mpv.override {scripts = [mpvScripts.mpris];}) # with tray
+    qbittorrent
     ranger
       
     # Hyprland Stuff | Laptop related stuff on a separate .nix
-	ags        
+	  ags        
     btop
     cava
     cliphist
@@ -95,13 +97,13 @@
     hypridle # requires unstable channel
     jq
     kitty
-	libsForQt5.qtstyleplugin-kvantum #kvantum
-	networkmanagerapplet
+	  libsForQt5.qtstyleplugin-kvantum #kvantum
+	  networkmanagerapplet
     nwg-look # requires unstable channel
     nvtopPackages.full
     pamixer
     pavucontrol
-	playerctl
+	  playerctl
     polkit_gnome
     pyprland
     qt5ct
@@ -114,6 +116,7 @@
     swaynotificationcenter
     swww
     unzip
+    wallust
     wl-clipboard
     wlogout
     yad
@@ -122,8 +125,8 @@
     #(pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];}))
   ]) ++ [
 	python-packages
-	inputs.wallust.packages.${pkgs.system}.wallust
-	#inputs.ags.packages.${pkgs.system}.ags
+	  #inputs.wallust.packages.${pkgs.system}.wallust
+	  #inputs.ags.packages.${pkgs.system}.ags
   ];
 
   programs = {
@@ -205,7 +208,7 @@
     noto-fonts-cjk
     jetbrains-mono
     font-awesome
-		terminus_font
+	  terminus_font
     (nerdfonts.override {fonts = ["JetBrainsMono"];})
  	];
   
@@ -215,22 +218,6 @@
 	rtkit.enable = true;
   };
     
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  #networking.nftables.enable = true;
-  #networking.firewall = {
-	#enable = true;
-	#allowedTCPPorts = [ 80 443 ];
-	#allowedUDPPortRanges = [
-	    #{ from = 4000; to = 4007; }
-	    #{ from = 8000; to = 8010; }
-	    #];
-  #};
-  #sudo firewall-cmd --add-port=1025-65535/tcp --permanent
-  #sudo firewall-cmd --add-port=1025-65535/udp --permanent
-      
   # SYSTEMD
   systemd.services = {
 	  NetworkManager-wait-online.enable = false;
@@ -239,28 +226,32 @@
 		  enable = true;
 		  wantedBy = [ "multi-user.target" ];
   		};
-  }; 
-
-  # Masking sleep, hibernate, suspend.. etc
+  };
+  systemd.extraConfig = ''
+	  DefaultTimeoutStartSec=5s;
+	  DefaultTimeoutStopSec=5s;	 
+  	'';
+  	
+  # Masking sleep, hibernate, suspend
   systemd = {
-	targets = {
-	sleep = {
-	enable = false;
-	unitConfig.DefaultDependencies = "no";
-  	};
-	suspend = {
-	enable = false;
-	unitConfig.DefaultDependencies = "no";
-	};
-	hibernate = {
-	enable = false;
-	unitConfig.DefaultDependencies = "no";
-	};
-	"hybrid-sleep" = {
-	enable = false;
-	unitConfig.DefaultDependencies = "no";
-	};
-	};
+	  targets = {
+	    sleep = {
+	    enable = false;
+	    unitConfig.DefaultDependencies = "no";
+  		};
+	    suspend = {
+	    enable = false;
+	    unitConfig.DefaultDependencies = "no";
+		  };
+	    hibernate = {
+	    enable = false;
+	    unitConfig.DefaultDependencies = "no";
+		  };
+	    "hybrid-sleep" = {
+	    enable = false;
+	    unitConfig.DefaultDependencies = "no";
+		  };
+	  };
   };
 
   # zram
