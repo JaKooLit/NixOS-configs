@@ -1,11 +1,14 @@
-### My Nixos Configs
 
-> [!NOTE]
-> I dont use Home Manager
-> all my systems are configured with Grub bootloader with separate /efi partition
+<div align="center">
+<img src="https://github.com/JaKooLit/Telegram-Animated-Emojis/blob/main/Activity/Sparkles.webp" alt="Sparkles" width="38" height="38" /> My Nixos Configs <img src="https://github.com/JaKooLit/Telegram-Animated-Emojis/blob/main/Activity/Sparkles.webp" alt="Sparkles" width="38" height="38" />
+</div>
 
 
-#### notes on my Nixos-Hyprland
+> [!CAUTION]
+> I dont use Home Manager & all my systems are configured with Grub bootloader with separate /efi partition
+
+
+#### 💥 notes on my Nixos-Hyprland
 - GTK themes are install manually. Here is the [`LINK`](https://github.com/JaKooLit/GTK-themes-icons)
 - Hyprland-Dots [`LINK`](https://github.com/JaKooLit/Hyprland-Dots)
 - Installing of Hyprland-Dots how to [`LINK`](https://github.com/JaKooLit/Hyprland-Dots?tab=readme-ov-file#-copying--installation--update-instructions-)
@@ -18,6 +21,7 @@
 
 > [!NOTE]
 > I dont use any Log-in Manager. I do utilize ~/.zprofile for auto start for Hyprland
+
 - contents of `~/.zprofile`
 
 ```
