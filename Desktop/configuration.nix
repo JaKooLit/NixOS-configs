@@ -227,11 +227,12 @@
 		  wantedBy = [ "multi-user.target" ];
   		};
   };
+
   systemd.extraConfig = ''
-	  DefaultTimeoutStartSec=5s;
-	  DefaultTimeoutStopSec=5s;	 
-  	'';
-  	
+  	DefaultTimeoutStartSec=5s
+  	DefaultTimeoutStopSec=5s
+  	'';  
+ 		
   # Masking sleep, hibernate, suspend
   systemd = {
 	  targets = {

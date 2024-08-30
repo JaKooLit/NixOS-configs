@@ -4,11 +4,13 @@
 { config, pkgs, lib, inputs, system,... }:
 
   {
-  # Kernel Parameters miniPC
+  # Kernel Parameters Desktop
   boot = {
-    kernelParams = [ 
+    kernelParams = [
+    	"systemd.mask=systemd-vconsole-setup.service"
+    	"systemd.mask=dev-tpmrm0.device"
       "nowatchdog"
-	    "modprobe.blacklist=iTCO_wdt"
+	   	"modprobe.blacklist=sp5100_tco"
  	  ];
   
     initrd = { 
