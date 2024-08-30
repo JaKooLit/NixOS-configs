@@ -14,10 +14,10 @@
 - Installing of Hyprland-Dots how to [`LINK`](https://github.com/JaKooLit/Hyprland-Dots?tab=readme-ov-file#-copying--installation--update-instructions-)
 
 
-> [!NOTE]
+> [!IMPORTANT]
 > ensure to add 'services.envfs.enable = true' in your configuration.nix to use the Hyprland-Dots above 
 
-- Some Notes regarding Hyprland-Dots for Nixos [`LINK`](https://github.com/JaKooLit/Hyprland-Dots?tab=readme-ov-file#-copying--installation--update-instructions-)
+- see Notes regarding KooL's Hyprland-Dots on Nixos [`LINK`](https://github.com/JaKooLit/Hyprland-Dots/wiki/Other_Distros#-will-this-work-on-nixos)
 
 > [!NOTE]
 > I dont use any Log-in Manager. I do utilize ~/.zprofile for auto start for Hyprland
