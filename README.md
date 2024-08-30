@@ -18,7 +18,8 @@
 
 > [!NOTE]
 > I dont use any Log-in Manager. I do utilize ~/.zprofile for auto start for Hyprland
-- ~/.zprofile
+- contents of `~/.zprofile`
+
 ```
 if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
        Hyprland 
