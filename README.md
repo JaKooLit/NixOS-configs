@@ -2,13 +2,19 @@
 
 > [!NOTE]
 > I dont use Home Manager
+> all my systems are configured with Grub bootloader with separate /efi partition
+
 
 #### notes on my Nixos-Hyprland
 - GTK themes are install manually. Here is the [`LINK`](https://github.com/JaKooLit/GTK-themes-icons)
 - Hyprland-Dots [`LINK`](https://github.com/JaKooLit/Hyprland-Dots)
 - Installing of Hyprland-Dots how to [`LINK`](https://github.com/JaKooLit/Hyprland-Dots?tab=readme-ov-file#-copying--installation--update-instructions-)
-- Some Notes regarding Hyprland-Dots for Nixos [`LINK`](https://github.com/JaKooLit/Hyprland-Dots?tab=readme-ov-file#-copying--installation--update-instructions-)
 
+
+> [!NOTE]
+> ensure to add 'services.envfs.enable = true' in your configuration.nix to use the Hyprland-Dots above 
+
+- Some Notes regarding Hyprland-Dots for Nixos [`LINK`](https://github.com/JaKooLit/Hyprland-Dots?tab=readme-ov-file#-copying--installation--update-instructions-)
 
 > [!NOTE]
 > I dont use any Log-in Manager. I do utilize ~/.zprofile for auto start for Hyprland
