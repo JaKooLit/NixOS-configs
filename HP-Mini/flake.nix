@@ -4,7 +4,7 @@
   inputs = {
   	nixpkgs.url = "nixpkgs/nixos-unstable";
 	#wallust.url = "git+https://codeberg.org/explosion-mental/wallust?ref=dev";
-	hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1"; # unstable hyprland
+	hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1"; # hyprland development
 	distro-grub-themes.url = "github:AdisonCavani/distro-grub-themes"; 
   	};
 
@@ -12,7 +12,8 @@
 	inputs@{ self,nixpkgs, ... }:
     	let
       	system = "x86_64-linux";
-      	host = "NixOS-MiniPC";
+      	host = "NixOS-MiniPC"; #NOTE: ensure host is same name as config directory.
+		username = "ja"; # set your username here
 
       	pkgs = import nixpkgs {
         	inherit system;
@@ -27,9 +28,9 @@
 		specialArgs = { 
 			inherit system;
 			inherit inputs;
-       		inherit host;
+			inherit username;
 			};
-	   		modules = [ ./profiles/configuration.nix ];
+	   		modules = [ ./${host}/configuration.nix ];
 			};
 		};
 	};

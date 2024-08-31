@@ -12,8 +12,8 @@
   in {
   imports =
     [ # Include the results of the hardware scan.
-    ./Mini-PC/hardware-configuration.nix
-    ./Mini-PC/HP-Mini.nix
+    ./hardware-configuration.nix
+    ./HP-Mini.nix
     ];
 
 	# bootloader
@@ -118,17 +118,18 @@
     yad
     xdg-desktop-portal-hyprland
     #(pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];}))
+
   ]) ++ [
 	  #inputs.wallust.packages.${pkgs.system}.wallust # dev
 	  python-packages # needed for Weather.py
   ];
 
   programs = {
-	hyprland = {
-    enable = true;
-		package = inputs.hyprland.packages.${pkgs.system}.hyprland; #hyprland-git
-    xwayland.enable = true;
-  	};
+	  hyprland = {
+      enable = true;
+		  package = inputs.hyprland.packages.${pkgs.system}.hyprland; #hyprland-git
+      xwayland.enable = true;
+  	  };
 
 	xwayland.enable = true;
 

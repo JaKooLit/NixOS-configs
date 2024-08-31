@@ -1,14 +1,14 @@
 # Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
 
-{ config, pkgs, lib, inputs, system,... }:
+{ config, pkgs, username, lib, inputs, system,... }:
 
   {
   # Kernel Parameters miniPC
   boot = {
     kernelParams = [ 
-    "nowatchdog"
-	  "modprobe.blacklist=iTCO_wdt"
+      "nowatchdog"
+	    "modprobe.blacklist=iTCO_wdt"
  	  ];
   
     initrd = { 
@@ -33,7 +33,7 @@
   
   # User account
   users = {
-	  users.ja = {
+	  users."${username}" = {
     isNormalUser = true;
     extraGroups = [ 
 		  "wheel" 
