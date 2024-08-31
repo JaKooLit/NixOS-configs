@@ -13,9 +13,9 @@
   in {
   imports =
     [ # Include the results of the hardware scan.
-	  ./Asus-G15/Asus-G15.nix
-	  ./Asus-G15/qemu-kvm.nix
-      ./Asus-G15/hardware-configuration.nix
+	  ./Asus-G15.nix
+	  ./qemu-kvm.nix
+      ./hardware-configuration.nix
     ];
 
   # bootloader

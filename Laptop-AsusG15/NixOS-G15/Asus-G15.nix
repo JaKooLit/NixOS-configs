@@ -1,7 +1,7 @@
 # Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
 
-{ config, pkgs, lib, inputs, system, ... }:
+{ config, pkgs, username, lib, inputs, system, ... }:
 
 {
   boot = {
@@ -31,7 +31,7 @@
 
   # User account
   users = {
-	users.ja = {
+	users."${username}" = {
       isNormalUser = true;
       extraGroups = [ 
 		"wheel" 
@@ -58,6 +58,9 @@
 	brightnessctl
   	discord
 	fzf
+
+	google-chrome
+
   	glxinfo
 	krabby
 	kdePackages.okular

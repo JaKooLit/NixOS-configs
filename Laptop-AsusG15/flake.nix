@@ -12,7 +12,8 @@
 	inputs@{ self,nixpkgs, ... }:
     	let
       	system = "x86_64-linux";
-      	host = "NixOS-G15";
+      	host = "NixOS-G15"; #NOTE: ensure host is same name as config directory.
+		username = "ja"; # set your username here
 
       	pkgs = import nixpkgs {
         	inherit system;
@@ -23,13 +24,13 @@
     in
     {
 	nixosConfigurations = {
-		"${host}" = nixpkgs.lib.nixosSystem rec {
-			specialArgs = { 
+      "${host}" = nixpkgs.lib.nixosSystem rec {
+		specialArgs = { 
 			inherit system;
 			inherit inputs;
-      		inherit host;
+			inherit username;
 			};
-	   		modules = [ ./Profiles/configuration.nix ];
+	   		modules = [ ./${host}/configuration.nix ];
 			};
 		};
 	};  	
