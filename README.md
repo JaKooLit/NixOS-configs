@@ -9,7 +9,7 @@
 
 
 #### 💥 notes on my Nixos-Hyprland
-- GTK themes are install manually. Here is the [`LINK`](https://github.com/JaKooLit/GTK-themes-icons)
+- GTK themes and icons needs to install manually. Here is the [`LINK`](https://github.com/JaKooLit/GTK-themes-icons)
 - Hyprland-Dots [`LINK`](https://github.com/JaKooLit/Hyprland-Dots)
 - Installing of Hyprland-Dots how to [`LINK`](https://github.com/JaKooLit/Hyprland-Dots?tab=readme-ov-file#-copying--installation--update-instructions-)
 
