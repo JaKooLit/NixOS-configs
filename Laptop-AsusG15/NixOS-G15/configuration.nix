@@ -109,13 +109,19 @@
 	  python-packages # needed for Weather.py 
   ];
 
+  # enabling Cachix for hyprland on nixos with flakes
+  nix.settings = {
+    substituters = ["https://hyprland.cachix.org"];
+    trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
+  };
 
   programs = {
 	hyprland = {
     	enable = true;
-		package = inputs.hyprland.packages.${pkgs.system}.hyprland;
-		portalPackage = pkgs.xdg-desktop-portal-hyprland;
-    	xwayland.enable = true;
+    	# set the flake package
+    	package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+    	# make sure to also set the portal package, so that they are in sync
+    	portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
   	};
 
 	xwayland.enable = true;
@@ -141,6 +147,7 @@
   xdg.portal.enable = true;
   xdg.portal.extraPortals = with pkgs; [
     	xdg-desktop-portal-gtk
+		#xdg-desktop-portal-hyprland
   ];
   
   services = {
