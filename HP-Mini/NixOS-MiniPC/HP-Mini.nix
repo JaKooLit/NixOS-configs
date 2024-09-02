@@ -8,7 +8,7 @@
   boot = {
     kernelParams = [ 
       "nowatchdog"
-	    "modprobe.blacklist=iTCO_wdt"
+	   "modprobe.blacklist=iTCO_wdt"
  	  ];
   
     initrd = { 
@@ -58,6 +58,9 @@
     krabby
     vscodium
     nvtopPackages.intel # requires unstable channel
+
+	whatsapp-for-linux
+	qbittorrent
   ];
 
   # Additional fonts needed for office stuff
