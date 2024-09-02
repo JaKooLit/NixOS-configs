@@ -16,23 +16,30 @@
       ./qemu-kvm.nix
       ./desktop.nix
     ];
-	
-	# bootloader
-  boot.loader.efi = {
-		efiSysMountPoint = "/efi";
-		canTouchEfiVariables = true;
+
+  # bootloader grub
+  boot.loader = {
+    efi = {
+		  efiSysMountPoint = "/efi"; # MAKE SURE to comment this out if you did not set a /efi partition
+		  canTouchEfiVariables = true;
   		};
-  boot.loader.grub = {
-		enable = true;
-		devices = [ "nodev" ];
-		efiSupport = true;
- 		gfxmodeBios = "auto";
-		memtest86.enable = true;
-		extraGrubInstallArgs = [ "--bootloader-id=NixOS" ];
-		configurationName = "Desktop";
-  	};
-  boot.loader.timeout = 1;
- 
+    grub = {
+		  enable = true;
+		  devices = [ "nodev" ];
+		  efiSupport = true;
+  	  gfxmodeBios = "auto";
+		  memtest86.enable = true;
+		  extraGrubInstallArgs = [ "--bootloader-id=NixOS" ];
+		  configurationName = "Desktop";
+  		};
+	  timeout = 1;
+  };
+  
+  # default systemd-boot (make sure to comment out above if wanted to use systemd-boot)
+  #boot.loader.systemd-boot.enable = true;
+  #boot.loader.efi.canTouchEfiVariables = true;
+  
+  	 
   # NOTE SET KERNEL BOOTLOADER OPTIONS and Hostname ON INDIVIDUAL MODULE NIX  
   networking.networkmanager.enable = true; 
 
@@ -165,6 +172,7 @@
 	dconf.enable = true;
 	
 	waybar.enable = true;
+	
   };
 
   xdg.portal.enable = true;

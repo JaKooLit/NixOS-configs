@@ -46,7 +46,7 @@
 		  "libvirtd"
 		  "tss"
 		]; 
-    packages = with pkgs; [		
+    packages = with pkgs; [
      	];
   	};
 
