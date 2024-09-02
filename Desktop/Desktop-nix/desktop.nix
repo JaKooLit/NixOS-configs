@@ -1,7 +1,7 @@
 # Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
 
-{ config, pkgs, lib, inputs, system,... }:
+{ config, pkgs, username, lib, inputs, system,... }:
 
   {
   # Kernel Parameters Desktop
@@ -9,7 +9,7 @@
     kernelParams = [
     	"systemd.mask=systemd-vconsole-setup.service"
     	"systemd.mask=dev-tpmrm0.device"
-      "nowatchdog"
+       	"nowatchdog"
 	   	"modprobe.blacklist=sp5100_tco"
  	  ];
   
@@ -36,7 +36,7 @@
 
   # User account
   users = {
-	users.ja = {
+	users."${username}" = {
     isNormalUser = true;
     extraGroups = [ 
 		  "wheel" 

@@ -32,6 +32,6 @@ fi
 
 
 System Specs
-- Asus G15 - AMD CPU + Nvidia Discreet GPU
+- Asus G15 - AMD 5900HS + Nvidia RTX 3080
 - HP-Mini PC - Intel 8500T igpu only
-- Desktop - Full AMD
+- Desktop - Full AMD (5950X + RX 6900XT)

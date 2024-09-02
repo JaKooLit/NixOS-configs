@@ -11,11 +11,15 @@
   ];
 
   programs.virt-manager.enable = true;
-  virtualisation.libvirtd.enable = true;
-  virtualisation.libvirtd.onShutdown = "shutdown";
-  virtualisation.spiceUSBRedirection.enable = true;
-  #virtualisation.libvirtd.extraOptions = 
-  #	[
-  #	"--tray"
-  #];
+  virtualisation = {
+  	libvirtd = {
+  		enable = true;
+  	qemu = {
+  		swtpm.enable = true;
+  	  	};
+  	};
+  	spiceUSBRedirection.enable = true;
+  };
+  services.spice-vdagentd.enable = true;
+  
 }

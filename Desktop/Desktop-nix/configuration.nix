@@ -12,11 +12,9 @@
 	in {
   imports =
     [ # Include the results of the hardware scan.
-      ./Profiles/Desktop/hardware-configuration.nix
-      #./modules/HP-Mini.nix
-      #./asus-g15.nix
-      ./Profiles/Desktop/qemu-kvm.nix
-      ./Profiles/Desktop/desktop.nix
+      ./hardware-configuration.nix
+      ./qemu-kvm.nix
+      ./desktop.nix
     ];
 	
 	# bootloader
@@ -69,6 +67,8 @@
     glib #for gsettings to work
 	killall  
     libappindicator
+    libayatana-appindicator
+    libappindicator-gtk3
     libnotify
     openssl #required by Rainbow borders
     vim
@@ -84,7 +84,7 @@
     ranger
       
     # Hyprland Stuff | Laptop related stuff on a separate .nix
-	  ags        
+	ags        
     btop
     cava
     cliphist
@@ -97,13 +97,13 @@
     hypridle # requires unstable channel
     jq
     kitty
-	  libsForQt5.qtstyleplugin-kvantum #kvantum
-	  networkmanagerapplet
+	libsForQt5.qtstyleplugin-kvantum #kvantum
+	networkmanagerapplet
     nwg-look # requires unstable channel
     nvtopPackages.full
     pamixer
     pavucontrol
-	  playerctl
+	playerctl
     polkit_gnome
     pyprland
     qt5ct
@@ -129,12 +129,22 @@
 	  #inputs.ags.packages.${pkgs.system}.ags
   ];
 
+  programs.nm-applet.indicator = true;
+  
+  
+  # Cachix for Hyprland (required on flakes)
+  nix.settings = {
+    substituters = ["https://hyprland.cachix.org"];
+    trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
+  };
+  
   programs = {
 	hyprland = {
-    enable = true;
-    package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-    portalPackage = pkgs.xdg-desktop-portal-hyprland;
-    xwayland.enable = true;
+      enable = true;
+      # set the flake package
+      package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+      # make sure to also set the portal package, so that they are in sync
+      portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
   	};
 
 	xwayland.enable = true;
@@ -208,7 +218,7 @@
     noto-fonts-cjk
     jetbrains-mono
     font-awesome
-	  terminus_font
+	terminus_font
     (nerdfonts.override {fonts = ["JetBrainsMono"];})
  	];
   
