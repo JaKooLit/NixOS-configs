@@ -77,7 +77,7 @@
     fastfetch
     (mpv.override {scripts = [mpvScripts.mpris];}) # with tray
     ranger
-	  yt-dlp
+	yt-dlp
       
     # Hyprland Stuff | Laptop related stuff on a separate .nix
     ags      
@@ -117,7 +117,6 @@
     wl-clipboard
     wlogout
     yad
-    #xdg-desktop-portal-hyprland
     #(pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];}))
 
   ]) ++ [
@@ -135,8 +134,8 @@
   programs = {
 	  hyprland = {
       enable = true;
-		  package = inputs.hyprland.packages.${pkgs.system}.hyprland; #hyprland-git
-		  portalPackage = pkgs.xdg-desktop-portal-hyprland; # xdph
+		  package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland; #hyprland-git
+		  portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland; # xdph
       xwayland.enable = true;
   	  };
 
@@ -163,7 +162,6 @@
   xdg.portal.enable = true;
   xdg.portal.extraPortals = with pkgs; [
     xdg-desktop-portal-gtk
-	#xdg-desktop-portal-hyprland
   ];
   
   services = {
