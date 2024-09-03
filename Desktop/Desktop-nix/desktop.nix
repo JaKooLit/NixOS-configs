@@ -1,7 +1,7 @@
 # Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
 
-{ config, pkgs, username, lib, inputs, system,... }:
+{ config, pkgs, username, host, lib, inputs, system,... }:
 
   {
   # Kernel Parameters Desktop
@@ -32,7 +32,7 @@
   };
   
   
-  networking.hostName = "NixOS-Desktop";
+  networking.hostName = "${host}";
 
   # User account
   users = {

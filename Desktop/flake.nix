@@ -29,6 +29,7 @@
 			inherit system;
 			inherit inputs;
 			inherit username;
+			inherit host;
 			};
 	   		modules = [ ./${host}/configuration.nix ];
 			};
