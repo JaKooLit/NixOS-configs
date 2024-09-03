@@ -36,7 +36,7 @@ fi
 - copy the configs into your flakes folder
 - edit Flakes.nix with your username and Host. NOTE and IMPORTANT, name of CONFIG DIRECTORY SHOULD be SAME as HOST
 <p align="center">
-    <img align="center" width="100%" src="https://github.com/JaKooLit/NixOS-configs/blob/NixOS-Flakes.png" />
+    <img align="center" width="100%" src="https://github.com/JaKooLit/NixOS-configs/blob/main/NixOS-Flakes.png" />
 
 - delete the hardware-configuration.nix from the `Desktop-nix` directory.
 - copy the hardware-configuration.nix from /etc/nixos/hardware-configuration.nix
