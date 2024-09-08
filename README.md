@@ -4,7 +4,7 @@
 </div>
 
 
-<h4 align="left">
+<h4 align="center">
 <img src="https://github.com/JaKooLit/Telegram-Animated-Emojis/blob/main/Objects/File Folder.webp" alt="File Folder" width="38" height="38" />   <a href="https://github.com/JaKooLit/NixOS-Hyprland"> 👉 NixOS-Hyprland Install Script </a><br><br>
 </h4>
 
