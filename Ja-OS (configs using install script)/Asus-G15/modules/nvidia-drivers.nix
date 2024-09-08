@@ -16,12 +16,12 @@ in
   	enable32Bit = true;
 	  extraPackages = with pkgs; [
 	    vaapiVdpau
-  	  libvdpau
-  	  libvdpau-va-gl 
-  	  nvidia-vaapi-driver
-  	  vdpauinfo
-	    libva
- 		  libva-utils		
+      libvdpau
+      libvdpau-va-gl 
+      nvidia-vaapi-driver
+      vdpauinfo
+      libva
+      libva-utils		
     	];
   	};
 
@@ -30,7 +30,7 @@ in
     modesetting.enable = true;
       
     # Nvidia power management. Experimental, and can cause sleep/suspend to fail.
-    powerManagement.enable = false;
+    powerManagement.enable = true;
       
     # Fine-grained power management. Turns off GPU when not in use.
     # Experimental and only works on modern Nvidia GPUs (Turing or newer).

@@ -107,11 +107,11 @@
   # Extra Module Options
   drivers.amdgpu.enable = true;
   drivers.intel.enable = false;
-   drivers.nvidia.enable = true;
+  drivers.nvidia.enable = true;
   drivers.nvidia-prime = {
-    enable = false;
-    intelBusID = "";
-    nvidiaBusID = "";
+    enable = true;
+    #amdgpuBusID = "";
+    #nvidiaBusID = "";
   };
   vm.guest-services.enable = false;
   local.hardware-clock.enable = false;

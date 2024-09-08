@@ -10,14 +10,14 @@ in
       isNormalUser = true;
       description = "${gitUsername}";
       extraGroups = [
-        "networkmanager"
-        "wheel"
-        "libvirtd"
-        "scanner"
-        "lp"
-        "video" 
-        "input" 
-        "audio"
+		"wheel" 
+		"video" 
+		"input" 
+		"audio"
+		"storage"
+		"scanner" 
+		"lp" 
+		"libvirtd"
       ];
 
     # define user packages here
