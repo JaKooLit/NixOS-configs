@@ -4,6 +4,14 @@
 </div>
 
 
+<h4 align="left">
+<img src="https://github.com/JaKooLit/Telegram-Animated-Emojis/blob/main/Objects/File Folder.webp" alt="File Folder" width="38" height="38" />   <a href="https://github.com/JaKooLit/NixOS-Hyprland"> 👉 NixOS-Hyprland Install Script </a><br><br>
+</h4>
+
+<div align="center">
+ 👆🏻 👆🏻 👆🏻 👆🏻 👆🏻  Use The Install Script Above 👆🏻 👆🏻 👆🏻 👆🏻 👆🏻
+</div>
+
 > [!CAUTION]
 > I dont use Home Manager & all my systems are configured with Grub bootloader with separate /efi partition
 
@@ -30,6 +38,9 @@ if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
 fi
 ```
 
+<details>
+<summary align=center> 👉🏻 Previous TIPS in using these configs </summary>
+
 #### ‼️ TIPS to use these configs
 - For the purpose of this tutorial, sample config to use is "Desktop"
 - install and configure NixOS with flakes
@@ -42,6 +53,8 @@ fi
 - copy the hardware-configuration.nix from /etc/nixos/hardware-configuration.nix
 - Edit the `configuration.nix` & `desktop.nix`. NOTE and IMPORTANT the Bootloader part.
 - once you update and edit as required, ran `sudo nixos-rebuild switch --flake .#<HOSTNAME>` remember to edit HOSTNAME as per your hostname.
+
+</details>
 
 #### 🖥️ System Specs
 - Asus G15 - AMD 5900HS + Nvidia RTX 3080
