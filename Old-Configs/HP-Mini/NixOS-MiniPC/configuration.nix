@@ -17,10 +17,10 @@
     ./HP-Mini.nix
     ];
 
-	# bootloader GRUB
+	# bootloader
   boot.loader = {
     efi = {
-		  efiSysMountPoint = "/efi"; # MAKE SURE to comment this out if you did not set a /efi partition
+		  efiSysMountPoint = "/efi";
 		  canTouchEfiVariables = true;
   		};
     grub = {
@@ -35,10 +35,6 @@
 	  timeout = 1;
   };
 
-  # default systemd-boot (make sure to comment out above if wanted to use systemd-boot)
-  #boot.loader.systemd-boot.enable = true;
-  #boot.loader.efi.canTouchEfiVariables = true;
-  
   # NOTE SET KERNEL BOOTLOADER OPTIONS and Hostname ON INDIVIDUAL MODULE NIX  
   networking.networkmanager.enable = true; 
 
