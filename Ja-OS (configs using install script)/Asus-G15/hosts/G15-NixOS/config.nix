@@ -68,11 +68,11 @@
 	    enable = true;
 	      devices = [ "nodev" ];
 	      efiSupport = true;
-          gfxmodeBios = "auto";
+        gfxmodeBios = "auto";
 	      memtest86.enable = true;
 	      extraGrubInstallArgs = [ "--bootloader-id=${host}" ];
 	      configurationName = "${host}";
-  	  	 };
+  	  	};
 
     # Bootloader GRUB theme, configure below
 
@@ -149,13 +149,12 @@
   	  xwayland.enable = true;
       };
 
-	
 	  waybar.enable = true;
 	  hyprlock.enable = true;
 	  firefox.enable = true;
 	  git.enable = true;
     nm-applet.indicator = true;
-    neovim.enable = true;
+    #neovim.enable = true;
 
 	  thunar.enable = true;
 	  thunar.plugins = with pkgs.xfce; [
@@ -166,8 +165,8 @@
 		  tumbler
   	  ];
 	
-    virt-manager.enable = false;
-	system-config-printer.enable = true;
+    virt-manager.enable = true;
+	  system-config-printer.enable = true;
     
     #steam = {
     #  enable = true;
@@ -216,7 +215,7 @@
 
     fastfetch
     (mpv.override {scripts = [mpvScripts.mpris];}) # with tray
-    #ranger
+    
       
     # Hyprland Stuff
     ags        
@@ -260,22 +259,25 @@
     yt-dlp
 
 	# Asus G15 additional
-	brightnessctl
-  	discord
-  	glxinfo
-	krabby
-	kdePackages.okular
-  	libreoffice-fresh
-  	obs-studio
-	pdfarranger
-	shotcut
-  	thunderbird
-  	yt-dlp
+    brightnessctl
+    discord
+    glxinfo
+    #krabby
+    kdePackages.okular
+    libreoffice-fresh
+    obs-studio
+    pdfarranger
+    qemu
+	  ranger
+    shotcut
+    thunderbird
+    yt-dlp
     vscodium
     (epsonscan2.override { withNonFreePlugins = true; withGui = true; }) 
 
     #waybar  # if wanted experimental next line
     #(pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];}))
+  
   ]) ++ [
 	  python-packages
   ];
@@ -434,6 +436,28 @@
 	  cpuFreqGovernor = "schedutil";
   };
 
+  # Masking sleep, hibernate, suspend.. etc
+  systemd = {
+		targets = {
+		  sleep = {
+		  enable = false;
+		  unitConfig.DefaultDependencies = "no";
+  	  	};
+		  suspend = {
+		  enable = false;
+		  unitConfig.DefaultDependencies = "no";
+		  };
+		  hibernate = {
+		  enable = false;
+		  unitConfig.DefaultDependencies = "no";
+		  };
+		  "hybrid-sleep" = {
+		  enable = false;
+		  unitConfig.DefaultDependencies = "no";
+		    };
+	    };
+  };
+
 	# for network scanner
   hardware.sane = {
 	  enable = true;
@@ -508,11 +532,26 @@
   };
 
   # Virtualization / Containers
-  virtualisation.libvirtd.enable = true;
+  virtualisation.libvirtd = {
+	enable = true;
+	  qemu = {
+        package = pkgs.qemu_kvm;
+        runAsRoot = true;
+        swtpm.enable = false;
+      ovmf = {
+        enable = true;
+        packages = [(pkgs.OVMF.override {
+        secureBoot = false;
+        tpmSupport = false;
+      	}).fd];
+      };
+    };
+  };
+
   virtualisation.podman = {
-    enable = true;
-    dockerCompat = true;
-    defaultNetwork.settings.dns_enabled = true;
+    enable = false;
+    dockerCompat = false;
+    defaultNetwork.settings.dns_enabled = false;
   };
 
   # OpenGL
