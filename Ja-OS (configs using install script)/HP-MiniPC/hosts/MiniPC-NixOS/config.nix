@@ -165,13 +165,6 @@
 	
     virt-manager.enable = false;
     
-    #steam = {
-    #  enable = true;
-    #  gamescopeSession.enable = true;
-    #  remotePlay.openFirewall = true;
-    #  dedicatedServer.openFirewall = true;
-    #};
-    
     xwayland.enable = true;
 
     dconf.enable = true;
@@ -256,10 +249,10 @@
     yad
     yt-dlp
 
-	  #added to miniPC
-	  discord
-    ranger
-    vscodium
+	#added to miniPC
+	discord
+	ranger
+	vscodium
 
     #waybar  # if wanted experimental next line
     #(pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];}))
@@ -408,8 +401,8 @@
   #};
 
   # Extra Logitech Support
-  hardware.logitech.wireless.enable = false;
-  hardware.logitech.wireless.enableGraphical = false;
+  #hardware.logitech.wireless.enable = false;
+  #hardware.logitech.wireless.enableGraphical = false;
 
   # Bluetooth
   hardware = {
