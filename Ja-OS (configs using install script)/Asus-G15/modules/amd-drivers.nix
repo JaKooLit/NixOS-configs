@@ -16,8 +16,9 @@ in
     hardware.graphics = {
       extraPackages = with pkgs; [
         libva
-			  libva-utils	
+		libva-utils	
         ];
     };
+	hardware.amdgpu.opencl.enable = true;
   };
 }

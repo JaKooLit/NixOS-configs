@@ -25,6 +25,10 @@ in
     	];
   	};
 
+  environment.systemPackages = [
+    pkgs.python312Packages.nvidia-ml-py
+  ];
+
   hardware.nvidia = {
     # Modesetting is required.
     modesetting.enable = true;

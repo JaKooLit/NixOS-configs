@@ -1,19 +1,20 @@
-# 💫 https://github.com/JaKooLit 💫 #
 # Main default config
-
-
-# NOTE!!! : Packages and Fonts are configured in packages-&-fonts.nix
-
 
 { config, pkgs, host, username, options, lib, inputs, system, ...}: let
   
   inherit (import ./variables.nix) keyboardLayout;
-    
+  python-packages = pkgs.python3.withPackages (
+    ps:
+      with ps; [
+        requests
+        pyquery # needed for hyprland-dots Weather script
+        ]
+    );
+  
   in {
   imports = [
     ./hardware.nix
     ./users.nix
-    ./packages-fonts.nix
     ../../modules/amd-drivers.nix
     ../../modules/nvidia-drivers.nix
     ../../modules/nvidia-prime-drivers.nix
@@ -191,6 +192,112 @@
     mutableUsers = true;
   };
 
+  environment.systemPackages = (with pkgs; [
+  # System Packages
+    baobab
+    btrfs-progs
+    clang
+    cpufrequtils
+    duf
+    eza
+    ffmpeg   
+    glib #for gsettings to work
+    gsettings-qt
+    killall  
+    libappindicator
+    libnotify
+    openssl #required by Rainbow borders
+    pciutils
+    vim
+    wget
+    xdg-user-dirs
+    xdg-utils
+
+    fastfetch
+    (mpv.override {scripts = [mpvScripts.mpris];}) # with tray
+    
+      
+    (ags.overrideAttrs (oldAttrs: {
+        inherit (oldAttrs) pname;
+        version = "1.8.2";
+      }))
+    audacious        
+    btop
+    cava
+    cliphist
+    eog
+    gnome-system-monitor
+    file-roller
+    grim
+    gtk-engine-murrine #for gtk themes
+    hyprcursor # requires unstable channel
+    hypridle # requires unstable channel
+    imagemagick 
+    inxi
+    jq
+    kitty
+	libsForQt5.qt5ct
+    libsForQt5.qtstyleplugin-kvantum #kvantum
+    networkmanagerapplet
+    nwg-look # requires unstable channel
+    nvtopPackages.full
+    pamixer
+    pavucontrol
+    playerctl
+    polkit_gnome
+    pyprland 
+    qt6ct
+    qt6.qtwayland
+    qt6Packages.qtstyleplugin-kvantum #kvantum
+    rofi-wayland
+    slurp
+    swappy
+    swaynotificationcenter
+    swww
+    unzip
+    wallust
+    wl-clipboard
+    wlogout
+    yad
+    yt-dlp
+
+	# Asus G15 additional
+    brightnessctl
+    discord-canary
+    glxinfo
+    #krabby
+    kdePackages.okular
+    libreoffice-fresh
+    obs-studio
+    pdfarranger
+    qemu
+	ranger
+    shotcut
+	teams-for-linux
+    thunderbird
+    yt-dlp
+    vscodium
+	whatsapp-for-linux
+    (epsonscan2.override { withNonFreePlugins = true; withGui = true; }) 
+
+    #waybar  # if wanted experimental next line
+    #(pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];}))
+  
+  ]) ++ [
+	  python-packages
+  ];
+
+  # FONTS
+  fonts.packages = with pkgs; [
+    noto-fonts
+    fira-code
+	nerd-fonts.jetbrains-mono
+    noto-fonts-cjk-sans #dec 2024
+    jetbrains-mono
+    font-awesome
+	terminus_font	
+ 	];
+
   # Extra Portal Configuration
   xdg.portal = {
     enable = true;
@@ -269,19 +376,39 @@
     
     gnome.gnome-keyring.enable = true;
     
-    #printing = {
-    #  enable = false;
-    #  drivers = [
-        # pkgs.hplipWithPlugin
-    #  ];
-    #};
+    printing = {
+      enable = true;
+      drivers = with pkgs; [
+			epson-escpr
+			epson-escpr2
+      ];
+    };
     
-    #avahi = {
-    #  enable = true;
-    #  nssmdns4 = true;
-    #  openFirewall = true;
-    #};
-    
+
+	avahi = {
+		enable = true; # necessary for network printing / scanning
+		nssmdns4 = true;
+		openFirewall = true;
+     	publish = {
+       		enable = true;
+       		addresses = true;
+       		userServices = true;
+     		};
+		};
+	
+	asusd = {
+		enable = true;
+	  	enableUserService = true;
+      };
+
+	supergfxd.enable = true;
+	power-profiles-daemon.enable = true;
+
+	logind = {
+		lidSwitch = "ignore";
+		lidSwitchExternalPower = "ignore";
+		lidSwitchDocked = "ignore";
+	};    
     #ipp-usb.enable = true;
     
     #syncthing = {
@@ -314,11 +441,36 @@
 	  cpuFreqGovernor = "schedutil";
   };
 
-  #hardware.sane = {
-  #  enable = true;
-  #  extraBackends = [ pkgs.sane-airscan ];
-  #  disabledDefaultBackends = [ "escl" ];
-  #};
+  # Masking sleep, hibernate, suspend.. etc
+  systemd = {
+		targets = {
+		  sleep = {
+		  enable = false;
+		  unitConfig.DefaultDependencies = "no";
+  	  	};
+		  suspend = {
+		  enable = false;
+		  unitConfig.DefaultDependencies = "no";
+		  };
+		  hibernate = {
+		  enable = false;
+		  unitConfig.DefaultDependencies = "no";
+		  };
+		  "hybrid-sleep" = {
+		  enable = false;
+		  unitConfig.DefaultDependencies = "no";
+		    };
+	    };
+  };
+
+	# for network scanner
+  hardware.sane = {
+	  enable = true;
+	  extraBackends = [
+		pkgs.epsonscan2
+		];
+	  disabledDefaultBackends = ["escl"];
+  		};
 
   # Extra Logitech Support
   hardware.logitech.wireless.enable = false;
@@ -340,7 +492,7 @@
 
   # Enable sound with pipewire.
   hardware.pulseaudio.enable = false;
-
+  hardware.i2c.enable = true;
   # Security / Polkit
   security.rtkit.enable = true;
   security.polkit.enable = true;
@@ -385,7 +537,22 @@
   };
 
   # Virtualization / Containers
-  virtualisation.libvirtd.enable = false;
+  virtualisation.libvirtd = {
+	enable = true;
+	  qemu = {
+        package = pkgs.qemu_kvm;
+        runAsRoot = true;
+        swtpm.enable = false;
+      ovmf = {
+        enable = true;
+        packages = [(pkgs.OVMF.override {
+        secureBoot = false;
+        tpmSupport = false;
+      	}).fd];
+      };
+    };
+  };
+
   virtualisation.podman = {
     enable = false;
     dockerCompat = false;
@@ -414,5 +581,5 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "24.11"; # Did you read the comment?
+  system.stateVersion = "24.05"; # Did you read the comment?
 }
