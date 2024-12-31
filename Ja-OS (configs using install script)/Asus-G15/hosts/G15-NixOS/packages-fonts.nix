@@ -48,7 +48,7 @@
         version = "1.8.2";
       }))
     #ags    
-    btop-rocm
+    btop
     brightnessctl # for brightness control
     cava
     cliphist
@@ -102,7 +102,7 @@
     pdfarranger
     qemu
 	ranger
-    shotcut
+    #shotcut
 	teams-for-linux
     thunderbird
     yt-dlp

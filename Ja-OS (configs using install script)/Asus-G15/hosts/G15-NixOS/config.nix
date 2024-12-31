@@ -260,36 +260,49 @@
 	
   	blueman.enable = true;
   	
+	# asusctl related
+	asusd = {
+		enable = true;
+	  	enableUserService = true;
+      };
+
+	supergfxd.enable = true;
+	power-profiles-daemon.enable = true;
+
+	logind = {
+		lidSwitch = "ignore";
+		lidSwitchExternalPower = "ignore";
+		lidSwitchDocked = "ignore";
+	};
+
+	printing = {
+		enable = true;
+		drivers = with pkgs; [
+			epson-escpr
+			epson-escpr2			
+			];
+  		};
+	
+	avahi = {
+		enable = true; # necessary for network printing / scanning
+		nssmdns4 = true;
+		openFirewall = true;
+     	publish = {
+       		enable = true;
+       		addresses = true;
+       		userServices = true;
+     		};
+		};
+
   	#hardware.openrgb.enable = true;
   	#hardware.openrgb.motherboard = "amd";
 
-	  fwupd.enable = true;
+	fwupd.enable = true;
 
-	  upower.enable = true;
+	upower.enable = true;
     
     gnome.gnome-keyring.enable = true;
     
-    #printing = {
-    #  enable = false;
-    #  drivers = [
-        # pkgs.hplipWithPlugin
-    #  ];
-    #};
-    
-    #avahi = {
-    #  enable = true;
-    #  nssmdns4 = true;
-    #  openFirewall = true;
-    #};
-    
-    #ipp-usb.enable = true;
-    
-    #syncthing = {
-    #  enable = false;
-    #  user = "${username}";
-    #  dataDir = "/home/${username}";
-    #  configDir = "/home/${username}/.config/syncthing";
-    #};
 
   };
   
@@ -314,11 +327,20 @@
 	  cpuFreqGovernor = "schedutil";
   };
 
-  #hardware.sane = {
-  #  enable = true;
-  #  extraBackends = [ pkgs.sane-airscan ];
-  #  disabledDefaultBackends = [ "escl" ];
-  #};
+  hardware = {
+	cpu.amd.updateMicrocode = true;
+
+	# for network scanner
+	sane = {
+	  enable = true;
+	  extraBackends = [
+		pkgs.epsonscan2
+		];
+	  disabledDefaultBackends = ["escl"];
+  		};
+
+	i2c.enable = true;
+  };
 
   # Extra Logitech Support
   hardware.logitech.wireless.enable = false;
