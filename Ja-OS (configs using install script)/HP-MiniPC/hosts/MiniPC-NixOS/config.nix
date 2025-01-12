@@ -30,8 +30,8 @@
  	  ];
 
     # This is for OBS Virtual Cam Support
-    kernelModules = [ "v4l2loopback" ];
-    extraModulePackages = [ config.boot.kernelPackages.v4l2loopback ];
+    #kernelModules = [ "v4l2loopback" ];
+    #extraModulePackages = [ config.boot.kernelPackages.v4l2loopback ];
     
     initrd = { 
       availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "sd_mod" ];
@@ -135,8 +135,8 @@
   programs = {
 	hyprland = {
      enable = true;
-     package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland; #hyprland-git
-     portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland; # xdphls
+     	#package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland; #hyprland-git
+     	portalPackage = pkgs.xdg-desktop-portal-hyprland; # xdph
   	  xwayland.enable = true;
       };
 
@@ -218,19 +218,20 @@
 	  gvfs.enable = true;
 	  tumbler.enable = true;
 
-	  pipewire = {
+	pipewire = {
       enable = true;
       alsa.enable = true;
       alsa.support32Bit = true;
       pulse.enable = true;
 	    wireplumber.enable = true;
   	  };
-	
-	  udev.enable = true;
-	  envfs.enable = true;
-	  dbus.enable = true;
 
-	  fstrim = {
+	pulseaudio.enable = false;	
+	udev.enable = true;
+	envfs.enable = true;
+	dbus.enable = true;
+
+	fstrim = {
       enable = true;
       interval = "weekly";
       };
@@ -248,9 +249,9 @@
   	#hardware.openrgb.enable = true;
   	#hardware.openrgb.motherboard = "amd";
 
-	  fwupd.enable = true;
+	fwupd.enable = true;
 
-	  upower.enable = true;
+	upower.enable = true;
     
     gnome.gnome-keyring.enable = true;
     
@@ -326,7 +327,7 @@
   hardware.cpu.intel.updateMicrocode = true;
   
 # Enable sound with pulseaduio
-  hardware.pulseaudio.enable = false;
+  #hardware.pulseaudio.enable = false;
 
   # Security / Polkit
   security.rtkit.enable = true;
