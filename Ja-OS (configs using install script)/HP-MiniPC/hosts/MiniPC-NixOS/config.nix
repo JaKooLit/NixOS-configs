@@ -130,64 +130,6 @@
     LC_TIME = "en_US.UTF-8";
   };
 
-  nixpkgs.config.allowUnfree = true;
-  
-  programs = {
-	hyprland = {
-     enable = true;
-     	#package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland; #hyprland-git
-     	portalPackage = pkgs.xdg-desktop-portal-hyprland; # xdph
-  	  xwayland.enable = true;
-      };
-
-	
-	waybar.enable = true;
-	hyprlock.enable = true;
-	firefox.enable = true;
-	git.enable = true;
-    nm-applet.indicator = true;
-    neovim.enable = true;
-
-	thunar.enable = true;
-	thunar.plugins = with pkgs.xfce; [
-	  exo
-	  mousepad
-	  thunar-archive-plugin
-	  thunar-volman
-	  tumbler
-  	  ];
-	
-    virt-manager.enable = false;
-    
-    xwayland.enable = true;
-
-    dconf.enable = true;
-    seahorse.enable = true;
-    fuse.userAllowOther = true;
-    mtr.enable = true;
-    gnupg.agent = {
-      enable = true;
-      enableSSHSupport = true;
-    };
-	
-  };
-
-  users = {
-    mutableUsers = true;
-  };
-
-  # Extra Portal Configuration
-  xdg.portal = {
-    enable = true;
-    wlr.enable = false;
-    extraPortals = [
-      pkgs.xdg-desktop-portal-gtk
-    ];
-    configPackages = [
-      pkgs.xdg-desktop-portal-gtk
-      pkgs.xdg-desktop-portal
-    ];
-  };
 
   # Services to start
   services = {
@@ -255,6 +197,7 @@
     
     gnome.gnome-keyring.enable = true;
     
+	power-profiles-daemon.enable = true;
     #printing = {
     #  enable = false;
     #  drivers = [

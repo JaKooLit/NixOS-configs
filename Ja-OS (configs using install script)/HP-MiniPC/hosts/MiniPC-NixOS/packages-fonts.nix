@@ -50,7 +50,7 @@
     cava
     cliphist
     eog
-	  file-roller
+	file-roller
     gnome-system-monitor
     grim
     gtk-engine-murrine #for gtk themes
@@ -82,17 +82,17 @@
     wallust
     wl-clipboard
     wlogout
-	  #xarchiver
+	#xarchiver
     yad
     yt-dlp
 
-	  #added to miniPC
-	  audacious
-	  discord-canary
-	  gparted
-	  qbittorrent
-	  ranger
-	  vscodium
+	#added to miniPC
+	audacious
+	discord-canary
+	gparted
+	qbittorrent
+	ranger
+	vscodium
 
     #waybar  # if wanted experimental next line
     #(pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];}))
@@ -107,8 +107,64 @@
     noto-fonts-cjk-sans
     jetbrains-mono
     font-awesome
-	  terminus_font
+	terminus_font
     nerd-fonts.jetbrains-mono
-	  nerd-fonts.fira-code
+	nerd-fonts.fira-code
  	];
-  }
+
+  nixpkgs.config.allowUnfree = true;
+  
+  programs = {
+	hyprland = {
+     enable = true;
+     	#package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland; #hyprland-git
+     	portalPackage = pkgs.xdg-desktop-portal-hyprland; # xdph
+  	  xwayland.enable = true;
+      };
+
+	
+	waybar.enable = true;
+	hyprlock.enable = true;
+	firefox.enable = true;
+	git.enable = true;
+    nm-applet.indicator = true;
+    neovim.enable = true;
+
+	thunar.enable = true;
+	thunar.plugins = with pkgs.xfce; [
+	  exo
+	  mousepad
+	  thunar-archive-plugin
+	  thunar-volman
+	  tumbler
+  	  ];
+	
+    virt-manager.enable = false;
+    
+    xwayland.enable = true;
+
+    dconf.enable = true;
+    seahorse.enable = true;
+    fuse.userAllowOther = true;
+    mtr.enable = true;
+    gnupg.agent = {
+      enable = true;
+      enableSSHSupport = true;
+    };
+	
+  };  
+
+  # Extra Portal Configuration
+  xdg.portal = {
+    enable = true;
+    wlr.enable = false;
+    extraPortals = [
+      pkgs.xdg-desktop-portal-gtk
+    ];
+    configPackages = [
+      pkgs.xdg-desktop-portal-gtk
+      pkgs.xdg-desktop-portal
+    ];
+  };
+
+}

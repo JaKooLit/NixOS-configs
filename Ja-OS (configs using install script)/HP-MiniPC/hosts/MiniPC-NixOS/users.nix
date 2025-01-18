@@ -4,7 +4,8 @@ let
   inherit (import ./variables.nix) gitUsername;
 in
 {
-  users = { 
+  users = {
+    mutableUsers = true; 
     users."${username}" = {
       homeMode = "755";
       isNormalUser = true;
@@ -18,7 +19,7 @@ in
         "video" 
         "input" 
         "audio"
-      ];
+        ];
 
     # define user packages here
     packages = with pkgs; [
@@ -29,8 +30,8 @@ in
   }; 
   
   environment.shells = with pkgs; [ zsh ];
-  environment.systemPackages = with pkgs; [ fzf ]; 
-    
+  environment.systemPackages = with pkgs; [ fzf ];   
+  
   programs = {
   # Zsh configuration
 	  zsh = {
