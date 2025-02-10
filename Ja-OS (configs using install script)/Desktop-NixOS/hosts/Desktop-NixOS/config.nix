@@ -14,6 +14,7 @@
   imports = [
     ./hardware.nix
     ./users.nix
+    ./packages-fonts.nix
     ../../modules/amd-drivers.nix
     ../../modules/nvidia-drivers.nix
     ../../modules/nvidia-prime-drivers.nix
@@ -31,7 +32,7 @@
       "systemd.mask=dev-tpmrm0.device" #this is to mask that stupid 1.5 mins systemd bug
  	  "iommu=on" 
 	  "amd_iommu=on" 
-	  "amd_pstate=guided" 
+	  "amd_pstate=active" 
 	  "nowatchdog"
 	  "modprobe.blacklist=sp5100_tco" 
  	  ];
@@ -137,175 +138,6 @@
     LC_TIME = "en_US.UTF-8";
   };
 
-  nixpkgs.config.allowUnfree = true;
-  
-  programs = {
-	hyprland = {
-      enable = true;
-		  package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland; #hyprland-git
-		  portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland; # xdphls
-		  xwayland.enable = true;
-		};
-
-	xwayland.enable = true;
-
-	waybar.enable = true;
-	hyprlock.enable = true;
-	firefox.enable = true;
-	git.enable = true;
-
-	thunar.enable = true;
-	thunar.plugins = with pkgs.xfce; [
-		exo
-		mousepad
-		thunar-archive-plugin
-		thunar-volman
-		tumbler
-  	];
-	
-	nm-applet.indicator = true;
-    dconf.enable = true;
-    seahorse.enable = true;
-    fuse.userAllowOther = true;
-    mtr.enable = true;
-    gnupg.agent = {
-      enable = true;
-      enableSSHSupport = true;
-    };
-    
-    virt-manager.enable = true;
-    nix-ld.enable = true;
-    
-	neovim.enable = true;
-	#steam = {
-    #  enable = true;
-    #  gamescopeSession.enable = true;
-    #  remotePlay.openFirewall = true;
-    #  dedicatedServer.openFirewall = true;
-    #};
-  
-  # corectrl (Overclocking AMD GPU's)
-  corectrl = {
-	enable = true;
-	gpuOverclock.enable = true;
-	gpuOverclock.ppfeaturemask = "0xffffffff";
-	};
-	
-  };
-
-  users = {
-    mutableUsers = true;
-  };
-
-  environment.systemPackages = (with pkgs; [
-  # System Packages
-    baobab
-    btrfs-progs
-	clang
-    cpufrequtils
-    duf
-    eza
-    ffmpeg   
-    glib #for gsettings to work
-    gsettings-qt
-    killall  
-    libappindicator
-    libnotify
-    openssl #required by Rainbow borders
-    pciutils
-    vim
-    wget
-	xarchiver
-    xdg-user-dirs
-    xdg-utils
-
-    fastfetch
-    (mpv.override {scripts = [mpvScripts.mpris];}) # with tray
-      
-    # Hyprland Stuff | Laptop related stuff on a separate .nix
-    (ags.overrideAttrs (oldAttrs: {
-        inherit (oldAttrs) pname;
-        version = "1.8.2";
-      }))        
-    btop
-    cliphist
-    eog
-    gnome-system-monitor
-    grim
-    gtk-engine-murrine #for gtk themes
-    hyprcursor # requires unstable channel
-    hypridle # requires unstable channel
-    inxi
-	imagemagick
-    jq
-    kitty
-	libsForQt5.qt5ct
-    libsForQt5.qtstyleplugin-kvantum #kvantum
-    networkmanagerapplet
-    nwg-look # requires unstable channel
-    pamixer
-    pavucontrol
-    playerctl
-    polkit_gnome
-    pyprland
-    qt6ct
-    qt6.qtwayland
-    qt6Packages.qtstyleplugin-kvantum #kvantum
-    rofi-wayland
-    slurp
-    swappy
-    swaynotificationcenter
-    swww
-    unzip
-    wallust
-    wl-clipboard
-    wlogout
-    yad
-    yt-dlp
-
-    cava
-
-    #waybar  # if wanted experimental next line
-    #(pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];}))
-
-	#added for desktop
-    discord
-    glxinfo
-    #krabby
-    nvtopPackages.amd
-    obs-studio
-    obs-studio-plugins.obs-vaapi
-    ranger
-    shotcut
-    vscodium
-
-  ]) ++ [
-	  python-packages
-  ];
-
-  # FONTS
-  fonts.packages = with pkgs; [
-    noto-fonts
-    fira-code
-    noto-fonts-cjk-sans
-    jetbrains-mono
-    font-awesome
-	terminus_font
-    nerd-fonts.jetbrains-mono
- 	];
-
-  # Extra Portal Configuration
-  xdg.portal = {
-    enable = true;
-    wlr.enable = false;
-    extraPortals = [
-      pkgs.xdg-desktop-portal-gtk
-    ];
-    configPackages = [
-      pkgs.xdg-desktop-portal-gtk
-      pkgs.xdg-desktop-portal
-    ];
-  };
 
   # Services to start
   services = {
@@ -369,6 +201,8 @@
 	fwupd.enable = true;
 
 	upower.enable = true;
+	
+	pulseaudio.enable = false; # unstable Feb 2025
     
     #printing = {
     #  enable = false;
@@ -440,7 +274,7 @@
 
     # AMD Microcode update
     cpu.amd.updateMicrocode = true;
-	pulseaudio.enable = false;
+	#pulseaudio.enable = false; #disabled in unstable Feb 2025
 
   	# Extra Logitech Support
 	logitech.wireless.enable = false;

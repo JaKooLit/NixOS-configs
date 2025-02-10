@@ -5,7 +5,8 @@
   	nixpkgs.url = "nixpkgs/nixos-unstable";
 	#wallust.url = "git+https://codeberg.org/explosion-mental/wallust?ref=dev";
 	hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1"; # hyprland development
-	distro-grub-themes.url = "github:AdisonCavani/distro-grub-themes"; 
+	distro-grub-themes.url = "github:AdisonCavani/distro-grub-themes";
+	ags.url = "github:aylur/ags/v1"; # aylurs-gtk-shell-v1 
   	};
 
   outputs = 

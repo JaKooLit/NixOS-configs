@@ -14,31 +14,31 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/589768b2-b43b-48dd-9d85-414cf23515dd";
+    { device = "/dev/disk/by-uuid/d1b6bf99-dc04-4ee9-8d51-f95a0e6ff856";
       fsType = "btrfs";
       options = [ "noatime" "compress=zstd:5" "ssd" "discard=async" "space_cache=v2" "subvol=root" ];
     };
 
   fileSystems."/nix" =
-    { device = "/dev/disk/by-uuid/589768b2-b43b-48dd-9d85-414cf23515dd";
+    { device = "/dev/disk/by-uuid/d1b6bf99-dc04-4ee9-8d51-f95a0e6ff856";
       fsType = "btrfs";
       options = [ "noatime" "compress=zstd:5" "ssd" "discard=async" "space_cache=v2" "subvol=nix" ];
     };
 
   fileSystems."/var" =
-    { device = "/dev/disk/by-uuid/589768b2-b43b-48dd-9d85-414cf23515dd";
+    { device = "/dev/disk/by-uuid/d1b6bf99-dc04-4ee9-8d51-f95a0e6ff856";
       fsType = "btrfs";
       options = [ "noatime" "compress=zstd:5" "ssd" "discard=async" "space_cache=v2" "subvol=var" ];
     };
 
   fileSystems."/opt" =
-    { device = "/dev/disk/by-uuid/589768b2-b43b-48dd-9d85-414cf23515dd";
+    { device = "/dev/disk/by-uuid/d1b6bf99-dc04-4ee9-8d51-f95a0e6ff856";
       fsType = "btrfs";
       options = [ "noatime" "compress=zstd:5" "ssd" "discard=async" "space_cache=v2" "subvol=opt" ];
     };
 
   fileSystems."/home" =
-    { device = "/dev/disk/by-uuid/589768b2-b43b-48dd-9d85-414cf23515dd";
+    { device = "/dev/disk/by-uuid/d1b6bf99-dc04-4ee9-8d51-f95a0e6ff856";
       fsType = "btrfs";
       options = [ "noatime" "compress=zstd:5" "ssd" "discard=async" "space_cache=v2" "subvol=home" ];
     };
@@ -50,7 +50,7 @@
     };
 
   fileSystems."/efi" =
-    { device = "/dev/disk/by-uuid/B741-B33B";
+    { device = "/dev/disk/by-uuid/5F9B-897F";
       fsType = "vfat";
       options = [ "fmask=0022" "dmask=0022" ];
     };
@@ -60,7 +60,7 @@
   #  ];
 
    swapDevices =
-    [ { device = "/dev/disk/by-uuid/ef6d1409-5ecf-413b-8408-7265f05b1bc9"; }
+    [ { device = "/dev/disk/by-uuid/fa73a43a-d217-4565-b7e5-42ff4b4d8026"; }
     ];
 
   fileSystems."/home/ja/00shared-drives/1TB-NVME" =
@@ -78,8 +78,8 @@
       fsType = "ext4";
     };
 
-  fileSystems."/home/ja/00shared-drives/Data-Momentus-XT" =
-    { device = "/dev/disk/by-uuid/11bc1730-7b19-48dd-8bde-05fa54308860";
+  fileSystems."/home/ja/00shared-drives/2TB-SSD" =
+    { device = "/dev/disk/by-uuid/43000139-d5b8-4708-a84c-f3bb9cbcd855";
       fsType = "ext4";
     };
 
