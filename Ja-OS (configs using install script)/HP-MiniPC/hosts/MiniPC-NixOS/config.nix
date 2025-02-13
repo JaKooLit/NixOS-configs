@@ -1,6 +1,6 @@
 # Main default config
 
-{ config, pkgs, host, username, options, lib, inputs, system, ...}: let
+{ config, pkgs, username, host, options, lib, inputs, system, ...}: let
   
   inherit (import ./variables.nix) keyboardLayout;
   
@@ -157,8 +157,8 @@
       autodetect = true;
     };
     
-	  gvfs.enable = true;
-	  tumbler.enable = true;
+	gvfs.enable = true;
+	tumbler.enable = true;
 
 	pipewire = {
       enable = true;
@@ -198,6 +198,8 @@
     gnome.gnome-keyring.enable = true;
     
 	power-profiles-daemon.enable = true;
+
+	#hypridle.enable = true;
     #printing = {
     #  enable = false;
     #  drivers = [

@@ -40,21 +40,16 @@
     #ranger
       
     # Hyprland Stuff
-    #(ags.overrideAttrs (oldAttrs: {
-    #    inherit (oldAttrs) pname;
-    #    version = "1.8.2";
-    #  }))
     ags    
     btop
     brightnessctl # for brightness control
     cava
     cliphist
     eog
-	file-roller
+	#file-roller
     gnome-system-monitor
     grim
     gtk-engine-murrine #for gtk themes
-    hyprcursor # requires unstable channel
     hypridle # requires unstable channel
     imagemagick 
     inxi
@@ -82,17 +77,17 @@
     wallust
     wl-clipboard
     wlogout
-	#xarchiver
+	  xarchiver
     yad
     yt-dlp
 
-	#added to miniPC
-	audacious
-	discord-canary
-	gparted
-	qbittorrent
-	ranger
-	vscodium
+	  #added to miniPC
+	  audacious
+	  discord
+	  gparted
+	  qbittorrent
+  	ranger
+	  vscodium
 
     #waybar  # if wanted experimental next line
     #(pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];}))
