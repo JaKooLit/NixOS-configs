@@ -44,7 +44,7 @@
     (mpv.override {scripts = [mpvScripts.mpris];}) # with tray
       
     # Hyprland Stuff
-    #ags_1 # desktop overview  
+    ags_1 # desktop overview  
     btop
     brightnessctl # for brightness control
     cava
