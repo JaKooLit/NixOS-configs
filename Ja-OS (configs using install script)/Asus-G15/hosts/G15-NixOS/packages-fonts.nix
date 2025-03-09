@@ -12,9 +12,14 @@
     );
 
   in {
+
+  nixpkgs.config.allowUnfree = true;
+
   environment.systemPackages = (with pkgs; [
   # System Packages
+    ayatana-ido
     baobab
+    bc
     btrfs-progs
     clang
     curl
@@ -26,7 +31,6 @@
     gsettings-qt
     git
     killall  
-    libappindicator
     libnotify
     openssl #required by Rainbow borders
     pciutils
@@ -34,38 +38,32 @@
     wget
     xdg-user-dirs
     xdg-utils
+    xorg.xhost
 
-	rocmPackages_5.rocm-smi
-    python312Packages.nvidia-ml-py
-
-	fastfetch
+    fastfetch
     (mpv.override {scripts = [mpvScripts.mpris];}) # with tray
-    #ranger
       
     # Hyprland Stuff
-    (ags.overrideAttrs (oldAttrs: {
-        inherit (oldAttrs) pname;
-        version = "1.8.2";
-      }))
-    #ags    
+    #ags_1 # desktop overview  
     btop
     brightnessctl # for brightness control
     cava
     cliphist
-    eog
     gnome-system-monitor
-    file-roller
     grim
     gtk-engine-murrine #for gtk themes
-    hyprcursor # requires unstable channel
-    hypridle # requires unstable channel
+    hypridle 
+    hyprpolkitagent
     imagemagick 
     inxi
     jq
     kitty
     libsForQt5.qtstyleplugin-kvantum #kvantum
+    loupe
     networkmanagerapplet
-    nwg-look # requires unstable channel
+    nwg-look
+    nwg-displays
+    #nvtopPackages.amd
     nvtopPackages.full
     pamixer
     pavucontrol
@@ -73,9 +71,9 @@
     polkit_gnome
     pyprland
     libsForQt5.qt5ct
-    qt6ct
-    qt6.qtwayland
-    qt6Packages.qtstyleplugin-kvantum #kvantum
+    kdePackages.qt6ct
+    kdePackages.qtwayland
+    kdePackages.qtstyleplugin-kvantum #kvantum
     rofi-wayland
     slurp
     swappy
@@ -85,34 +83,45 @@
     wallust
     wl-clipboard
     wlogout
-    yad
+    xarchiver
+    yad   
     yt-dlp
 
     #waybar  # if wanted experimental next line
     #(pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];}))
 
-	# Asus G15 additional
+    # Asus G15 additional
     brightnessctl
-    discord-canary
+    discord
     glxinfo
     #krabby
     kdePackages.okular
     libreoffice-fresh
     obs-studio
     pdfarranger
-    qemu
-	ranger
-    #shotcut
-	teams-for-linux
+    ranger
+    shotcut
+    teams-for-linux
     thunderbird
     yt-dlp
     vscodium
-	whatsapp-for-linux
+    whatsapp-for-linux
+
+    libayatana-appindicator
+    libayatana-indicator
+    libayatana-common
+    indicator-application-gtk3
+    indicator-application-gtk3
+    libindicator
+    libindicator-gtk3
+    libappindicator
+    libappindicator-gtk3
+
     (epsonscan2.override { withNonFreePlugins = true; withGui = true; }) 
 
-  ]) ++ [
+    ]) ++ [
 	  python-packages
-  ];
+    ];
 
   # FONTS
   fonts.packages = with pkgs; [
@@ -121,7 +130,79 @@
     noto-fonts-cjk-sans
     jetbrains-mono
     font-awesome
-	  terminus_font
-    nerd-fonts.jetbrains-mono
+    terminus_font
+    victor-mono
+    #(nerdfonts.override {fonts = ["JetBrainsMono"];}) # stable banch
+    nerd-fonts.jetbrains-mono # unstable
+    nerd-fonts.fira-code # unstable
+    nerd-fonts.fantasque-sans-mono #unstable
  	];
+
+  
+  programs = {
+	  hyprland = {
+        enable = true;
+		      #package = pks.hyprland;
+ 		      #portalPackage = pkgs.xdg-desktop-portal-hyprland; 
+		      package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland; #hyprland-git
+		      portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland; # xdphls
+  	      xwayland.enable = true;
+      };
+
+	  waybar.enable = true;
+	  hyprlock.enable = true;
+	  firefox.enable = true;
+	  git.enable = true;
+    nm-applet.indicator = true;
+    #neovim.enable = true;
+
+	  thunar.enable = true;
+	  thunar.plugins = with pkgs.xfce; [
+		  exo
+		  mousepad
+		  thunar-archive-plugin
+		  thunar-volman
+		  tumbler
+  	  ];
+	
+    virt-manager.enable = true;
+	  system-config-printer.enable = true;
+    
+    #steam = {
+    #  enable = true;
+    #  gamescopeSession.enable = true;
+    #  remotePlay.openFirewall = true;
+    #  dedicatedServer.openFirewall = true;
+    #};
+    
+    xwayland.enable = true;
+
+    dconf.enable = true;
+    seahorse.enable = true;
+    fuse.userAllowOther = true;
+    mtr.enable = true;
+    gnupg.agent = {
+      enable = true;
+      enableSSHSupport = true;
+    };
+	
+  };
+
+  users = {
+    mutableUsers = true;
+  };
+
+  # Extra Portal Configuration
+  xdg.portal = {
+    enable = true;
+    wlr.enable = false;
+    extraPortals = [
+      pkgs.xdg-desktop-portal-gtk
+    ];
+    configPackages = [
+      pkgs.xdg-desktop-portal-gtk
+      pkgs.xdg-desktop-portal
+    ];
+    };
+
   }

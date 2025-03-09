@@ -2,20 +2,28 @@
   description = "KooL's NixOS-Hyprland"; 
   	
   inputs = {
-  	nixpkgs.url = "nixpkgs/nixos-unstable";
-	#wallust.url = "git+https://codeberg.org/explosion-mental/wallust?ref=dev";
-	hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1"; # hyprland development
-	distro-grub-themes.url = "github:AdisonCavani/distro-grub-themes"; 
+  	#nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
+	nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable"; #Unstable
+	hyprland.url = "github:hyprwm/Hyprland"; # hyprland development
+	distro-grub-themes.url = "github:AdisonCavani/distro-grub-themes";
+	#ags.url = "github:aylur/ags/v1"; # aylurs-gtk-shell-v1 
   	};
 
   outputs = 
-	inputs@{ self,nixpkgs, ... }:
-    	let
-      system = "x86_64-linux";
-      host = "G15-NixOS";
-      username = "ja";
+	inputs@{ self, nixpkgs, ... }:
+      let
+        system = "x86_64-linux";
+        host = "G15-NixOS";
+        username = "ja";
 
-    pkgs = import nixpkgs {
+      #unstable = import nixpkgs-unstable {
+       # inherit system;
+       # config = {
+       #   allowUnfree = true;
+       # };
+      #};
+
+      pkgs = import nixpkgs {
        	inherit system;
        	config = {
        	allowUnfree = true;
@@ -30,6 +38,7 @@
 			inherit inputs;
 			inherit username;
 			inherit host;
+			#inherit unstable;
 			};
 	   		modules = [ 
 				./hosts/${host}/config.nix 

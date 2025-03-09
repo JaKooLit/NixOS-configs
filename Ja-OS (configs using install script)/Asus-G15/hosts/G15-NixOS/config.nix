@@ -14,6 +14,7 @@
     ./hardware.nix
     ./users.nix
     ./packages-fonts.nix
+	  ./qemu-kvm.nix # added for virtualization
     ../../modules/amd-drivers.nix
     ../../modules/nvidia-drivers.nix
     ../../modules/nvidia-prime-drivers.nix
@@ -24,26 +25,27 @@
 
   # BOOT related stuff
   boot = {
-    kernelPackages = pkgs.linuxPackages_latest; # Kernel
+    #kernelPackages = pkgs.linuxPackages_zen; # Kernel
+ 	kernelPackages = pkgs.linuxPackages_latest; # Kernel
 
     kernelParams = [
-		"rd.driver.blacklist=nouveau" 
-		"modprobe.blacklist=nouveau" 
-		"nvidia-drm.modeset=1" 
-		"iommu=on" 
-		"amd_iommu=on" 
-		"amd_pstate=guided" 
-		"nowatchdog"
-		"modprobe.blacklist=sp5100_tco" 
+		 "rd.driver.blacklist=nouveau" 
+		 "modprobe.blacklist=nouveau" 
+		 "nvidia-drm.modeset=1" 
+		 "iommu=on" 
+		 "amd_iommu=on" 
+		 "amd_pstate=active" 
+		 "nowatchdog"
+		 "modprobe.blacklist=sp5100_tco" 
  	  ];
 
     # This is for OBS Virtual Cam Support
-    kernelModules = [ "v4l2loopback" ];
-    extraModulePackages = [ config.boot.kernelPackages.v4l2loopback ];
+    #kernelModules = [ "v4l2loopback" ];
+    #extraModulePackages = [ config.boot.kernelPackages.v4l2loopback ];
     
     initrd = { 
-      availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "sd_mod" ];
-      kernelModules = [ ];
+     availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "sd_mod" ];
+     kernelModules = [ ];
     };
 
     # Needed For Some Steam Games
@@ -138,72 +140,6 @@
     LC_TIME = "en_US.UTF-8";
   };
 
-  nixpkgs.config.allowUnfree = true;
-  
-  programs = {
-	  hyprland = {
-      enable = true;
-		  package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland; #hyprland-git
-		  portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland; # xdphls
-  	  xwayland.enable = true;
-      };
-
-	  waybar.enable = true;
-	  hyprlock.enable = true;
-	  firefox.enable = true;
-	  git.enable = true;
-    nm-applet.indicator = true;
-    #neovim.enable = true;
-
-	  thunar.enable = true;
-	  thunar.plugins = with pkgs.xfce; [
-		  exo
-		  mousepad
-		  thunar-archive-plugin
-		  thunar-volman
-		  tumbler
-  	  ];
-	
-    virt-manager.enable = true;
-	  system-config-printer.enable = true;
-    
-    #steam = {
-    #  enable = true;
-    #  gamescopeSession.enable = true;
-    #  remotePlay.openFirewall = true;
-    #  dedicatedServer.openFirewall = true;
-    #};
-    
-    xwayland.enable = true;
-
-    dconf.enable = true;
-    seahorse.enable = true;
-    fuse.userAllowOther = true;
-    mtr.enable = true;
-    gnupg.agent = {
-      enable = true;
-      enableSSHSupport = true;
-    };
-	
-  };
-
-  users = {
-    mutableUsers = true;
-  };
-
-  # Extra Portal Configuration
-  xdg.portal = {
-    enable = true;
-    wlr.enable = false;
-    extraPortals = [
-      pkgs.xdg-desktop-portal-gtk
-    ];
-    configPackages = [
-      pkgs.xdg-desktop-portal-gtk
-      pkgs.xdg-desktop-portal
-    ];
-  };
-
   # Services to start
   services = {
     xserver = {
@@ -228,80 +164,83 @@
     smartd = {
       enable = false;
       autodetect = true;
-    };
-    
-	  gvfs.enable = true;
-	  tumbler.enable = true;
-
-	  pipewire = {
-      enable = true;
-      alsa.enable = true;
-      alsa.support32Bit = true;
-      pulse.enable = true;
-	    wireplumber.enable = true;
-  	  };
-	
-	  udev.enable = true;
-	  envfs.enable = true;
-	  dbus.enable = true;
-
-	  fstrim = {
-      enable = true;
-      interval = "weekly";
       };
-  
-    libinput.enable = true;
+    
+	gvfs.enable = true;
+	tumbler.enable = true;
 
-    rpcbind.enable = false;
-    nfs.server.enable = false;
+	ayatana-indicators.enable = true;
+	pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+	  wireplumber.enable = true;
+  	};
+    
+	pulseaudio.enable = false; #unstable	
+	  
+	udev.enable = true;
+	envfs.enable = true;
+	dbus.enable = true;
+
+	fstrim = {
+    enable = true;
+    interval = "weekly";
+    };
   
-    openssh.enable = true;
-    flatpak.enable = false;
+	libinput.enable = true;
+
+	rpcbind.enable = false;
+	nfs.server.enable = false;
+  
+	openssh.enable = true;
+	flatpak.enable = false;
 	
-  	blueman.enable = true;
+	blueman.enable = true;
   	
 	# asusctl related
 	asusd = {
-		enable = true;
-	  	enableUserService = true;
-      };
+	  enable = true;
+	  enableUserService = true;
+     };
 
 	supergfxd.enable = true;
 	power-profiles-daemon.enable = true;
 
 	logind = {
-		lidSwitch = "ignore";
-		lidSwitchExternalPower = "ignore";
-		lidSwitchDocked = "ignore";
-	};
+	  lidSwitch = "ignore";
+	  lidSwitchExternalPower = "ignore";
+	  lidSwitchDocked = "ignore";
+	 };
 
 	printing = {
-		enable = true;
-		drivers = with pkgs; [
-			epson-escpr
-			epson-escpr2			
+	  enable = true;
+	  drivers = with pkgs; [
+	    epson-escpr
+	    epson-escpr2			
 			];
-  		};
+  	};
 	
 	avahi = {
-		enable = true; # necessary for network printing / scanning
-		nssmdns4 = true;
-		openFirewall = true;
-     	publish = {
-       		enable = true;
-       		addresses = true;
-       		userServices = true;
-     		};
+	  enable = true; # necessary for network printing / scanning
+	  nssmdns4 = true;
+	  openFirewall = true;
+      publish = {
+       	enable = true;
+       	addresses = true;
+       	userServices = true;
+     	};
 		};
 
-  	#hardware.openrgb.enable = true;
-  	#hardware.openrgb.motherboard = "amd";
+  #hardware.openrgb.enable = true;
+  #hardware.openrgb.motherboard = "amd";
 
 	fwupd.enable = true;
 
 	upower.enable = true;
     
-    gnome.gnome-keyring.enable = true;
+	gnome.gnome-keyring.enable = true;
     
 
   };
@@ -328,16 +267,16 @@
   };
 
   hardware = {
-	cpu.amd.updateMicrocode = true;
+	  cpu.amd.updateMicrocode = true;
 
-	# for network scanner
-	sane = {
-	  enable = true;
-	  extraBackends = [
-		pkgs.epsonscan2
-		];
-	  disabledDefaultBackends = ["escl"];
-  		};
+	  # for network scanner
+	  sane = {
+	    enable = true;
+	    extraBackends = [
+		  pkgs.epsonscan2
+		  ];
+	    disabledDefaultBackends = ["escl"];
+  	};
 
 	i2c.enable = true;
   };
@@ -361,7 +300,7 @@
   };
 
   # Enable sound with pipewire.
-  hardware.pulseaudio.enable = false;
+  #hardware.pulseaudio.enable = false;
 
   # Security / Polkit
   security.rtkit.enable = true;
@@ -407,12 +346,12 @@
   };
 
   # Virtualization / Containers
-  virtualisation.libvirtd.enable = false;
-  virtualisation.podman = {
-    enable = false;
-    dockerCompat = false;
-    defaultNetwork.settings.dns_enabled = false;
-  };
+  #virtualisation.libvirtd.enable = false;
+  #virtualisation.podman = {
+  #  enable = false;
+  #  dockerCompat = false;
+  #  defaultNetwork.settings.dns_enabled = false;
+  #};
 
   # OpenGL
   hardware.graphics = {
