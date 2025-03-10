@@ -17,7 +17,7 @@
   
   environment.systemPackages = (with pkgs; [
   # System Packages
-	  bc
+    bc
     baobab
     btrfs-progs
     clang
@@ -45,15 +45,14 @@
     # Hyprland Stuff
 
     #(ags.overrideAttrs (oldAttrs: {
-     #   inherit (oldAttrs) pname;
-     #   version = "1.9.0";
-     # }))
+      #   inherit (oldAttrs) pname;
+      #   version = "1.9.0";
+      # }))
     ags_1 #for Desktop overview  
     btop
     brightnessctl # for brightness control
     cava
     cliphist
-    eog
     gnome-system-monitor
     grim
     gtk-engine-murrine #for gtk themes
@@ -63,15 +62,15 @@
     jq
     kitty
     libsForQt5.qtstyleplugin-kvantum #kvantum
+    loupe
     networkmanagerapplet
     nwg-look
-	  nwg-displays
+    nwg-displays
     #nvtopPackages.full	 
     pamixer
     pavucontrol
     playerctl
     polkit_gnome
-    pyprland
     libsForQt5.qt5ct
     kdePackages.qt6ct
     kdePackages.qtwayland
@@ -89,7 +88,7 @@
     yad
     yt-dlp
 
-	#added for desktop
+    #added for desktop
     discord
     glxinfo
     #krabby
