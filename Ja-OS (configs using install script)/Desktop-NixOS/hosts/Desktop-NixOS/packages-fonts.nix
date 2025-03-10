@@ -17,13 +17,13 @@
   
   environment.systemPackages = (with pkgs; [
   # System Packages
+	  bc
     baobab
     btrfs-progs
     clang
     curl
     cpufrequtils
     duf
-    eza
     ffmpeg   
     glib #for gsettings to work
     gsettings-qt
@@ -43,7 +43,12 @@
     #ranger
       
     # Hyprland Stuff
-    ags #for Desktop overview  
+
+    #(ags.overrideAttrs (oldAttrs: {
+     #   inherit (oldAttrs) pname;
+     #   version = "1.9.0";
+     # }))
+    ags_1 #for Desktop overview  
     btop
     brightnessctl # for brightness control
     cava
@@ -60,6 +65,7 @@
     libsForQt5.qtstyleplugin-kvantum #kvantum
     networkmanagerapplet
     nwg-look
+	  nwg-displays
     #nvtopPackages.full	 
     pamixer
     pavucontrol
@@ -107,10 +113,12 @@
     noto-fonts-cjk-sans
     jetbrains-mono
     font-awesome
-	  terminus_font
+    terminus_font
+    victor-mono
     #(nerdfonts.override {fonts = ["JetBrainsMono"];}) # stable banch
     nerd-fonts.jetbrains-mono # unstable
     nerd-fonts.fira-code # unstable
+    nerd-fonts.fantasque-sans-mono # unstable
  	];
   
   programs = {
@@ -127,8 +135,8 @@
 	  hyprlock.enable = true;
 	  firefox.enable = true;
 	  git.enable = true;
-    nm-applet.indicator = true;
-    #neovim.enable = true;
+      nm-applet.indicator = true;
+      #neovim.enable = true;
 
 	  thunar.enable = true;
 	  thunar.plugins = with pkgs.xfce; [
@@ -139,7 +147,6 @@
 		  tumbler
   	  ];
 	
-    virt-manager.enable = false;
     
     #steam = {
     #  enable = true;
